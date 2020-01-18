@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2607405737
+    locked: 0
+  - name: Base
+    uniqueID: 16849193
+    locked: 0
+  - name: Rocks
+    uniqueID: 3660740303
+    locked: 0
+  - name: GameArea
+    uniqueID: 3085538757
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
