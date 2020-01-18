@@ -25,14 +25,8 @@ public class Trap : MonoBehaviour
     {
         isActivated = true;
         animator.SetBool("isActivated", isActivated);
-        StartCoroutine(Hitting());
         Debug.Log("Un Trap de base a été enclenché, pas une sous classe..");
     }
 
-    protected IEnumerator Hitting()
-    {
-        yield return new WaitForSeconds(0.2f);
-        isActivated = false;
-        Object.Destroy(this.gameObject);
-    }
+
 }

@@ -39,12 +39,14 @@ public class MapManager : MonoBehaviour
     private GameObject victoryPanel;
 
     private bool endRound;
+    private bool trapAlreadySet;
 
     private void Start()
     {
         whoPlay = 1;
         player = player1;
         spectate = player2;
+        trapAlreadySet = false;
         endRound = false;
         spawnPosition = GameObject.Find("SpawnPosition").transform.position;
         spectatePosition = GameObject.Find("SpectatePosition").transform.position;
@@ -75,6 +77,8 @@ public class MapManager : MonoBehaviour
         Player s = spectate.GetComponent<Player>();
         if (p.Life <= 0 || s.Life <= 0)
         {
+            p.gameObject.GetComponent<PlayerMovement>().canMove = false;
+            s.gameObject.GetComponent<PlayerMovement>().canMove = false;
             victoryPanel.SetActive(true);
         }
         if (endRound)
@@ -124,13 +128,13 @@ public class MapManager : MonoBehaviour
                 canSetTrap = false;
             }
         }
-        if (canSetTrap && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
+        if (canSetTrap && !trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
             Debug.Log("Je pose le piège");
             Instantiate(newTrap, tilemap.GetCellCenterLocal(frontCellInt), Quaternion.identity, GameObject.Find("Traps").transform);
-            Debug.Log("Fin de manche");
-            endRound = true;
+            trapAlreadySet = true;
             selectionMap.SetTile(frontCellInt, oldTile); // On retire la case de selection pour voir le piege se poser
+            UpdatePositions();
         }
         else // Je ne peux pas poser de piege pour le moment
         {
@@ -156,6 +160,8 @@ public class MapManager : MonoBehaviour
         {
             Debug.Log("whoPlay a une valeur différente de 1 ou 2 !");
         }
+        UpdatePositions();
+        UpdateAbilities();
     }
 
     public void UpdatePositions()
@@ -187,9 +193,8 @@ public class MapManager : MonoBehaviour
 
     public void EndRound()
     {
-        SwitchPlayer();
-        UpdateAbilities();
-        UpdatePositions();
+        trapAlreadySet = false;
         endRound = false;
+        SwitchPlayer();
     }
 }

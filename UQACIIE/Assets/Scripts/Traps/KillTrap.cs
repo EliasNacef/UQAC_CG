@@ -24,4 +24,11 @@ public class KillTrap : Trap
         player.Hurt();
         StartCoroutine(Hitting());
     }
+
+    protected IEnumerator Hitting()
+    {
+        yield return new WaitForSeconds(0.2f);
+        isActivated = false;
+        Object.Destroy(this.gameObject);
+    }
 }
