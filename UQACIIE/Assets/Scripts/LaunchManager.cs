@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-
-
-public class MenuButton : MonoBehaviour
+/// <summary>
+/// Classe gestionnaire des changement de scenes
+/// </summary>
+public class LaunchManager : MonoBehaviour
 {
     public void LoadGame()
     {

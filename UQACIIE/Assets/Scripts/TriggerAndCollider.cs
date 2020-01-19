@@ -2,36 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Classe gestionnaire des collisions dans le jeu
+/// </summary>
 public class TriggerAndCollider : MonoBehaviour
 {
     [SerializeField]
-    private Player player;
+    private Player player; // Player qui peut entrer en collision avec quelque chose
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Decrit se qu'il se passe lors de la collision entre un collider et le joueur
+    /// </summary>
+    /// <param name="collision"> Objet qui est entre en collision </param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Le trap qui va s'enclencher
-        Trap trap = collision.gameObject.GetComponent<Trap>();
-
-        // Pour activer l'animation de destruction du trap.
-        collision.gameObject.GetComponent<SpriteRenderer>().sprite = null;
-
-        // Activation du trap
-        trap.Activate(player);
-
-        // Debug
-        Debug.Log("Boom, le piège s'est activé");
+        Trap trap = collision.gameObject.GetComponent<Trap>(); // Le trap qui va s'enclencher car il est en collision avec le player
+        collision.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
+        trap.Activate(player); // Activation du trap
     }
 
 

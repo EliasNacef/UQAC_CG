@@ -3,59 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
+/// </summary>
 public class MapManager : MonoBehaviour
 {
     [SerializeField]
-    private Tilemap tilemap;
+    private Tilemap tilemap; // Tilemap de de la Game Area
     [SerializeField]
-    private Tilemap selectionMap;
-    public TileBase blueTile;
-    public TileBase oldTile;
-    private Grid grid;
+    private Tilemap selectionMap; // Tilemap ou la case selectionnee est dessinee
+    public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
+    public TileBase oldTile; // La TileBase que l'on va effacer avant de redessiner
+    private Grid grid; // La grille de jeu associee a la tilemap de la game area
 
     [SerializeField]
-    private Trap[] traps;
-    public KillTrap newTrap;
+    public Trap[] traps; // La liste des pieges instancies
+    public Trap newTrap; // Le nouveau piege a instancier
 
     
-    private GameObject player;
-    private GameObject spectate;
+    private GameObject player; // Le joueur
+    private GameObject spectator; // Le spectateur (qui attend de jouer)
     [SerializeField]
-    private GameObject player1; // GameObject du joueur
+    private GameObject player1; // GameObject du premier joueur
     [SerializeField]
-    private GameObject player2; // GameObject du joueur
-    private int whoPlay;
+    private GameObject player2; // GameObject du second joueur
 
-    private Vector3 spawnPosition;
-    private Vector3 spectatePosition;
+    private int whoPlay; // Entier indiquant le numero de celui qui joue
+
+    private Vector3 spawnPosition; // La position ou le joueur doit apparaitre
+    private Vector3 spectatePosition; // La position ou le spactateur doit observer
     [SerializeField]
-    private Vector3 currentCell; // Cellule où est le joueur
+    private Vector3 currentCell; // Cellule où se trouve le joueur
     [SerializeField]
-    private Vector3 frontCell; // Cellule devant le joueur
-    private Vector3Int currentCellInt;
-    private Vector3Int frontCellInt;
+    private Vector3 frontCell; // Cellule juste devant (au dessus) le joueur
+    private Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
+    private Vector3Int frontCellInt; // Cellule frontCell convertie en vectuer d'entiers avec Floor()
 
     [SerializeField]
-    private GameObject victoryPanel;
+    private GameObject victoryPanel; // Le panel a afficher apres la fin du jeu
 
-    private bool endRound;
-    private bool trapAlreadySet;
+    private bool endRound; // Est-ce la fin d'un round ?
+    public static bool trapAlreadySet; // Un piege a-t-il deja ete place pendant le round ?
+
+
 
     private void Start()
     {
-        whoPlay = 1;
-        player = player1;
-        spectate = player2;
-        trapAlreadySet = false;
-        endRound = false;
-        spawnPosition = GameObject.Find("SpawnPosition").transform.position;
-        spectatePosition = GameObject.Find("SpectatePosition").transform.position;
-        UpdatePositions();
-        UpdateAbilities();
+        // Parametres initiaux
+        whoPlay = 1; // Le joueur 1 commence a jouer
+        player = player1; // Le player est donc le joueur 1
+        spectator = player2; // ..et le spectator est donc le joueur 2
+        trapAlreadySet = false; // la bombe n'a pas encore ete placee
+        endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
+        spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
+        spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
+        UpdatePositions(); // On update les positions
+        UpdateAbilities(); // On update les abilites
 
-
-        //Notre map est la GameArea defini par la TileMap GameArea
-        grid = tilemap.layoutGrid;
+        grid = tilemap.layoutGrid; // Grille associee a la tilemap
         //Liste des pièges
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
 
@@ -70,71 +75,62 @@ public class MapManager : MonoBehaviour
 
 
 
-    // Update is called once per frame
     void Update()
     {
-        Player p = player.GetComponent<Player>();
-        Player s = spectate.GetComponent<Player>();
-        if (p.Life <= 0 || s.Life <= 0)
-        {
-            p.gameObject.GetComponent<PlayerMovement>().canMove = false;
-            s.gameObject.GetComponent<PlayerMovement>().canMove = false;
-            victoryPanel.SetActive(true);
-        }
-        if (endRound)
-        {
-            EndRound();
-        }
-        else
+        TestEndGame(); // Testons si c'est la fin du jeu
+
+        if (endRound) // Est-ce la fin d'un round ?
+            EndRound(); // Si oui, on y met fin
+        else // Sinon
         {
             // La case de selection se deplace avec le joueur.
             SetSelectionTile();
-            if (grid.WorldToCell(player.transform.position).y > 4)
-            {
-                endRound = true;
-            }
-            else if (Input.GetButtonDown("Jump"))
-            {
-                TryToSetTrap();
-            }
+
+            if (grid.WorldToCell(player.transform.position).y > 4) // Si on arrive en haut de la grille de jeu
+                endRound = true; // Fin du round
+            else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
+                TryToSetTrap(); // Essayer de poser un piege
         }
     }
 
-
+    /// <summary>
+    /// Met en place la cellule de selection pour poser un piege : dessine une tile devant le joueur pour voir ou le piege sera place
+    /// </summary>
     void SetSelectionTile()
     {
-        if (!endRound)
+        if (!endRound) // Si le round n'est pas fini
         {
-            selectionMap.SetTile(frontCellInt, oldTile);
+            selectionMap.SetTile(frontCellInt, oldTile); // Remet en place l'ancienne Tile 
             frontCell = grid.WorldToCell(player.transform.position); // Cellule devant le joueur (car le transform du player est une case au dessus)
             currentCell = frontCell + new Vector3(0f, -1f, 0f); // Cellule où est le joueur
             frontCellInt = new Vector3Int(Mathf.FloorToInt(frontCell.x), Mathf.FloorToInt(frontCell.y), Mathf.FloorToInt(frontCell.z));
             currentCellInt = new Vector3Int(Mathf.FloorToInt(currentCell.x), Mathf.FloorToInt(currentCell.y), Mathf.FloorToInt(currentCell.z));
-            oldTile = selectionMap.GetTile(frontCellInt);
-            selectionMap.SetTile(frontCellInt, blueTile);
+            oldTile = selectionMap.GetTile(frontCellInt); // Stocke la tile avant de la changer
+            selectionMap.SetTile(frontCellInt, selectionTile); // Dessine la tile de selection
         }
     }
 
-
+    /// <summary>
+    /// Tente de placer un piege sur la position de selection du piege.
+    /// </summary>
     void TryToSetTrap()
     {
-        bool canSetTrap = true;
-        Vector3 positionFutureTrap = tilemap.GetCellCenterLocal(frontCellInt);
-        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
-        foreach (Trap trap in traps)
+        bool canSetTrap = true; // Le joueur peut initialement placer un piege si il le souhaite
+        Vector3 positionTrap = tilemap.GetCellCenterLocal(frontCellInt); // La future position du piege
+        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>(); // Mise a jour des traps de la liste avant de la parcourir
+        foreach (Trap trap in traps) // verifie si un piege est deja sur la position de selection
         {
-            if (positionFutureTrap == tilemap.WorldToLocal(trap.transform.position))
+            if (positionTrap == tilemap.WorldToLocal(trap.transform.position))
             {
-                canSetTrap = false;
+                canSetTrap = false; // Ne peut pas placer le piege ici
             }
         }
         if (canSetTrap && !trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
-            Debug.Log("Je pose le piège");
-            Instantiate(newTrap, tilemap.GetCellCenterLocal(frontCellInt), Quaternion.identity, GameObject.Find("Traps").transform);
-            trapAlreadySet = true;
+            Instantiate(newTrap, tilemap.GetCellCenterLocal(frontCellInt), Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            trapAlreadySet = true; // Le piege a ete place pendant le round
             selectionMap.SetTile(frontCellInt, oldTile); // On retire la case de selection pour voir le piege se poser
-            UpdatePositions();
+            UpdatePositions(); // On reset les positions
         }
         else // Je ne peux pas poser de piege pour le moment
         {
@@ -142,59 +138,117 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changer les joueurs de positions, leurs capacites (mouvement..) et inverse leur statut de joueur/spectateur
+    /// </summary>
     void SwitchPlayer()
     {
-        if (whoPlay == 1)
+        if (whoPlay == 1) // Si le joueur 1 joue
         {
             player = player2;
-            spectate = player1;
+            spectator = player1;
             whoPlay = 2;
         }
-        else if(whoPlay == 2)
+        else if(whoPlay == 2) // Sinon si le joueur 2 joue
         {
             player = player1;
-            spectate = player2;
+            spectator = player2;
             whoPlay = 1;
         }
-        else
-        {
+        else // Erreur
             Debug.Log("whoPlay a une valeur différente de 1 ou 2 !");
-        }
+
+        // Update
         UpdatePositions();
         UpdateAbilities();
     }
 
+
+    /// <summary>
+    /// Met a jour les positions en fonction du statut joueur/spectateur
+    /// </summary>
     public void UpdatePositions()
     {
-        Player p;
-        p = player.GetComponent<Player>();
-        //Si on s'est mange un piege, on perd une seule vie
-        if (p.hasLost)
-        {
-            p.Life--;
-            p.hasLost = false;
-        }
-        //Mise a jour des positions
+        // Mise a jour des positions
         player.transform.position = spawnPosition;
-        spectate.transform.position = spectatePosition;
-        CharacterController controllerSpectate = spectate.GetComponent<CharacterController>();
+        spectator.transform.position = spectatePosition;
+
+        // Le spectateur doit observer le jeu est donc faire face a la game area
+        PlayerMovement controllerSpectate = spectator.GetComponent<PlayerMovement>();
         if (!controllerSpectate.m_FacingRight)
-        {
             controllerSpectate.Flip();
-        }
     }
 
+
+
+    /// <summary>
+    /// Met a jour les abilites du joueur et du spectateur : le joueur peut bouger mais pas le spectateur
+    /// </summary>
     void UpdateAbilities()
     {
         player.GetComponent<PlayerMovement>().canMove = true;
-        spectate.GetComponent<PlayerMovement>().canMove = false;
+        spectator.GetComponent<PlayerMovement>().canMove = false;
     }
 
 
+
+    /// <summary>
+    /// Fin du round, reinitialisation des variables du tour et on echange le joueur avec le spectateur
+    /// </summary>
     public void EndRound()
     {
         trapAlreadySet = false;
         endRound = false;
-        SwitchPlayer();
+        SwitchPlayer(); // Echange de joueurs
+    }
+
+
+    /// <summary>
+    /// Teste si c'est la fin du jeu. Si l'un des joueurs n'a plus de vie, on met fin au jeu.
+    /// </summary>
+    private void TestEndGame()
+    {
+        Player p = player.GetComponent<Player>();
+        Player s = spectator.GetComponent<Player>();
+        if (p.Life <= 0 || s.Life <= 0)
+        {
+            // On bloque les mouvement et la possibilite de mettre des pieges
+            PlayerMovement pm = player.GetComponent<PlayerMovement>();
+            PlayerMovement sm = player.GetComponent<PlayerMovement>();
+            pm.canMove = false;
+            sm.canMove = false;
+            trapAlreadySet = true;
+            victoryPanel.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Sauvegarde le level en cours
+    /// </summary>
+    public void SaveLevel()
+    {
+        SaveSystem.SaveLevel(this); // On a sauvegarde le level
+    }
+
+
+    /// <summary>
+    /// Load le level sauvegarde
+    /// </summary>
+    public void LoadLevel()
+    {
+        LevelData data = SaveSystem.LoadLevel();
+
+        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+        foreach (Trap trap in traps) //  on vide le tableau de traps
+        {
+            Object.Destroy(trap.gameObject);
+        }
+
+        for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
+        {
+            Vector3 v = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
+            Instantiate(newTrap, v, Quaternion.identity, GameObject.Find("Traps").transform);
+        }
+        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
     }
 }

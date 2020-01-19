@@ -1,26 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Classe gestionnaire de l'UI de score
+/// </summary>
 public class ScoreUI : MonoBehaviour
 {
     [SerializeField]
-    private Player player;
+    private Player player; // Player en train de joueur
     [SerializeField]
-    private Player spectate;
+    private Player spectate; // Player en train d'observer
 
     [SerializeField]
-    private Text playerScore;
+    private Text playerScore; // Score de celui en train de jouer
     [SerializeField]
-    private Text spectateScore;
+    private Text spectateScore; // Score de celui en train d'observer
 
 
-    // Update is called once per frame
     void Update()
     {
-        playerScore.text = "Player : " + player.Life;
-        spectateScore.text = "Spectate : " + spectate.Life;
+        playerScore.text = "Player : " + player.Life; // Texte score de joueur
+        spectateScore.text = "Spectate : " + spectate.Life; // Texte score du spectateur
     }
 }
