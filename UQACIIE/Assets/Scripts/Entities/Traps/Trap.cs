@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Classe mere des pieges : les classes filles auront des effets
 /// </summary>
-public class Trap : MonoBehaviour
+public class Trap : Entity
 {
 
     protected bool isActivated; // Le piege a-t-il ete declenche
@@ -13,6 +13,7 @@ public class Trap : MonoBehaviour
 
     void Start()
     {
+        mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
         isActivated = false; // Le piege est initialement non declenche
     }
 
@@ -22,11 +23,20 @@ public class Trap : MonoBehaviour
     /// <param name="player"> Joueur qui a enclenche le piege </param>
     virtual public void Activate(Player player)
     {
-        MapManager.trapAlreadySet = true;
+        mapManager.trapAlreadySet = true;
         isActivated = true;
         animator.SetBool("isActivated", isActivated); // Active l'animation du piege
         Debug.Log("Un Trap de base a été enclenché, pas une sous classe..");
     }
 
-
+    /// <summary>
+    /// Va mettre un terme a l'activation du piege et le detruire
+    /// </summary>
+    /// <returns> Attends un certain nombre de secondes pour desactiver le piege </returns>
+    protected IEnumerator Desactivate()
+    {
+        yield return new WaitForSeconds(0.2f);
+        isActivated = false;
+        Object.Destroy(this.gameObject);
+    }
 }
