@@ -15,7 +15,7 @@ public class MapManager : MonoBehaviour
     public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
     public TileBase oldTile; // La TileBase que l'on va stocker avant de redessiner
     public Vector3Int oldPosition;
-    private Grid grid; // La grille de jeu associee a la tilemap de la game area
+    public GridMap grid; // La grille de jeu associee a la tilemap de la game area
 
     [SerializeField]
     public Entity[] entities;
@@ -41,15 +41,10 @@ public class MapManager : MonoBehaviour
 
     private Vector3 currentCell; // Cellule repere
     private Vector3 frontCell; // Cellule juste devant (au dessus) la currentCell
-    private Vector3 leftCell; // Cellule juste a gauche de la currentCell
-    private Vector3 rightCell; // Cellule juste a droite de la currentCell
-    private Vector3 behindCell; // Cellule juste derriere (en dessous) la currentCell
 
-    private Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
+    public Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
     public Vector3Int frontCellInt; // Cellule frontCell convertie en vectuer d'entiers avec Floor()
-    public Vector3Int leftCellInt; // Cellule leftCell convertie en vectuer d'entiers avec Floor()
-    public Vector3Int rightCellInt; // Cellule rightCell convertie en vectuer d'entiers avec Floor()
-    public Vector3Int behindCellInt; // Cellule behindCell convertie en vectuer d'entiers avec Floor()
+
 
     [SerializeField]
     private GameObject victoryPanel; // Le panel a afficher apres la fin du jeu
@@ -61,8 +56,8 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
+        grid = new GridMap(7, 10, 1f, new Vector3(-3f, -5f, 0f)); // TODO Adapter automatiquement
 
-        
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
         player = player1; // Le player est donc le joueur 1
@@ -73,8 +68,6 @@ public class MapManager : MonoBehaviour
         spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
-
-        grid = tilemap.layoutGrid; // Grille associee a la tilemap
         
         UpdateEntitiesArrays(); // Update des arrays d'entites
 
@@ -88,16 +81,22 @@ public class MapManager : MonoBehaviour
 
     void Update()
     {
+
+        //Vector3 center = grid.GetLocalPosition(player.transform.position - new Vector3(0.3f, 0.3f, 0f)); // Player trop grand
+        //Debug.DrawLine(new Vector3(center.x - 0.5f, center.y - 0.5f, 0), new Vector3(center.x + 0.5f, center.y + 0.5f, 0), Color.blue, 100f);
+        grid.EntitiesDisp(); // TODO Debug pour connaitre les position des entites sur la gridArray de grid
         TestEndGame(); // Testons si c'est la fin du jeu
 
         if (endRound) // Est-ce la fin d'un round ?
-            EndRound(); // Si oui, on y met fin
+            StartCoroutine(EndRound()); // Si oui, on y met fin
         else // Sinon
         {
             // La case de selection se deplace avec le joueur.
             SetSelectionTile();
-            if (grid.WorldToCell(player.transform.position).y > 4) // TODO CHANGE : Si on arrive en haut de la grille de jeu
+            if (grid.GetLocalPosition(player.transform.position).y > 9)
+            { // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
                 endRound = true; // Fin du round
+            }
             else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                 TryToSetTrap(); // Essayer de poser un piege
         }
@@ -125,6 +124,9 @@ public class MapManager : MonoBehaviour
     {
         bool canSetTrap = true; // Le joueur peut initialement placer un piege si il le souhaite
         Vector3 positionTrap = tilemap.GetCellCenterLocal(frontCellInt); // La future position du piege
+        Debug.DrawLine(new Vector3(positionTrap.x - 0.5f, positionTrap.y + 0.5f, 0), new Vector3(positionTrap.x + 0.5f, positionTrap.y - 0.5f, 0), Color.green, 100f);
+        Debug.DrawLine(new Vector3(positionTrap.x - 0.5f, positionTrap.y - 0.5f, 0), new Vector3(positionTrap.x + 0.5f, positionTrap.y + 0.5f, 0), Color.green, 100f);
+
         UpdateEntitiesArrays(); // Mise a jour des traps de la liste avant de la parcourir
         foreach (Trap trap in traps) // verifie si un piege est deja sur la position de selection
         {
@@ -135,9 +137,15 @@ public class MapManager : MonoBehaviour
         }
         if (canSetTrap && !trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
-            Instantiate(newEntity, tilemap.GetCellCenterLocal(frontCellInt), Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-            trapAlreadySet = true; // Le piege a ete place pendant le round
-            UpdatePlayersPositions(); // On reset les positions
+            Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
+            if (grid.CheckGrid(cellTrap.x, cellTrap.y))
+            {
+                var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+                Debug.Log(cellTrap.ToString());
+                grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
+                trapAlreadySet = true; // Le piege a ete place pendant le round
+                UpdatePlayersPositions(); // On reset les positions
+            }
         }
         else // Je ne peux pas poser de piege pour le moment
         {
@@ -192,17 +200,11 @@ public class MapManager : MonoBehaviour
     /// <param name="go"> Gameobject d'observation </param>
     public void UpdateAroundPosition(GameObject go)
     {
-        currentCell = grid.WorldToCell(go.transform.position - new Vector3(0f, 0.30f, 0f)); // Cellule ou est le go (le transform du player au milieu de deux cases donc baisse la position en Y)
+        currentCell = tilemap.layoutGrid.WorldToCell(go.transform.position - new Vector3(0f, 0.30f, 0f)); // Cellule ou est le go (le transform du player au milieu de deux cases donc baisse la position en Y)
         frontCell = currentCell + new Vector3(0f, 1f, 0f); // Cellule devant  le go
-        leftCell = currentCell + new Vector3(-1f, 0f, 0f); // Cellule devant  le go
-        rightCell = currentCell + new Vector3(1f, 0f, 0f); // Cellule devant  le go
-        behindCell = currentCell + new Vector3(0f, -1f, 0f); // Cellule devant  le go
 
         currentCellInt = new Vector3Int(Mathf.FloorToInt(currentCell.x), Mathf.FloorToInt(currentCell.y), Mathf.FloorToInt(currentCell.z));
         frontCellInt = new Vector3Int(Mathf.FloorToInt(frontCell.x), Mathf.FloorToInt(frontCell.y), Mathf.FloorToInt(frontCell.z));
-        leftCellInt = new Vector3Int(Mathf.FloorToInt(leftCell.x), Mathf.FloorToInt(leftCell.y), Mathf.FloorToInt(leftCell.z));
-        rightCellInt = new Vector3Int(Mathf.FloorToInt(rightCell.x), Mathf.FloorToInt(rightCell.y), Mathf.FloorToInt(rightCell.z));
-        behindCellInt = new Vector3Int(Mathf.FloorToInt(behindCell.x), Mathf.FloorToInt(behindCell.y), Mathf.FloorToInt(behindCell.z));
 
     }
 
@@ -231,18 +233,20 @@ public class MapManager : MonoBehaviour
         traps.CopyTo(entities, 0);
         blocks.CopyTo(entities, traps.Length);
         players.CopyTo(entities, traps.Length + blocks.Length);
-        Debug.Log("=>" + entities.Length);
     }
 
 
     /// <summary>
     /// Fin du round, reinitialisation des variables du tour et on echange le joueur avec le spectateur
     /// </summary>
-    public void EndRound()
+    public IEnumerator EndRound()
     {
         trapAlreadySet = false;
         endRound = false;
         SwitchPlayer(); // Echange de joueurs
+        player.GetComponent<PlayerMovement>().canMove = false;
+        yield return new WaitForSeconds(0.10f); //Eviter que le joueur n'avance automatiquement avec l'input du joueur precedent
+        UpdateAbilities();
     }
 
 

@@ -14,6 +14,7 @@ public class Entity : MonoBehaviour
         mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
     }
 
+
     void Update()
     {
         

@@ -37,6 +37,9 @@ public class Trap : Entity
     {
         yield return new WaitForSeconds(0.2f);
         isActivated = false;
+        // On retire le trap de la grid
+        Vector3Int trapPosition = mapManager.grid.GetLocalPosition(this.transform.position);
+        mapManager.grid.SetValue(trapPosition.x, trapPosition.y, null);
         Object.Destroy(this.gameObject);
     }
 }

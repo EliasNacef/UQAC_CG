@@ -570,7 +570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596375672}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -285.3825, y: -178.0525, z: 0}
+  m_LocalPosition: {x: 0.5, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1856133058}
@@ -3838,7 +3838,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031296706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.47, y: -5.23, z: 0}
+  m_LocalPosition: {x: -1.85, y: 4.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5396,10 +5396,8 @@ MonoBehaviour:
   players: []
   player1: {fileID: 1308208420}
   player2: {fileID: 1834794835}
+  currentCellInt: {x: 0, y: 0, z: 0}
   frontCellInt: {x: 0, y: 0, z: 0}
-  leftCellInt: {x: 0, y: 0, z: 0}
-  rightCellInt: {x: 0, y: 0, z: 0}
-  behindCellInt: {x: 0, y: 0, z: 0}
   victoryPanel: {fileID: 1197118922}
   trapAlreadySet: 0
 --- !u!1 &1655448612
@@ -5749,7 +5747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1856133057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 285.8825, y: 174.0525, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 596375673}
@@ -6582,7 +6580,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2011685330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -291.3825, y: -172.0525, z: 0}
+  m_LocalPosition: {x: -6, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1856133058}
@@ -6707,6 +6705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PushTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600075026781901120, guid: 9f04ae07c39404949b951b4302aa200e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2600075026781901124, guid: 9f04ae07c39404949b951b4302aa200e,
         type: 3}

@@ -21,17 +21,21 @@ public class PushTrap : Trap
         // TODO : Pour chaque objets a cote du piege, pousser de une case dans sla bonne direction.
         // TODO !
         mapManager.UpdateAroundPosition(this.gameObject);
-        Vector3 frontPositionEntity = mapManager.tilemap.GetCellCenterLocal(mapManager.frontCellInt); // La future position du piege
-        mapManager.UpdateEntitiesArrays(); // Mise a jour des traps de la liste avant de la parcourir
-        foreach (Entity entity in mapManager.entities) // verifie si un piege est deja sur la position de selection
+        Vector3Int CellEntity = mapManager.grid.GetLocalPosition(mapManager.currentCellInt); // La position du PushTrap
+        Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;
+        Vector3Int behindCellEntity = new Vector3Int(0, -1, 0) + CellEntity;
+        Vector3Int rightCellEntity = new Vector3Int(1, 0, 0) + CellEntity;
+        Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity; // TODO : Corriger la gridMap pour pas qu'elle interagisse en dehors de sa taille(width et height)
+        if (mapManager.grid.GetValue(frontCellEntity.x, frontCellEntity.y) != null)
         {
-            // Si il y a une entite devant le piege
-            if (frontPositionEntity == mapManager.tilemap.WorldToLocal(entity.transform.position))
+            // PUSH UP
+            //Debug.Log("Local front Entity" + Mathf.FloorToInt(frontCellEntity.x) + Mathf.FloorToInt(frontCellEntity.y));
+            if (mapManager.grid.CheckGrid(frontCellEntity.x, frontCellEntity.y + 1))
             {
-               // TODO : FAIRE BOUGER LE S ENTITES
+                mapManager.grid.MoveEntity(frontCellEntity.x, frontCellEntity.y, new Vector3Int(0, 1, 0));
             }
         }
-        player.Wait(); // Infliger des degats au joueur
+        player.Wait(); // Faire attendre le joueur
         StartCoroutine(Desactivate()); // Desactivation du piege
     }
 
