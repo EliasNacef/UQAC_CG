@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Classe mere des blocks : les classes filles sont mobiles ou non
+/// </summary>
 public class Block : Entity
 {
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+        mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -144,11 +144,13 @@ public class GridMap
 
     public void MoveEntity(int x, int y, Vector3Int translation)
     {
-        Debug.DrawLine(new Vector3(gridArray[x, y].gameObject.transform.position.x, gridArray[x, y].gameObject.transform.position.y, 0), new Vector3(gridArray[x, y].gameObject.transform.position.x + translation.x, gridArray[x, y].gameObject.transform.position.y + translation.y, 0), Color.red, 100f);
-        GameObject go = GetValue(x, y).gameObject;
-        go.transform.position += translation;
-        SetValue(x + translation.x, y + translation.y , GetValue(x, y));
-        SetValue(x, y, null);
+        Entity entity = GetValue(x, y);
+        if(!entity.isStatic)
+        {
+            GameObject go = GetValue(x, y).gameObject;
+            go.transform.position += translation;
+            SetValue(x + translation.x, y + translation.y , GetValue(x, y));
+            SetValue(x, y, null);
+        }
     }
-
 }

@@ -8,9 +8,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     protected MapManager mapManager;
+    public bool isStatic;
 
     void Start()
     {
+        isStatic = false;
         mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
     }
 
