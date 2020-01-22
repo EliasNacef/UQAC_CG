@@ -107,7 +107,7 @@ public class GridMap
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
-            Debug.Log("FullCell in : (x : " + x + " , y :" + y + " )");
+            //Debug.Log("FullCell in : (x : " + x + " , y :" + y + " )");
 
             return true;
             //if (OnGridChangedEvent != null) OnGridChangedEvent(this, new OnGridValueChanged { x = x, y = y });
@@ -130,7 +130,7 @@ public class GridMap
         }
         else
         {
-            Debug.Log("Erreur : " + "(x: " + x + ", y: " + y + ") est a l'exterieur de la grille et vous essayez d'y acceder !");
+            //Debug.Log("Erreur : " + "(x: " + x + ", y: " + y + ") est a l'exterieur de la grille et vous essayez d'y acceder !");
             return null;
         }
     }

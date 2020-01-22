@@ -9,7 +9,15 @@ using UnityEngine.Tilemaps;
 public class MapManager : MonoBehaviour
 {
     [SerializeField]
+    private Camera camera;
+
+    [SerializeField]
     public Tilemap tilemap; // Tilemap de de la Game Area
+    public Vector3Int startTilemap; // Position de debut de dessin (en bas a gauche)
+    public Vector3Int endTilemap; // Position de fin de dessin (en haut a droite)
+    public Tile drawingTile; // Tile pour dessiner
+
+
     [SerializeField]
     private Tilemap selectionMap; // Tilemap ou la case selectionnee est dessinee
     public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
@@ -56,9 +64,21 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(tilemap.origin);
-        Debug.Log(tilemap.size);
-        grid = new GridMap(tilemap.size.x - 1, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        tilemap.ClearAllTiles();
+
+        // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
+        for(int i = startTilemap.x; i < endTilemap.x; i++)
+        {
+            for(int j = startTilemap.y; j < endTilemap.y; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
+            }
+        }
+        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        camera.transform.position = new Vector3((endTilemap.x + startTilemap.x)/2, (endTilemap.y + startTilemap.y)/2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
+
+        spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
+
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
@@ -66,7 +86,7 @@ public class MapManager : MonoBehaviour
         spectator = player2; // ..et le spectator est donc le joueur 2
         trapAlreadySet = false; // la bombe n'a pas encore ete placee
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
-        spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
+        //spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
         spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
@@ -83,10 +103,10 @@ public class MapManager : MonoBehaviour
 
     void Update()
     {
-
-        Vector3 center = grid.GetLocalPosition(player.transform.position - new Vector3(0.3f, 0.3f, 0f)); // Player trop grand
-        Debug.DrawLine(new Vector3(center.x - 0.5f, center.y - 0.5f, 0), new Vector3(center.x + 0.5f, center.y + 0.5f, 0), Color.blue, 100f);
-        grid.EntitiesDisp(); // TODO Debug pour connaitre les position des entites sur la gridArray de grid
+        //camera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -12); // La camera suit le joueur
+        //Vector3 center = grid.GetLocalPosition(player.transform.position - new Vector3(0.3f, 0.3f, 0f)); // Player trop grand
+        //Debug.DrawLine(new Vector3(center.x - 0.5f, center.y - 0.5f, 0), new Vector3(center.x + 0.5f, center.y + 0.5f, 0), Color.blue, 100f);
+        //grid.EntitiesDisp(); // TODO Debug pour connaitre les position des entites sur la gridArray de grid
         TestEndGame(); // Testons si c'est la fin du jeu
 
         if (endRound) // Est-ce la fin d'un round ?
@@ -95,7 +115,7 @@ public class MapManager : MonoBehaviour
         {
             // La case de selection se deplace avec le joueur.
             SetSelectionTile();
-            if (grid.GetLocalPosition(player.transform.position).y > tilemap.size.y - 1)
+            if (grid.GetLocalPosition(player.transform.position).y >= grid.GetLocalPosition(endTilemap).y)
             { // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
                 endRound = true; // Fin du round
             }
@@ -141,7 +161,7 @@ public class MapManager : MonoBehaviour
             if (grid.CheckGrid(cellTrap.x, cellTrap.y))
             {
                 var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-                Debug.Log(cellTrap.ToString());
+                //Debug.Log(cellTrap.ToString());
                 grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
                 trapAlreadySet = true; // Le piege a ete place pendant le round
                 UpdatePlayersPositions(); // On reset les positions
