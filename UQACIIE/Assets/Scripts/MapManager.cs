@@ -56,7 +56,9 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
-        grid = new GridMap(7, 10, 1f, new Vector3(-3f, -5f, 0f)); // TODO Adapter automatiquement
+        Debug.Log(tilemap.origin);
+        Debug.Log(tilemap.size);
+        grid = new GridMap(tilemap.size.x - 1, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
@@ -82,8 +84,8 @@ public class MapManager : MonoBehaviour
     void Update()
     {
 
-        //Vector3 center = grid.GetLocalPosition(player.transform.position - new Vector3(0.3f, 0.3f, 0f)); // Player trop grand
-        //Debug.DrawLine(new Vector3(center.x - 0.5f, center.y - 0.5f, 0), new Vector3(center.x + 0.5f, center.y + 0.5f, 0), Color.blue, 100f);
+        Vector3 center = grid.GetLocalPosition(player.transform.position - new Vector3(0.3f, 0.3f, 0f)); // Player trop grand
+        Debug.DrawLine(new Vector3(center.x - 0.5f, center.y - 0.5f, 0), new Vector3(center.x + 0.5f, center.y + 0.5f, 0), Color.blue, 100f);
         grid.EntitiesDisp(); // TODO Debug pour connaitre les position des entites sur la gridArray de grid
         TestEndGame(); // Testons si c'est la fin du jeu
 
@@ -93,7 +95,7 @@ public class MapManager : MonoBehaviour
         {
             // La case de selection se deplace avec le joueur.
             SetSelectionTile();
-            if (grid.GetLocalPosition(player.transform.position).y > 9)
+            if (grid.GetLocalPosition(player.transform.position).y > tilemap.size.y - 1)
             { // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
                 endRound = true; // Fin du round
             }
@@ -124,8 +126,6 @@ public class MapManager : MonoBehaviour
     {
         bool canSetTrap = true; // Le joueur peut initialement placer un piege si il le souhaite
         Vector3 positionTrap = tilemap.GetCellCenterLocal(frontCellInt); // La future position du piege
-        Debug.DrawLine(new Vector3(positionTrap.x - 0.5f, positionTrap.y + 0.5f, 0), new Vector3(positionTrap.x + 0.5f, positionTrap.y - 0.5f, 0), Color.green, 100f);
-        Debug.DrawLine(new Vector3(positionTrap.x - 0.5f, positionTrap.y - 0.5f, 0), new Vector3(positionTrap.x + 0.5f, positionTrap.y + 0.5f, 0), Color.green, 100f);
 
         UpdateEntitiesArrays(); // Mise a jour des traps de la liste avant de la parcourir
         foreach (Trap trap in traps) // verifie si un piege est deja sur la position de selection

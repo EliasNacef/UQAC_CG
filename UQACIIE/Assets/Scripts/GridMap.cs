@@ -130,7 +130,7 @@ public class GridMap
         }
         else
         {
-            Debug.Log("Erreur : L'entite est exterieur a la grille !");
+            Debug.Log("Erreur : " + "(x: " + x + ", y: " + y + ") est a l'exterieur de la grille et vous essayez d'y acceder !");
             return null;
         }
     }

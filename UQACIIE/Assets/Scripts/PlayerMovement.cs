@@ -89,8 +89,9 @@ public class PlayerMovement : MonoBehaviour {
                 if (currentPosition.x + movingX < mapXMax && currentPosition.x + movingX > mapXMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x + movingX, currentPosition.y, currentPosition.z);
-                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition);
-                    Entity entity = mapManager.grid.GetValue(cellPosition);
+                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    Debug.Log("CellPosition selon X : " + "(x: " + cellPosition.x + ", y: " + cellPosition.y + ")");
+                    Entity entity = mapManager.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || entity.GetType() != typeof(Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
@@ -105,8 +106,9 @@ public class PlayerMovement : MonoBehaviour {
                 if (currentPosition.y + movingY < mapYMax && currentPosition.y + movingY > mapYMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x, currentPosition.y + movingY, currentPosition.z); // Déplacement sur la future cellule
-                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition);
-                    Entity entity = mapManager.grid.GetValue(cellPosition);
+                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    Debug.Log("CellPosition selon Y : " + "(x: " + cellPosition.x + ", y: " + cellPosition.y + ")");
+                    Entity entity = mapManager.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || entity.GetType() != typeof(Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
