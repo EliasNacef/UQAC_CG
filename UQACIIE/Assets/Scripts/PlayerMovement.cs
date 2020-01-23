@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour {
         mapYMin = mapManager.startTilemap.y;
         mapXMax = mapManager.endTilemap.x;
         mapYMax = mapManager.endTilemap.y;
-        Debug.Log(mapYMax);
 
         // Initialement, les joueurs sont immobiles
         canMove = false; 
@@ -112,7 +111,7 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x, currentPosition.y + movingY, currentPosition.z); // Déplacement sur la future cellule
                     Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
-                    Debug.Log("CellPosition selon Y : " + "(x: " + cellPosition.x + ", y: " + cellPosition.y + ")");
+                    //Debug.Log("CellPosition selon Y : " + "(x: " + cellPosition.x + ", y: " + cellPosition.y + ")");
                     Entity entity = mapManager.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || entity.GetType() != typeof(Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmovibleBlock : Block
+public class MovableBlock : Block
 {
     // Start is called before the first frame update
     void Start()
