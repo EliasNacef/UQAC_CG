@@ -25,7 +25,6 @@ public class LevelDesignManager : MonoBehaviour
     [SerializeField]
     public Trap[] traps; // La liste des pieges instancies
     public Block[] blocks; // La liste des blocks instancies
-    public Player[] players; // La liste des blocks instancies
 
     private Vector3 spawnPosition; // La position ou le joueur doit apparaitre
     private Vector3 spectatePosition; // La position ou le spactateur doit observer
@@ -93,7 +92,9 @@ public class LevelDesignManager : MonoBehaviour
         {
             if (grid.CheckGrid(gridCellPosition.x, gridCellPosition.y))
             {
-                var entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+                Entity entityInstance;
+                if (newEntity is Trap) entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+                else entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau block
                 grid.SetValue(gridCellPosition.x, gridCellPosition.y, entityInstance);
             }
         }
@@ -117,7 +118,7 @@ public class LevelDesignManager : MonoBehaviour
         // Liste des blocks
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         // Liste des entites puis remplissage des entites presentes dans cette liste
-        entities = new Entity[traps.Length + blocks.Length + players.Length];
+        entities = new Entity[traps.Length + blocks.Length];
         traps.CopyTo(entities, 0);
         blocks.CopyTo(entities, traps.Length);
     }
@@ -140,16 +141,28 @@ public class LevelDesignManager : MonoBehaviour
         LevelData data = SaveSystem.LoadLevel();
 
         UpdateEntitiesArrays();
-        foreach (Trap trap in traps) //  on vide le tableau de traps
+        foreach (Entity entity in entities) //  on vide le tableau de traps
         {
-            Object.Destroy(trap.gameObject);
+            Object.Destroy(entity.gameObject);
         }
 
         for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
         {
-            Vector3 v = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
-            Instantiate(newEntity, v, Quaternion.identity, GameObject.Find("Traps").transform);
+            Vector3 trapPosition = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
+            Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
+            Trap trapInstance;
+            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/KillTrap"), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
         }
+        for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
+        {
+            Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
+            Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
+            Block blockInstance;
+            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/MovableBlock"), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+            grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
+        }
+        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
     }
 }

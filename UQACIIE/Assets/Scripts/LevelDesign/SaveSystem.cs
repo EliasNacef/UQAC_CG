@@ -8,7 +8,7 @@ public static class SaveSystem
     public static void SaveLevel(LevelDesignManager levelDesignManager)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/level.cg";
+        string path = Application.persistentDataPath + "/level.uqac";
 
         FileStream stream = new FileStream(path, FileMode.Create);
         LevelData data = new LevelData(levelDesignManager);
@@ -20,7 +20,7 @@ public static class SaveSystem
 
     public static LevelData LoadLevel()
     {
-        string path = Application.persistentDataPath + "/level.cg";
+        string path = Application.persistentDataPath + "/level.uqac";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
