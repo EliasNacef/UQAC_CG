@@ -7,13 +7,13 @@ using UnityEngine;
 /// </summary>
 public class Entity : MonoBehaviour
 {
-    protected MapManager mapManager;
+    protected GameManager mapManager;
     public bool isStatic;
 
     void Start()
     {
         isStatic = false;
-        mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
+        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
     }
 
 

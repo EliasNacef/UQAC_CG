@@ -10,7 +10,7 @@ public class Block : Entity
 
     void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
+        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
     }
 
 }

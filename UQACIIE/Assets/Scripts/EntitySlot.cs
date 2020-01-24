@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EntitySlot : MonoBehaviour
 {
-    private MapManager mapManager;
+    private GameManager mapManager;
     private Entity entity;
     [SerializeField]
     private Image image;
@@ -16,7 +16,7 @@ public class EntitySlot : MonoBehaviour
 
     private void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<MapManager>(); // On load le MapManager
+        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
     }
 
     public void SetSprite(Sprite newSprite)
