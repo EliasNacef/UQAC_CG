@@ -36,6 +36,10 @@ public class LevelDesignManager : MonoBehaviour
     public Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
     public Vector3Int frontCellInt; // Cellule frontCell convertie en vectuer d'entiers avec Floor()
 
+    public bool putTile; // Peut-on placer un Tile
+    public bool putEntity; // Peut-on placer une Entity
+
+
 
 
 
@@ -43,6 +47,8 @@ public class LevelDesignManager : MonoBehaviour
 
     private void Start()
     {
+        putTile = true;
+        putEntity = true;
         tilemap.ClearAllTiles();
         // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
         for(int i = startTilemap.x; i < endTilemap.x; i++)
@@ -76,9 +82,22 @@ public class LevelDesignManager : MonoBehaviour
     {
         Vector3 clickPosition;
         clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - new Vector3(0, 0, Camera.main.transform.position.z));
-        Vector3Int cellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
-        tilemap.SetTile(cellPosition, drawingTile);
-        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        Vector3Int localCellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
+        Vector3Int gridCellPosition = grid.GetLocalPosition(localCellPosition);
+        if (putTile) // TODO : si on veu tplacer un tile
+        {
+            tilemap.SetTile(localCellPosition, drawingTile);
+            grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        }
+        else if (putEntity) // Si on veut placer un block
+        {
+            if (grid.CheckGrid(gridCellPosition.x, gridCellPosition.y))
+            {
+                var entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+                grid.SetValue(gridCellPosition.x, gridCellPosition.y, entityInstance);
+            }
+        }
+
     }
 
     private bool IsMouseOverUI()

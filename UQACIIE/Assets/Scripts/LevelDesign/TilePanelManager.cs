@@ -26,7 +26,7 @@ public class TilePanelManager : MonoBehaviour
             slot.SetSprite(tile.sprite);
             slot.SetColor(tile.color);
             slot.SetString(tile.name);
-            slot.SetEntity(tile);
+            slot.SetTile(tile);
         }
     }
 

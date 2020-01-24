@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class TileSlot : MonoBehaviour
 {
-    private LevelDesignManager levelDesinManager;
+    private LevelDesignManager levelDesignManager;
     private Tile tile;
     [SerializeField]
     private Image image;
@@ -17,7 +17,7 @@ public class TileSlot : MonoBehaviour
 
     private void Start()
     {
-        levelDesinManager = GameObject.Find("Tiles").GetComponent<LevelDesignManager>(); // On load le MapManager
+        levelDesignManager = GameObject.Find("Tiles").GetComponent<LevelDesignManager>(); // On load le MapManager
     }
 
     public void SetSprite(Sprite newSprite)
@@ -35,25 +35,26 @@ public class TileSlot : MonoBehaviour
         text.text = newString;
     }
 
-    public void SetEntity(Tile newTile)
+    public void SetTile(Tile newTile)
     {
         tile = newTile;
     }
 
 
-    public void SelectTrap()
+    public void Select()
     {
-        levelDesinManager.drawingTile = tile;
-        
+        levelDesignManager.drawingTile = tile;
+        levelDesignManager.putEntity = false;
+        levelDesignManager.putTile = true;
     }
 
     private void Update()
     {
         if (isCurrent)
         {
-            SetSprite(levelDesinManager.drawingTile.sprite);
-            SetColor(levelDesinManager.drawingTile.color);
-            SetString("Current DrawingTile");
+            SetSprite(levelDesignManager.drawingTile.sprite);
+            SetColor(levelDesignManager.drawingTile.color);
+            SetString("Current Tile");
         }
     }
 

@@ -40,7 +40,7 @@ public class EntitySlot : MonoBehaviour
     }
 
 
-    public void SelectTrap()
+    public void Select()
     {
         mapManager.newEntity = entity;
         
