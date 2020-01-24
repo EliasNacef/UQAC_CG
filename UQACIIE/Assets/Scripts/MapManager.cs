@@ -21,6 +21,7 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private Tilemap selectionMap; // Tilemap ou la case selectionnee est dessinee
     public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
+    private Vector3Int selectionRotation;
     public TileBase oldTile; // La TileBase que l'on va stocker avant de redessiner
     public Vector3Int oldPosition;
     public GridMap grid; // La grille de jeu associee a la tilemap de la game area
@@ -65,7 +66,6 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         tilemap.ClearAllTiles();
-
         // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
         for(int i = startTilemap.x; i < endTilemap.x; i++)
         {
@@ -79,20 +79,19 @@ public class MapManager : MonoBehaviour
 
         spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
 
-
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
         player = player1; // Le player est donc le joueur 1
         spectator = player2; // ..et le spectator est donc le joueur 2
         trapAlreadySet = false; // la bombe n'a pas encore ete placee
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
+        selectionRotation = new Vector3Int(0, 1, 0);
         //spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
         spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
         
         UpdateEntitiesArrays(); // Update des arrays d'entites
-
         
         UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
         oldTile = selectionMap.GetTile(frontCellInt); // Ancienne Tile initialisee
@@ -115,12 +114,18 @@ public class MapManager : MonoBehaviour
         {
             // La case de selection se deplace avec le joueur.
             SetSelectionTile();
-            if (grid.GetLocalPosition(player.transform.position).y >= grid.GetLocalPosition(endTilemap).y)
-            { // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
+            if (grid.GetLocalPosition(player.transform.position).y >= grid.GetLocalPosition(endTilemap).y) // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
                 endRound = true; // Fin du round
-            }
             else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                 TryToSetTrap(); // Essayer de poser un piege
+            else if(Input.GetButtonDown("R"))
+            {
+                if (selectionRotation.x == -1) selectionRotation = new Vector3Int(0, 1, 0);
+                else if (selectionRotation.x == 1) selectionRotation = new Vector3Int(0, -1, 0);
+                else if (selectionRotation.y == 1) selectionRotation = new Vector3Int(1, 0, 0);
+                else if (selectionRotation.y == -1) selectionRotation = new Vector3Int(-1, 0, 0);
+
+            }
         }
     }
 
@@ -133,9 +138,9 @@ public class MapManager : MonoBehaviour
         {
             selectionMap.SetTile(oldPosition, oldTile); // Remet en place l'ancienne Tile
             UpdateAroundPosition(player);
-            oldTile = selectionMap.GetTile(frontCellInt); // Stocke la tile avant de la changer
-            oldPosition = frontCellInt;
-            selectionMap.SetTile(frontCellInt, selectionTile); // Dessine la tile de selection
+            oldTile = selectionMap.GetTile(currentCellInt + selectionRotation); // Stocke la tile avant de la changer
+            oldPosition = currentCellInt + selectionRotation;
+            selectionMap.SetTile(currentCellInt + selectionRotation, selectionTile); // Dessine la tile de selection
         }
     }
 
@@ -145,16 +150,8 @@ public class MapManager : MonoBehaviour
     void TryToSetTrap()
     {
         bool canSetTrap = true; // Le joueur peut initialement placer un piege si il le souhaite
-        Vector3 positionTrap = tilemap.GetCellCenterLocal(frontCellInt); // La future position du piege
+        Vector3 positionTrap = tilemap.GetCellCenterLocal(currentCellInt + selectionRotation); // La future position du piege
 
-        UpdateEntitiesArrays(); // Mise a jour des traps de la liste avant de la parcourir
-        foreach (Trap trap in traps) // verifie si un piege est deja sur la position de selection
-        {
-            if (positionTrap == tilemap.WorldToLocal(trap.transform.position))
-            {
-                canSetTrap = false; // Ne peut pas placer le piege ici
-            }
-        }
         if (canSetTrap && !trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
             Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
@@ -163,6 +160,7 @@ public class MapManager : MonoBehaviour
                 var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
                 //Debug.Log(cellTrap.ToString());
                 grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
+                selectionRotation = new Vector3Int(0, 1, 0);
                 trapAlreadySet = true; // Le piege a ete place pendant le round
                 UpdatePlayersPositions(); // On reset les positions
             }
@@ -261,6 +259,7 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public IEnumerator EndRound()
     {
+        selectionRotation = new Vector3Int(0, 1, 0);
         trapAlreadySet = false;
         endRound = false;
         SwitchPlayer(); // Echange de joueurs

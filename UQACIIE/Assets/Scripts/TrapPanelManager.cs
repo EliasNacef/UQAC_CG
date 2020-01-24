@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 // Classe qui va mettre en place les pieges que l'on peut selectionner
 public class TrapPanelManager : MonoBehaviour
@@ -29,6 +31,6 @@ public class TrapPanelManager : MonoBehaviour
 
     private void Update()
     {
-        GUI.FocusControl("");
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

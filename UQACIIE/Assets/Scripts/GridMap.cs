@@ -94,12 +94,12 @@ public class GridMap
 
     public bool CheckGrid(int x, int y)
     {
-        if (x >= 0 && y >= 0 && x < width && y < height && gridArray[x, y] == null)
+        if (x >= 0 && y > 0 && x < width && y < height-1 && gridArray[x, y] == null)
         {
             return true;
             //if (OnGridChangedEvent != null) OnGridChangedEvent(this, new OnGridValueChanged { x = x, y = y });
         }
-        else return false;
+        return false;
     }
 
     public bool SetValue(int x, int y, Entity value)

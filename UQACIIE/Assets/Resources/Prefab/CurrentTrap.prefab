@@ -148,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 89683133496105580}
   text: {fileID: 89683133762679694}
+  isCurrent: 1
 --- !u!1 &89683133496105582
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,4 +301,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Hello
+  m_Text: Trap

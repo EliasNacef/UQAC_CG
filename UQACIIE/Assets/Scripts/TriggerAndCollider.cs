@@ -18,7 +18,8 @@ public class TriggerAndCollider : MonoBehaviour
     {
         Trap trap = collision.gameObject.GetComponent<Trap>(); // Le trap qui va s'enclencher car il est en collision avec le player
         collision.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
-        trap.Activate(player); // Activation du trap
+        if(trap != null)
+            trap.Activate(player); // Activation du trap
     }
 
 
