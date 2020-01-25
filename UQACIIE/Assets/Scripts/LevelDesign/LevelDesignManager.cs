@@ -60,9 +60,10 @@ public class LevelDesignManager : MonoBehaviour
         grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
 
         // Parametres initiaux
-        spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
+        if (grid != null) spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
         spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
-
+        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         UpdateEntitiesArrays(); // Update des arrays d'entites
     }
 
@@ -70,7 +71,7 @@ public class LevelDesignManager : MonoBehaviour
 
     void Update()
     {
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
+        if (grid != null) Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, Mathf.Min(-12, -Mathf.Max(grid.GetWidth(), grid.GetHeight()))); // La camera suit le joueur
         if (Input.GetMouseButtonDown(0) && !IsMouseOverUI())
         {
             Clicked();
@@ -82,14 +83,14 @@ public class LevelDesignManager : MonoBehaviour
         Vector3 clickPosition;
         clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - new Vector3(0, 0, Camera.main.transform.position.z));
         Vector3Int localCellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
-        Vector3Int gridCellPosition = grid.GetLocalPosition(localCellPosition);
-        if (putTile) // TODO : si on veu tplacer un tile
+        if (putTile) // TODO : si on veut placer un tile
         {
             tilemap.SetTile(localCellPosition, drawingTile);
-            grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+            ResetGrid();
         }
         else if (putEntity) // Si on veut placer un block
         {
+            Vector3Int gridCellPosition = grid.GetLocalPosition(localCellPosition);
             if (grid.CheckGrid(gridCellPosition.x, gridCellPosition.y))
             {
                 Entity entityInstance;
@@ -106,10 +107,7 @@ public class LevelDesignManager : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
-    private void OnMouseDown()
-    {
-        Debug.Log(name);
-    }
+
 
     public void UpdateEntitiesArrays()
     {
@@ -121,6 +119,17 @@ public class LevelDesignManager : MonoBehaviour
         entities = new Entity[traps.Length + blocks.Length];
         traps.CopyTo(entities, 0);
         blocks.CopyTo(entities, traps.Length);
+    }
+
+    public void ResetGrid()
+    {
+        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin);
+        UpdateEntitiesArrays();
+        foreach (Entity entity in entities) //  on vide le tableau de traps
+        {
+            Object.Destroy(entity.gameObject);
+        }
+        UpdateEntitiesArrays();
     }
 
 
@@ -140,26 +149,36 @@ public class LevelDesignManager : MonoBehaviour
     {
         LevelData data = SaveSystem.LoadLevel();
 
-        UpdateEntitiesArrays();
-        foreach (Entity entity in entities) //  on vide le tableau de traps
+        // Tiles
+        tilemap.ClearAllTiles();
+        ResetGrid();
+        for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
         {
-            Object.Destroy(entity.gameObject);
+            Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
+            Vector3Int gridCellPosition = tilePosition;
+            //Debug.Log(data.tilesTypes[i, 0]);
+            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<Tile>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
         }
+        ResetGrid();
 
+
+        // Traps
         for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
         {
             Vector3 trapPosition = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
             Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
             Trap trapInstance;
-            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/KillTrap"), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/" + data.trapsTypes[i, 0]), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
             grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
         }
+
+        // Blocks
         for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
         {
             Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
             Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
             Block blockInstance;
-            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/MovableBlock"), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/" + data.blocksTypes[i, 0]), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
             grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
         }
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
