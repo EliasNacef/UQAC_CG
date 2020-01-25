@@ -5,10 +5,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    public static void SaveLevel(LevelDesignManager levelDesignManager)
+    public static void SaveLevel(LevelDesignManager levelDesignManager, string saveName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/level.uqac";
+        string path = Application.persistentDataPath + "/" + saveName + ".uqac";
 
         FileStream stream = new FileStream(path, FileMode.Create);
         LevelData data = new LevelData(levelDesignManager);
@@ -18,9 +18,9 @@ public static class SaveSystem
     }
 
 
-    public static LevelData LoadLevel()
+    public static LevelData LoadLevel(string saveName)
     {
-        string path = Application.persistentDataPath + "/level.uqac";
+        string path = Application.persistentDataPath + "/" + saveName + ".uqac";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

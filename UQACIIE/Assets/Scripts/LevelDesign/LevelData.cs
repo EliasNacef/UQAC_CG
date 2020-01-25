@@ -29,14 +29,15 @@ public class LevelData
         {
             for (int y = 0; y < gridY; y++)
             {
-                Vector3Int tilePosition = levelDesignManager.tilemap.layoutGrid.WorldToCell(new Vector3(x, y, 0));
-                TileBase tile = levelDesignManager.tilemap.GetTile(tilePosition);
+                Vector3 tilePosition = levelDesignManager.grid.GetWorldPosition(x, y);
+                Vector3Int worldIntPosition = new Vector3Int(Mathf.FloorToInt(tilePosition.x), Mathf.FloorToInt(tilePosition.y), 0);
+                TileBase tile = levelDesignManager.tilemap.GetTile(worldIntPosition);
                 if(tile != null)
                 {
-                    tilesPositions[i, 0] = tilePosition.x;
-                    tilesPositions[i, 1] = tilePosition.y;
-                    tilesPositions[i, 2] = tilePosition.z;
-                    tilesTypes[i, 0] = tile.ToString();
+                    tilesPositions[i, 0] = worldIntPosition.x;
+                    tilesPositions[i, 1] = worldIntPosition.y;
+                    tilesPositions[i, 2] = worldIntPosition.z;
+                    tilesTypes[i, 0] = tile.name;
                     i++;
                 }
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class EntityLevelSlot : MonoBehaviour
 {
@@ -43,9 +44,13 @@ public class EntityLevelSlot : MonoBehaviour
 
     public void Select()
     {
-        levelDesignManager.newEntity = entity;
-        levelDesignManager.putEntity = true;
-        levelDesignManager.putTile = false;
+        if (entity != null)
+        {
+            levelDesignManager.newEntity = entity;
+            levelDesignManager.putEntity = true;
+            levelDesignManager.putTile = false;
+        }
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void Update()

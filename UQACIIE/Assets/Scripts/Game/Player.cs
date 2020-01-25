@@ -15,7 +15,7 @@ public class Player : Entity
     {
         mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
         isHurting = false; // Un joueur en train d'etre blesser au debut de partie
-        _life = 3; // Chaque joueur commence avec 3 vies
+        _life = 1; // Vie du joueur
     }
 
 

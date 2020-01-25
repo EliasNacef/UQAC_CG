@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 
@@ -28,10 +27,5 @@ public class TilePanelManager : MonoBehaviour
             slot.SetString(tile.name);
             slot.SetTile(tile);
         }
-    }
-
-    private void Update()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
     }
 }

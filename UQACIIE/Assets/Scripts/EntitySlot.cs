@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class EntitySlot : MonoBehaviour
 {
@@ -42,8 +43,8 @@ public class EntitySlot : MonoBehaviour
 
     public void Select()
     {
-        mapManager.newEntity = entity;
-        
+        if (entity != null ) mapManager.newEntity = entity;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void Update()

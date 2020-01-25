@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class TileSlot : MonoBehaviour
 {
@@ -43,9 +44,12 @@ public class TileSlot : MonoBehaviour
 
     public void Select()
     {
-        levelDesignManager.drawingTile = tile;
-        levelDesignManager.putEntity = false;
-        levelDesignManager.putTile = true;
+        if(tile != null) {
+            levelDesignManager.drawingTile = tile;
+            levelDesignManager.putEntity = false;
+            levelDesignManager.putTile = true;
+        }
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void Update()

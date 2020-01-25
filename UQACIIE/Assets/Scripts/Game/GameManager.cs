@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
+
 
 /// <summary>
 /// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
@@ -54,6 +56,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject victoryPanel; // Le panel a afficher apres la fin du jeu
+    [SerializeField]
+    private GameObject pausePanel; // Le panel a afficher en pause
 
     private bool endRound; // Est-ce la fin d'un round ?
     public bool trapAlreadySet; // Un piege a-t-il deja ete place pendant le round ?
@@ -62,18 +66,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        tilemap.ClearAllTiles();
-        // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
-        for(int i = startTilemap.x; i < endTilemap.x; i++)
-        {
-            for(int j = startTilemap.y; j < endTilemap.y; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
-            }
-        }
-        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x)/2, (endTilemap.y + startTilemap.y)/2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
-
+        LoadLevel();
         spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
 
         // Parametres initiaux
@@ -122,6 +115,10 @@ public class GameManager : MonoBehaviour
                 else if (selectionRotation.y == 1) selectionRotation = new Vector3Int(1, 0, 0);
                 else if (selectionRotation.y == -1) selectionRotation = new Vector3Int(-1, 0, 0);
 
+            }
+            else if (Input.GetButtonDown("Cancel"))
+            {
+                Pause();
             }
         }
     }
@@ -242,12 +239,12 @@ public class GameManager : MonoBehaviour
         // Liste des blocks
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         // Liste des players
-        players = GameObject.Find("Players").GetComponentsInChildren<Player>();
+        //players = GameObject.Find("Players").GetComponentsInChildren<Player>();
         // Liste des entites puis remplissage des entites presentes dans cette liste
-        entities = new Entity[traps.Length + blocks.Length + players.Length];
+        entities = new Entity[traps.Length + blocks.Length]; //+ players.Length];
         traps.CopyTo(entities, 0);
         blocks.CopyTo(entities, traps.Length);
-        players.CopyTo(entities, traps.Length + blocks.Length);
+        //players.CopyTo(entities, traps.Length + blocks.Length);
     }
 
 
@@ -277,7 +274,7 @@ public class GameManager : MonoBehaviour
         {
             // On bloque les mouvement et la possibilite de mettre des pieges
             PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            PlayerMovement sm = player.GetComponent<PlayerMovement>();
+            PlayerMovement sm = spectator.GetComponent<PlayerMovement>();
             pm.canMove = false;
             sm.canMove = false;
             trapAlreadySet = true;
@@ -285,33 +282,90 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sauvegarde le level en cours
-    /// </summary>
-    public void SaveLevel()
+    private void Pause()
     {
-        //SaveSystem.SaveLevel(this); // On a sauvegarde le level // TODO ENLEVER
+        PlayerMovement pm = player.GetComponent<PlayerMovement>();
+        PlayerMovement sm = spectator.GetComponent<PlayerMovement>();
+        pm.canMove = false;
+        sm.canMove = false;
+        trapAlreadySet = true;
+        pausePanel.SetActive(!pausePanel.activeSelf);
+    }
+
+    public void ResetGrid()
+    {
+        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin);
+        UpdateEntitiesArrays();
+        foreach (Entity entity in entities) //  on vide le tableau de traps
+        {
+            Destroy(entity.gameObject);
+        }
+        UpdateEntitiesArrays();
+    }
+
+    private void LoadDefault()
+    {
+        tilemap.ClearAllTiles();
+        for (int i = startTilemap.x; i < endTilemap.x; i++)
+        {
+            for (int j = startTilemap.y; j < endTilemap.y; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
+            }
+        }
+        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
     }
 
 
     /// <summary>
     /// Load le level sauvegarde
     /// </summary>
-    public void LoadLevel() // TODO REMPLIR LE GRID
+    /// <summary>
+    /// Load le level sauvegarde
+    /// </summary>
+    public void LoadLevel()
     {
-        LevelData data = SaveSystem.LoadLevel();
+        string saveName = PlayerPrefs.GetString("Save");
+        LevelData data = SaveSystem.LoadLevel(saveName);
 
-        UpdateEntitiesArrays();
-        foreach (Trap trap in traps) //  on vide le tableau de traps
+        // Tiles
+        tilemap.ClearAllTiles();
+        ResetGrid();
+        for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
         {
-            Object.Destroy(trap.gameObject);
+            Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
+            Vector3Int gridCellPosition = tilePosition;
+            //Debug.Log(data.tilesTypes[i, 0]);
+            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
         }
+        ResetGrid();
+        startTilemap = tilemap.origin;
+        endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
 
+        // Traps
         for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
         {
-            Vector3 v = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
-            Instantiate(newEntity, v, Quaternion.identity, GameObject.Find("Traps").transform);
+            Vector3 trapPosition = new Vector3(data.trapsPositions[i, 0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
+            Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
+            Trap trapInstance;
+            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/" + data.trapsTypes[i, 0]), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
         }
+
+        // Blocks
+        for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
+        {
+            Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
+            Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
+            Block blockInstance;
+            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/" + data.blocksTypes[i, 0]), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+            grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
+        }
+        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight()));
+        EventSystem.current.SetSelectedGameObject(null);
+
     }
 }

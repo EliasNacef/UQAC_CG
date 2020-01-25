@@ -31,10 +31,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Start()
     {
         mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
-        mapXMin = mapManager.startTilemap.x;
-        mapYMin = mapManager.startTilemap.y;
-        mapXMax = mapManager.endTilemap.x;
-        mapYMax = mapManager.endTilemap.y;
+        
 
         // Initialement, les joueurs sont immobiles
         canMove = false; 
@@ -49,6 +46,11 @@ public class PlayerMovement : MonoBehaviour {
 
 
     void Update () {
+        mapXMin = mapManager.startTilemap.x;
+        mapYMin = mapManager.startTilemap.y;
+        mapXMax = mapManager.endTilemap.x;
+        mapYMax = mapManager.endTilemap.y;
+
         if (canMove) // Si le joueur peut bouger
         {
             runSpeed = 1f; // Vitesse définie

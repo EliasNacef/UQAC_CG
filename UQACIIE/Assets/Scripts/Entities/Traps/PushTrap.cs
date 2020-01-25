@@ -15,11 +15,9 @@ public class PushTrap : Trap
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Player player)
     {
-        mapManager.trapAlreadySet = true; // On a ete touche par un piege donc on ne peut plus en placer un
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
-        // TODO : Pour chaque objets a cote du piege, pousser de une case dans sla bonne direction.
-        // TODO !
+
         mapManager.UpdateAroundPosition(this.gameObject);
         Vector3Int CellEntity = mapManager.grid.GetLocalPosition(mapManager.currentCellInt); // La position du PushTrap
         Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;

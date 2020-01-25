@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 
@@ -28,10 +27,5 @@ public class EntityPanelManager : MonoBehaviour
             slot.SetString(entity.name);
             slot.SetEntity(entity);
         }
-    }
-
-    private void Update()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
     }
 }

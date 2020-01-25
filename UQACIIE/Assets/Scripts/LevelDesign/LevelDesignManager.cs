@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 /// <summary>
@@ -38,9 +39,8 @@ public class LevelDesignManager : MonoBehaviour
     public bool putTile; // Peut-on placer un Tile
     public bool putEntity; // Peut-on placer une Entity
 
-
-
-
+    [SerializeField]
+    private GameObject pausePanel; // Le panel a afficher en pause
 
 
 
@@ -76,6 +76,10 @@ public class LevelDesignManager : MonoBehaviour
         {
             Clicked();
         }
+        else if (Input.GetButtonDown("Cancel"))
+        {
+            Pause();
+        }
     }
 
     void Clicked()
@@ -99,8 +103,14 @@ public class LevelDesignManager : MonoBehaviour
                 grid.SetValue(gridCellPosition.x, gridCellPosition.y, entityInstance);
             }
         }
-
     }
+
+
+    private void Pause()
+    {
+        pausePanel.SetActive(!pausePanel.activeSelf);
+    }
+
 
     private bool IsMouseOverUI()
     {
@@ -127,7 +137,7 @@ public class LevelDesignManager : MonoBehaviour
         UpdateEntitiesArrays();
         foreach (Entity entity in entities) //  on vide le tableau de traps
         {
-            Object.Destroy(entity.gameObject);
+            Destroy(entity.gameObject);
         }
         UpdateEntitiesArrays();
     }
@@ -138,7 +148,9 @@ public class LevelDesignManager : MonoBehaviour
     /// </summary>
     public void SaveLevel()
     {
-        SaveSystem.SaveLevel(this); // On a sauvegarde le level
+        GameObject saveName = GameObject.Find("SaveName");
+        SaveSystem.SaveLevel(this, saveName.GetComponent<InputField>().text); // On a sauvegarde le level
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
 
@@ -147,7 +159,8 @@ public class LevelDesignManager : MonoBehaviour
     /// </summary>
     public void LoadLevel() // TODO REMPLIR LE GRID
     {
-        LevelData data = SaveSystem.LoadLevel();
+        GameObject saveName = GameObject.Find("SaveName");
+        LevelData data = SaveSystem.LoadLevel(saveName.GetComponent<InputField>().text);
 
         // Tiles
         tilemap.ClearAllTiles();
@@ -157,7 +170,7 @@ public class LevelDesignManager : MonoBehaviour
             Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
             Vector3Int gridCellPosition = tilePosition;
             //Debug.Log(data.tilesTypes[i, 0]);
-            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<Tile>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
+            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
         }
         ResetGrid();
 
@@ -183,5 +196,8 @@ public class LevelDesignManager : MonoBehaviour
         }
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+
+        EventSystem.current.SetSelectedGameObject(null);
+
     }
 }
