@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
             runSpeed = 1f; // Vitesse définie
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; // Vitesse selon X
             verticalMove = Input.GetAxisRaw("Vertical") * runSpeed; // Vitesse selon Y
-            animator.SetFloat("Speed", Mathf.Abs(horizontalMove) + Mathf.Abs(verticalMove)); // Si le joueur bouge, l'animation doit s'activer
+            //animator.SetFloat("Speed", Mathf.Abs(horizontalMove) + Mathf.Abs(verticalMove)); // Si le joueur bouge, l'animation doit s'activer
         }
         else // Si le joueur ne peut pas bouger
         {
@@ -79,7 +79,6 @@ public class PlayerMovement : MonoBehaviour {
         {
             var move = new Vector2(horizontalMove, verticalMove); // Vecteur de deplacement selon X et Y
             currentPosition = this.transform.position;   // Actualisation de la position actuelle
-
             if ((move.x > 0) && !m_FacingRight) // Regarder a droite si on doit bouger vers la droite
             {
                 Flip();
@@ -92,6 +91,9 @@ public class PlayerMovement : MonoBehaviour {
             if (move.x != 0) // Si on souhaite se déplacer selon X
             {
                 movingX = Mathf.Sign(move.x); // Selon +X => 1 ; Selon -X => -1
+                animator.SetFloat("Speed", Mathf.Abs(move.x) + Mathf.Abs(move.y)); // Si le joueur bouge, l'animation doit s'activer
+                //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+                yield return new WaitForSeconds(0.1f);
                 if (currentPosition.x + movingX < mapXMax && currentPosition.x + movingX > mapXMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x + movingX, currentPosition.y, currentPosition.z);
@@ -100,14 +102,14 @@ public class PlayerMovement : MonoBehaviour {
                     if (entity == null || !(entity is Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
-
-
                 movingX = 0;
                 yield return new WaitForSeconds(0.15f);
             }
             else if (move.y != 0) // Sinon si on souhaite se deplacer selon Y
             {
                 movingY = Mathf.Sign(move.y); // Selon +Y => 1 ; Selon -Y => -1
+                animator.SetFloat("Speed", Mathf.Abs(move.x) + Mathf.Abs(move.y)); // Si le joueur bouge, l'animation doit s'activer
+                yield return new WaitForSeconds(0.1f);
                 if (currentPosition.y-0.3f + movingY < mapYMax && currentPosition.y-0.3f + movingY > mapYMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x, currentPosition.y + movingY, currentPosition.z); // Déplacement sur la future cellule
@@ -119,6 +121,7 @@ public class PlayerMovement : MonoBehaviour {
                 movingY = 0;
                 yield return new WaitForSeconds(0.15f);
             }
+            animator.SetFloat("Speed", 0); // Si le joueur bouge, l'animation doit s'activer
             yield return new WaitForEndOfFrame(); // Boucle fonctionne frame par frame
         }
     }

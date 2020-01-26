@@ -15,6 +15,7 @@ public class Trap : Entity
     {
         mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
         isActivated = false; // Le piege est initialement non declenche
+        
     }
 
     /// <summary>

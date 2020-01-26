@@ -152,8 +152,8 @@ public class GameManager : MonoBehaviour
             if (grid.CheckGrid(cellTrap.x, cellTrap.y))
             {
                 var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-                //Debug.Log(cellTrap.ToString());
                 grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
+                FindObjectOfType<AudioManager>().Play("PutTrap");
                 selectionRotation = new Vector3Int(0, 1, 0);
                 trapAlreadySet = true; // Le piege a ete place pendant le round
                 UpdatePlayersPositions(); // On reset les positions

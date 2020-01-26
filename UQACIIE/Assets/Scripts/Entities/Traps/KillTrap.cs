@@ -8,8 +8,6 @@ using UnityEngine;
 /// </summary>
 public class KillTrap : Trap
 {
-
-
     /// <summary>
     /// Activation du piege : va faire des degats au Player player
     /// </summary>
@@ -19,6 +17,7 @@ public class KillTrap : Trap
         mapManager.trapAlreadySet = true; // On a ete touche par un piege donc on ne peut plus en placer un
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
+        FindObjectOfType<AudioManager>().Play("BoomTrap");
         player.Hurt(); // Infliger des degats au joueur
         StartCoroutine(Desactivate()); // Desactivation du piege
     }

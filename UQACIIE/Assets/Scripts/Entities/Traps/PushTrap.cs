@@ -17,7 +17,7 @@ public class PushTrap : Trap
     {
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
-
+        FindObjectOfType<AudioManager>().Play("BoomTrap");
         mapManager.UpdateAroundPosition(this.gameObject);
         Vector3Int CellEntity = mapManager.grid.GetLocalPosition(mapManager.currentCellInt); // La position du PushTrap
         Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;

@@ -49,7 +49,6 @@ public class LevelDesignManager : MonoBehaviour
         putTile = true;
         putEntity = true;
         tilemap.ClearAllTiles();
-        // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
         for(int i = startTilemap.x; i < endTilemap.x; i++)
         {
             for(int j = startTilemap.y; j < endTilemap.y; j++)
@@ -57,6 +56,16 @@ public class LevelDesignManager : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
             }
         }
+
+
+        // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
+        /*for(int i = startTilemap.x; i < endTilemap.x; i++)
+        {
+            for(int j = startTilemap.y; j < endTilemap.y; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
+            }
+        }*/
         grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
 
         // Parametres initiaux
