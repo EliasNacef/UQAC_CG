@@ -3837,6 +3837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7360f139d6d2c4891e554f353db633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toLoad: {fileID: 0}
 --- !u!114 &967190271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5669,7 +5670,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0

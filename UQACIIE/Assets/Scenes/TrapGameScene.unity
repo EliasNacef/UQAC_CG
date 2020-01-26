@@ -587,6 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7360f139d6d2c4891e554f353db633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toLoad: {fileID: 0}
 --- !u!114 &326420263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4618,7 +4619,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 72de0c64f2c6a498096698322c976a67, type: 3}
-  m_Color: {r: 1, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.58521426, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5061,6 +5062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7360f139d6d2c4891e554f353db633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toLoad: {fileID: 0}
 --- !u!114 &1426689432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6528,7 +6530,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 3
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
@@ -7324,3 +7326,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7360f139d6d2c4891e554f353db633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toLoad: {fileID: 0}
