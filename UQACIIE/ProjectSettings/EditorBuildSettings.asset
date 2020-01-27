@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LevelDesignScene.unity
-    guid: 16869cd43ad0a7e4aa6b6d53e85d4296
+    path: Assets/Scenes/MenuScene.unity
+    guid: cb46d897bcbae1344932c711005eb8ca
   - enabled: 1
     path: Assets/Scenes/TrapGameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/MenuScene.unity
-    guid: cb46d897bcbae1344932c711005eb8ca
+    path: Assets/Scenes/LevelDesignScene.unity
+    guid: 16869cd43ad0a7e4aa6b6d53e85d4296
   m_configObjects: {}

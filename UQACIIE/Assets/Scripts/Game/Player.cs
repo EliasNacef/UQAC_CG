@@ -19,14 +19,6 @@ public class Player : Entity
     }
 
 
-
-
-    void Update()
-    {
-        animator.SetBool("isHurting", isHurting);
-    }
-
-
     /// <summary>
     /// Le joueur attend
     /// </summary>
@@ -71,7 +63,7 @@ public class Player : Entity
     {
         yield return new WaitForSeconds(1f);
         isHurting = false; // Fin de blessure (animation)
-        yield return new WaitForSeconds(0.35f);
+        animator.SetBool("isHurting", isHurting);
         mapManager.UpdatePlayersPositions(); // Update des positions (reset)
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
     }
