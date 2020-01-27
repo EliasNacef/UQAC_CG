@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour {
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
                 movingX = 0;
-                yield return new WaitForSeconds(0.15f);
+                yield return new WaitForSeconds(0.05f);
             }
             else if (move.y != 0) // Sinon si on souhaite se deplacer selon Y
             {
@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour {
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
                 movingY = 0;
-                yield return new WaitForSeconds(0.15f);
+                yield return new WaitForSeconds(0.05f);
             }
             animator.SetFloat("Speed", 0); // Si le joueur bouge, l'animation doit s'activer
             yield return new WaitForEndOfFrame(); // Boucle fonctionne frame par frame

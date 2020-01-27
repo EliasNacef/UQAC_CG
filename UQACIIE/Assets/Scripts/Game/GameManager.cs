@@ -68,6 +68,9 @@ public class GameManager : MonoBehaviour
     {
         LoadLevel();
         spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
+        spectatePosition = new Vector3(startTilemap.x - 1.5f, startTilemap.y + Mathf.FloorToInt((grid.GetHeight() / 2)) + 1f, 0f);
+        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(spectatePosition.x), Mathf.FloorToInt(spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/redTile"));
+
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
         selectionRotation = new Vector3Int(0, 1, 0);
         //spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
-        spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
+        //spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
         
@@ -335,13 +338,21 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
         {
             Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
-            Vector3Int gridCellPosition = tilePosition;
-            //Debug.Log(data.tilesTypes[i, 0]);
             if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
+            GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
         }
         ResetGrid();
         startTilemap = tilemap.origin;
         endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
+        int gridSize = grid.GetHeight() + grid.GetWidth();
+        for (int i = startTilemap.x - gridSize; i < endTilemap.x + gridSize; i++)
+        {
+            for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)
+            {
+                Vector3Int tilePosition = new Vector3Int(i, j, 0);
+                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
+            }
+        }
 
         // Traps
         for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
