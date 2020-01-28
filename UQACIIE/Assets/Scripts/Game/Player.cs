@@ -13,7 +13,7 @@ public class Player : Entity
 
     void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
         isHurting = false; // Un joueur en train d'etre blesser au debut de partie
         _life = 1; // Vie du joueur
     }
@@ -35,7 +35,7 @@ public class Player : Entity
     public IEnumerator Waiting()
     {
         yield return new WaitForSeconds(0.5f);
-        mapManager.UpdateAroundPosition(this.gameObject);
+        gameManager.map.UpdateAroundPosition(this.gameObject);
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
     }
 
@@ -64,7 +64,7 @@ public class Player : Entity
         yield return new WaitForSeconds(1f);
         isHurting = false; // Fin de blessure (animation)
         animator.SetBool("isHurting", isHurting);
-        mapManager.UpdatePlayersPositions(); // Update des positions (reset)
+        gameManager.UpdatePlayersPositions(); // Update des positions (reset)
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
     }
 

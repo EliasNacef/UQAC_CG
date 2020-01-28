@@ -14,7 +14,7 @@ public class KillTrap : Trap
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Player player)
     {
-        mapManager.trapAlreadySet = true; // On a ete touche par un piege donc on ne peut plus en placer un
+        gameManager.trapAlreadySet = true; // On a ete touche par un piege donc on ne peut plus en placer un
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
         FindObjectOfType<AudioManager>().Play("BoomTrap");

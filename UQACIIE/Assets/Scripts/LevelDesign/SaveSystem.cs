@@ -5,13 +5,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    public static void SaveLevel(LevelDesignManager levelDesignManager, string saveName)
+    public static void SaveLevel(Map map, string saveName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/" + saveName + ".uqac";
 
         FileStream stream = new FileStream(path, FileMode.Create);
-        LevelData data = new LevelData(levelDesignManager);
+        LevelData data = new LevelData(map);
 
         formatter.Serialize(stream, data);
         stream.Close();

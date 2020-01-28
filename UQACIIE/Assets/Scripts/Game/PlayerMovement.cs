@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
     public Animator animator; // Animator de deplacement
-    private GameManager mapManager;
+    private GameManager gameManager;
 
     private float mapXMin; // Limite min en X ou le joueur peut aller
     private float mapYMin; // Limite min en Y ou le joueur peut aller
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
         
 
         // Initialement, les joueurs sont immobiles
@@ -46,10 +46,10 @@ public class PlayerMovement : MonoBehaviour {
 
 
     void Update () {
-        mapXMin = mapManager.startTilemap.x;
-        mapYMin = mapManager.startTilemap.y;
-        mapXMax = mapManager.endTilemap.x;
-        mapYMax = mapManager.endTilemap.y;
+        mapXMin = gameManager.map.startTilemap.x;
+        mapYMin = gameManager.map.startTilemap.y;
+        mapXMax = gameManager.map.endTilemap.x;
+        mapYMax = gameManager.map.endTilemap.y;
 
         if (canMove) // Si le joueur peut bouger
         {
@@ -97,8 +97,8 @@ public class PlayerMovement : MonoBehaviour {
                 if (currentPosition.x + movingX < mapXMax && currentPosition.x + movingX > mapXMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x + movingX, currentPosition.y, currentPosition.z);
-                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
-                    Entity entity = mapManager.grid.GetValue(cellPosition.x, cellPosition.y);
+                    Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || !(entity is Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }
@@ -113,8 +113,8 @@ public class PlayerMovement : MonoBehaviour {
                 if (currentPosition.y-0.3f + movingY < mapYMax && currentPosition.y-0.3f + movingY > mapYMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x, currentPosition.y + movingY, currentPosition.z); // Déplacement sur la future cellule
-                    Vector3Int cellPosition = mapManager.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
-                    Entity entity = mapManager.grid.GetValue(cellPosition.x, cellPosition.y);
+                    Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || !(entity is Block))
                         transform.position = futurePosition; // Déplacement sur la future cellule
                 }

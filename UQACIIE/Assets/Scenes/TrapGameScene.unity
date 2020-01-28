@@ -5242,6 +5242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1589292863}
   - component: {fileID: 1589292862}
+  - component: {fileID: 1589292865}
   - component: {fileID: 1589292864}
   m_Layer: 0
   m_Name: Tiles
@@ -5291,27 +5292,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bd2bc096f61244c8e6b0c695747c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1981802443}
-  startTilemap: {x: -2, y: -4, z: 0}
-  endTilemap: {x: 2, y: 4, z: 0}
-  drawingTile: {fileID: 11400000, guid: 4cadb5fe48d95ed4683f84ca9d1b052a, type: 2}
-  selectionMap: {fileID: 82364626}
-  selectionTile: {fileID: 11400000, guid: a6c6b50799cb3ed419879956495f0139, type: 2}
-  oldTile: {fileID: 0}
-  oldPosition: {x: 0, y: 0, z: 0}
-  entities: []
-  newEntity: {fileID: 1837151163215989116, guid: 3113a339e3b1bf34180676b04af8afa9,
-    type: 3}
-  traps: []
-  blocks: []
-  players: []
+  map: {fileID: 1589292865}
   player1: {fileID: 1410658577}
   player2: {fileID: 1057283236}
-  currentCellInt: {x: 0, y: 0, z: 0}
-  frontCellInt: {x: 0, y: 0, z: 0}
+  newEntity: {fileID: 1837151163215989116, guid: 3113a339e3b1bf34180676b04af8afa9,
+    type: 3}
   victoryPanel: {fileID: 895528967}
   pausePanel: {fileID: 267297236}
   trapAlreadySet: 0
+--- !u!114 &1589292865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589292861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8db7d1f643e789c4a8490b6de00cfb4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isReady: 0
+  tilemap: {fileID: 1981802443}
+  startTilemap: {x: -3, y: -3, z: 0}
+  endTilemap: {x: 3, y: 3, z: 0}
+  drawingTile: {fileID: 11400000, guid: 5467c31aa5f7de949ac969e26f1d7f3d, type: 2}
+  selectionMap: {fileID: 82364626}
+  selectionTile: {fileID: 11400000, guid: a6c6b50799cb3ed419879956495f0139, type: 2}
+  selectionRotation: {x: 0, y: 1, z: 0}
+  oldTile: {fileID: 0}
+  oldPosition: {x: 0, y: 0, z: 0}
+  entities: []
+  traps: []
+  blocks: []
+  players: []
+  spawnPosition: {x: 0, y: 0, z: 0}
+  spectatePosition: {x: 0, y: 0, z: 0}
+  currentCellInt: {x: 0, y: 0, z: 0}
+  frontCellInt: {x: 0, y: 0, z: 0}
 --- !u!1 &1680589123
 GameObject:
   m_ObjectHideFlags: 0

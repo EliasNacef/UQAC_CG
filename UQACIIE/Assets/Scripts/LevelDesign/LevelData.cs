@@ -15,12 +15,12 @@ public class LevelData
 
 
 
-    public LevelData(LevelDesignManager levelDesignManager)
+    public LevelData(Map map)
     {
 
         int i = 0;
-        int gridX = levelDesignManager.grid.GetWidth();
-        int gridY = levelDesignManager.grid.GetHeight();
+        int gridX = map.grid.GetWidth();
+        int gridY = map.grid.GetHeight();
         int tilesSize = gridX * gridY;
         tilesPositions = new int[tilesSize, 3];
         tilesTypes = new string[tilesSize, 1];
@@ -29,9 +29,9 @@ public class LevelData
         {
             for (int y = 0; y < gridY; y++)
             {
-                Vector3 tilePosition = levelDesignManager.grid.GetWorldPosition(x, y);
+                Vector3 tilePosition = map.grid.GetWorldPosition(x, y);
                 Vector3Int worldIntPosition = new Vector3Int(Mathf.FloorToInt(tilePosition.x), Mathf.FloorToInt(tilePosition.y), 0);
-                TileBase tile = levelDesignManager.tilemap.GetTile(worldIntPosition);
+                TileBase tile = map.tilemap.GetTile(worldIntPosition);
                 if(tile != null)
                 {
                     tilesPositions[i, 0] = worldIntPosition.x;

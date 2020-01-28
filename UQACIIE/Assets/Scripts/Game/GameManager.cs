@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
@@ -11,31 +10,7 @@ using System.IO;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    public Tilemap tilemap; // Tilemap de de la Game Area
-    public Vector3Int startTilemap; // Position de debut de dessin (en bas a gauche)
-    public Vector3Int endTilemap; // Position de fin de dessin (en haut a droite)
-    public Tile drawingTile; // Tile pour dessiner
-
-
-    [SerializeField]
-    private Tilemap selectionMap; // Tilemap ou la case selectionnee est dessinee
-    public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
-    private Vector3Int selectionRotation;
-    public TileBase oldTile; // La TileBase que l'on va stocker avant de redessiner
-    public Vector3Int oldPosition;
-    public GridMap grid; // La grille de jeu associee a la tilemap de la game area
-
-    [SerializeField]
-    public Entity[] entities;
-    public Entity newEntity; // La nouvelle entite a instancier
-    [SerializeField]
-    public Trap[] traps; // La liste des pieges instancies
-    public Block[] blocks; // La liste des blocks instancies
-    public Player[] players; // La liste des blocks instancies
-
-
-
+    public Map map;
     private GameObject player; // Le joueur
     private GameObject spectator; // Le spectateur (qui attend de jouer)
     [SerializeField]
@@ -44,16 +19,7 @@ public class GameManager : MonoBehaviour
     private GameObject player2; // GameObject du second joueur
 
     private int whoPlay; // Entier indiquant le numero de celui qui joue
-
-    private Vector3 spawnPosition; // La position ou le joueur doit apparaitre
-    private Vector3 spectatePosition; // La position ou le spactateur doit observer
-
-    private Vector3 currentCell; // Cellule repere
-    private Vector3 frontCell; // Cellule juste devant (au dessus) la currentCell
-
-    public Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
-    public Vector3Int frontCellInt; // Cellule frontCell convertie en vectuer d'entiers avec Floor()
-
+    public Entity newEntity; // La nouvelle entite a placer
 
     [SerializeField]
     private GameObject victoryPanel; // Le panel a afficher apres la fin du jeu
@@ -67,11 +33,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel();
-        spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
-        spectatePosition = new Vector3(startTilemap.x - 1.5f, startTilemap.y + Mathf.FloorToInt((grid.GetHeight() / 2)) + 1f, 0f);
-        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(spectatePosition.x), Mathf.FloorToInt(spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/redTile"));
-
+        map.LoadLevel();
+        map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
+        map.spectatePosition = new Vector3(map.startTilemap.x - 1.5f, map.startTilemap.y + Mathf.FloorToInt((map.grid.GetHeight() / 2)) + 1f, 0f);
+        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(map.spectatePosition.x), Mathf.FloorToInt(map.spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/redTile"));
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
@@ -79,17 +44,9 @@ public class GameManager : MonoBehaviour
         spectator = player2; // ..et le spectator est donc le joueur 2
         trapAlreadySet = false; // la bombe n'a pas encore ete placee
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
-        selectionRotation = new Vector3Int(0, 1, 0);
-        //spawnPosition = GameObject.Find("SpawnPosition").transform.position; // On load la position de spawn dans son vecteur
-        //spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
-        
-        UpdateEntitiesArrays(); // Update des arrays d'entites
-        
-        UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
-        oldTile = selectionMap.GetTile(frontCellInt); // Ancienne Tile initialisee
-        oldPosition = frontCellInt;
+        map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
     }
 
 
@@ -107,61 +64,41 @@ public class GameManager : MonoBehaviour
         else // Sinon
         {
             // La case de selection se deplace avec le joueur.
-            SetSelectionTile();
-            if (grid.GetLocalPosition(player.transform.position).y >= grid.GetLocalPosition(endTilemap).y) // TODO CHANGE : Si on arrive en haut de la grille de jeu && mettre la fin du round dans le deplacement ??
+            map.SetSelectionTile(player);
+            if (map.grid.GetLocalPosition(player.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
                 endRound = true; // Fin du round
             else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                 TryToSetTrap(); // Essayer de poser un piege
             else if(Input.GetButtonDown("R"))
             {
-                if (selectionRotation.x == -1) selectionRotation = new Vector3Int(0, 1, 0);
-                else if (selectionRotation.x == 1) selectionRotation = new Vector3Int(0, -1, 0);
-                else if (selectionRotation.y == 1) selectionRotation = new Vector3Int(1, 0, 0);
-                else if (selectionRotation.y == -1) selectionRotation = new Vector3Int(-1, 0, 0);
+                map.RotateSelection();
 
             }
             else if (Input.GetButtonDown("Cancel"))
             {
                 Pause();
             }
+            else if (Input.mouseScrollDelta.y > 0)
+            {
+                Camera.main.transform.position += new Vector3(0, 0, 1);
+            }
+            else if (Input.mouseScrollDelta.y < 0)
+            {
+                Camera.main.transform.position += new Vector3(0, 0, -1);
+
+            }
         }
     }
 
-    /// <summary>
-    /// Met en place la cellule de selection pour poser un piege : dessine une tile devant le joueur pour voir ou le piege sera place
-    /// </summary>
-    void SetSelectionTile()
-    {
-        if (!endRound) // Si le round n'est pas fini
-        {
-            selectionMap.SetTile(oldPosition, oldTile); // Remet en place l'ancienne Tile
-            UpdateAroundPosition(player);
-            oldTile = selectionMap.GetTile(currentCellInt + selectionRotation); // Stocke la tile avant de la changer
-            oldPosition = currentCellInt + selectionRotation;
-            selectionMap.SetTile(currentCellInt + selectionRotation, selectionTile); // Dessine la tile de selection
-        }
-    }
 
     /// <summary>
     /// Tente de placer un piege sur la position de selection du piege.
     /// </summary>
     void TryToSetTrap()
     {
-        bool canSetTrap = true; // Le joueur peut initialement placer un piege si il le souhaite
-        Vector3 positionTrap = tilemap.GetCellCenterLocal(currentCellInt + selectionRotation); // La future position du piege
-
-        if (canSetTrap && !trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
+        if (!trapAlreadySet && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
-            Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
-            if (grid.CheckGrid(cellTrap.x, cellTrap.y))
-            {
-                var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-                grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
-                FindObjectOfType<AudioManager>().Play("PutTrap");
-                selectionRotation = new Vector3Int(0, 1, 0);
-                trapAlreadySet = true; // Le piege a ete place pendant le round
-                UpdatePlayersPositions(); // On reset les positions
-            }
+            map.SetTrap(newEntity);
         }
         else // Je ne peux pas poser de piege pour le moment
         {
@@ -201,27 +138,13 @@ public class GameManager : MonoBehaviour
     public void UpdatePlayersPositions()
     {
         // Mise a jour des positions
-        player.transform.position = spawnPosition;
-        spectator.transform.position = spectatePosition;
+        player.transform.position = map.spawnPosition;
+        spectator.transform.position = map.spectatePosition;
 
         // Le spectateur doit observer le jeu est donc faire face a la game area
         PlayerMovement controllerSpectate = spectator.GetComponent<PlayerMovement>();
         if (!controllerSpectate.m_FacingRight)
             controllerSpectate.Flip();
-    }
-
-    /// <summary>
-    /// Met a jour les cells autour de go pour travailler avec leurs positions
-    /// </summary>
-    /// <param name="go"> Gameobject d'observation </param>
-    public void UpdateAroundPosition(GameObject go)
-    {
-        currentCell = tilemap.layoutGrid.WorldToCell(go.transform.position - new Vector3(0f, 0.30f, 0f)); // Cellule ou est le go (le transform du player au milieu de deux cases donc baisse la position en Y)
-        frontCell = currentCell + new Vector3(0f, 1f, 0f); // Cellule devant  le go
-
-        currentCellInt = new Vector3Int(Mathf.FloorToInt(currentCell.x), Mathf.FloorToInt(currentCell.y), Mathf.FloorToInt(currentCell.z));
-        frontCellInt = new Vector3Int(Mathf.FloorToInt(frontCell.x), Mathf.FloorToInt(frontCell.y), Mathf.FloorToInt(frontCell.z));
-
     }
 
 
@@ -236,28 +159,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void UpdateEntitiesArrays()
-    {
-        // Liste des pièges
-        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
-        // Liste des blocks
-        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
-        // Liste des players
-        //players = GameObject.Find("Players").GetComponentsInChildren<Player>();
-        // Liste des entites puis remplissage des entites presentes dans cette liste
-        entities = new Entity[traps.Length + blocks.Length]; //+ players.Length];
-        traps.CopyTo(entities, 0);
-        blocks.CopyTo(entities, traps.Length);
-        //players.CopyTo(entities, traps.Length + blocks.Length);
-    }
-
 
     /// <summary>
     /// Fin du round, reinitialisation des variables du tour et on echange le joueur avec le spectateur
     /// </summary>
     public IEnumerator EndRound()
     {
-        selectionRotation = new Vector3Int(0, 1, 0);
+        map.selectionRotation = new Vector3Int(0, 1, 0);
         trapAlreadySet = false;
         endRound = false;
         SwitchPlayer(); // Echange de joueurs
@@ -296,96 +204,4 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(!pausePanel.activeSelf);
     }
 
-    public void ResetGrid()
-    {
-        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin);
-        UpdateEntitiesArrays();
-        foreach (Entity entity in entities) //  on vide le tableau de traps
-        {
-            Destroy(entity.gameObject);
-        }
-        UpdateEntitiesArrays();
-    }
-
-    private void LoadDefault()
-    {
-        tilemap.ClearAllTiles();
-        for (int i = startTilemap.x; i < endTilemap.x; i++)
-        {
-            for (int j = startTilemap.y; j < endTilemap.y; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
-            }
-        }
-        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
-    }
-
-
-    /// <summary>
-    /// Load le level sauvegarde
-    /// </summary>
-    /// <summary>
-    /// Load le level sauvegarde
-    /// </summary>
-    public void LoadLevel()
-    {
-        LevelData data;
-        string saveName = PlayerPrefs.GetString("Save");
-        if (File.Exists(Application.persistentDataPath + "/" + saveName + ".uqac"))
-        {
-            data = SaveSystem.LoadLevel(saveName);
-        }
-        else
-        {
-            data = SaveSystem.LoadLevel("");
-        }
-            
-
-        // Tiles
-        tilemap.ClearAllTiles();
-        ResetGrid();
-        for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
-        {
-            Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
-            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
-        }
-        ResetGrid();
-        startTilemap = tilemap.origin;
-        endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
-        int gridSize = grid.GetHeight() * grid.GetWidth();
-        for (int i = startTilemap.x - gridSize; i < endTilemap.x + gridSize; i++)
-        {
-            for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)
-            {
-                Vector3Int tilePosition = new Vector3Int(i, j, 0);
-                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
-            }
-        }
-
-        // Traps
-        for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
-        {
-            Vector3 trapPosition = new Vector3(data.trapsPositions[i, 0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
-            Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
-            Trap trapInstance;
-            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/" + data.trapsTypes[i, 0]), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-            grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
-        }
-
-        // Blocks
-        for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
-        {
-            Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
-            Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
-            Block blockInstance;
-            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/" + data.blocksTypes[i, 0]), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
-            grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
-        }
-        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
-        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight()));
-        EventSystem.current.SetSelectedGameObject(null);
-
-    }
 }

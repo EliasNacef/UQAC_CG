@@ -13,9 +13,8 @@ public class Trap : Entity
 
     void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
         isActivated = false; // Le piege est initialement non declenche
-        
     }
 
     /// <summary>
@@ -24,7 +23,7 @@ public class Trap : Entity
     /// <param name="player"> Joueur qui a enclenche le piege </param>
     virtual public void Activate(Player player)
     {
-        mapManager.trapAlreadySet = true;
+        gameManager.trapAlreadySet = true;
         isActivated = true;
         animator.SetBool("isActivated", isActivated); // Active l'animation du piege
         Debug.Log("Un Trap de base a été enclenché, pas une sous classe..");
@@ -39,8 +38,8 @@ public class Trap : Entity
         yield return new WaitForSeconds(0.2f);
         isActivated = false;
         // On retire le trap de la grid
-        Vector3Int trapPosition = mapManager.grid.GetLocalPosition(this.transform.position);
-        mapManager.grid.SetValue(trapPosition.x, trapPosition.y, null);
+        Vector3Int trapPosition = gameManager.map.grid.GetLocalPosition(this.transform.position);
+        gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null);
         Object.Destroy(this.gameObject);
     }
 }

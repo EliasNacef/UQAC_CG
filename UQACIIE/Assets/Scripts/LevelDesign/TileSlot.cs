@@ -45,7 +45,7 @@ public class TileSlot : MonoBehaviour
     public void Select()
     {
         if(tile != null) {
-            levelDesignManager.drawingTile = tile;
+            levelDesignManager.map.drawingTile = tile;
             levelDesignManager.putEntity = false;
             levelDesignManager.putTile = true;
         }
@@ -56,8 +56,8 @@ public class TileSlot : MonoBehaviour
     {
         if (isCurrent)
         {
-            SetSprite(levelDesignManager.drawingTile.sprite);
-            SetColor(levelDesignManager.drawingTile.color);
+            SetSprite(levelDesignManager.map.drawingTile.sprite);
+            SetColor(levelDesignManager.map.drawingTile.color);
             SetString("Current Tile");
         }
     }
