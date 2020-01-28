@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.IO;
 
 
 /// <summary>
@@ -53,27 +54,28 @@ public class LevelDesignManager : MonoBehaviour
         {
             for(int j = startTilemap.y; j < endTilemap.y; j++)
             {
-                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
+                tilemap.SetTile(new Vector3Int(i, j, 0), Resources.Load<TileBase>("Prefab/redTile"));
             }
         }
-
-
-        // TODO : Remplacer ce set Tile par le chargement d'une tilemap preenregistree dans notre level designer
-        /*for(int i = startTilemap.x; i < endTilemap.x; i++)
-        {
-            for(int j = startTilemap.y; j < endTilemap.y; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i, j, 0), drawingTile);
-            }
-        }*/
-        grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin); // TODO Adapter automatiquement
+        
 
         // Parametres initiaux
-        if (grid != null) spawnPosition = new Vector3(startTilemap.x + Mathf.FloorToInt((grid.GetWidth() / 2)) + 0.5f, startTilemap.y + 1f, 0f);
-        spectatePosition = GameObject.Find("SpectatePosition").transform.position; // On load la position de spectate dans son vecteur
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         UpdateEntitiesArrays(); // Update des arrays d'entites
+
+        ResetGrid();
+        startTilemap = tilemap.origin;
+        endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
+        int gridSize = grid.GetHeight() * grid.GetWidth();
+        for (int i = startTilemap.x - gridSize; i < endTilemap.x + gridSize; i++)
+        {
+            for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)
+            {
+                Vector3Int tilePosition = new Vector3Int(i, j, 0);
+                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
+            }
+        }
     }
 
 
@@ -100,6 +102,7 @@ public class LevelDesignManager : MonoBehaviour
         {
             tilemap.SetTile(localCellPosition, drawingTile);
             ResetGrid();
+            DrawBackground();
         }
         else if (putEntity) // Si on veut placer un block
         {
@@ -168,45 +171,77 @@ public class LevelDesignManager : MonoBehaviour
     /// </summary>
     public void LoadLevel() // TODO REMPLIR LE GRID
     {
-        GameObject saveName = GameObject.Find("SaveName");
-        LevelData data = SaveSystem.LoadLevel(saveName.GetComponent<InputField>().text);
-
-        // Tiles
-        tilemap.ClearAllTiles();
-        ResetGrid();
-        for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
+        string fileName = FindObjectOfType<InputField>().text;
+        if (File.Exists(Application.persistentDataPath + "/" + fileName + ".uqac"))
         {
-            Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
-            Vector3Int gridCellPosition = tilePosition;
-            //Debug.Log(data.tilesTypes[i, 0]);
-            if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
+            LevelData data = SaveSystem.LoadLevel(fileName);
+
+            // Tiles
+            tilemap.ClearAllTiles();
+            ResetGrid();
+            for (int i = 0; i < data.tilesPositions.GetLength(0); i++)
+            {
+                Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
+                Vector3Int gridCellPosition = tilePosition;
+                //Debug.Log(data.tilesTypes[i, 0]);
+                if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
+            }
+            ResetGrid();
+
+
+            // Traps
+            for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
+            {
+                Vector3 trapPosition = new Vector3(data.trapsPositions[i, 0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
+                Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
+                Trap trapInstance;
+                trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/" + data.trapsTypes[i, 0]), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+                grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
+            }
+
+            // Blocks
+            for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
+            {
+                Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
+                Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
+                Block blockInstance;
+                blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/" + data.blocksTypes[i, 0]), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
+                grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
+            }
+            blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
+            traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+
+            DrawBackground();
+            UpdateCamera();
+            EventSystem.current.SetSelectedGameObject(null);
         }
-        ResetGrid();
-
-
-        // Traps
-        for (int i = 0; i < data.trapsPositions.GetLength(0); i++)
+        else
         {
-            Vector3 trapPosition = new Vector3(data.trapsPositions[i,0], data.trapsPositions[i, 1], data.trapsPositions[i, 2]);
-            Vector3Int gridCellPosition = grid.GetLocalPosition(trapPosition);
-            Trap trapInstance;
-            trapInstance = Instantiate(Resources.Load<Trap>("Prefab/LevelEntities/" + data.trapsTypes[i, 0]), trapPosition, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
-            grid.SetValue(gridCellPosition.x, gridCellPosition.y, trapInstance);
+            Debug.Log("File not " + fileName + " found");
         }
+    }
 
-        // Blocks
-        for (int i = 0; i < data.blocksPositions.GetLength(0); i++)
+
+    private void DrawBackground()
+    {
+        startTilemap = tilemap.origin;
+        endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
+        int gridSize = grid.GetHeight() + grid.GetWidth();
+        for (int i = startTilemap.x - gridSize; i < endTilemap.x + gridSize; i++)
         {
-            Vector3 blockPosition = new Vector3(data.blocksPositions[i, 0], data.blocksPositions[i, 1], data.blocksPositions[i, 2]);
-            Vector3Int gridCellPosition = grid.GetLocalPosition(blockPosition);
-            Block blockInstance;
-            blockInstance = Instantiate(Resources.Load<Block>("Prefab/LevelEntities/" + data.blocksTypes[i, 0]), blockPosition, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
-            grid.SetValue(gridCellPosition.x, gridCellPosition.y, blockInstance);
+            for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)
+            {
+                Vector3Int tilePosition = new Vector3Int(i, j, 0);
+                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
+            }
         }
-        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
-        traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
+    }
 
-        EventSystem.current.SetSelectedGameObject(null);
 
+    private void UpdateCamera()
+    {
+        startTilemap = tilemap.origin;
+        endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
+        if (grid != null) Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, Mathf.Min(-12, -Mathf.Max(grid.GetWidth(), grid.GetHeight()))); // La camera suit le joueur
     }
 }

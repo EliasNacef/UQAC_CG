@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8716722608842267946}
   - component: {fileID: 1837151163215989116}
   m_Layer: 0
-  m_Name: Trap
+  m_Name: KillTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 1680383521
   m_SortingLayer: 1
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 8a8849b7b8b964564b9e89cb1ded0658, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ecee23365216f44daf348b7888cfb58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,7 +118,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 8.7, y: 8.1}
     newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -139,4 +139,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb25c562756eae446ae4bb4a8919bb5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 0
   animator: {fileID: 8716722608842267950}

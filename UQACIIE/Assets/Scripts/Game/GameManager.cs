@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
+using System.IO;
 
 
 /// <summary>
@@ -329,8 +330,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void LoadLevel()
     {
+        LevelData data;
         string saveName = PlayerPrefs.GetString("Save");
-        LevelData data = SaveSystem.LoadLevel(saveName);
+        if (File.Exists(Application.persistentDataPath + "/" + saveName + ".uqac"))
+        {
+            data = SaveSystem.LoadLevel(saveName);
+        }
+        else
+        {
+            data = SaveSystem.LoadLevel("");
+        }
+            
 
         // Tiles
         tilemap.ClearAllTiles();
@@ -339,12 +349,11 @@ public class GameManager : MonoBehaviour
         {
             Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
             if (data.tilesTypes[i, 0] != null) tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
-            GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
         }
         ResetGrid();
         startTilemap = tilemap.origin;
         endTilemap = tilemap.origin + new Vector3Int(grid.GetWidth(), grid.GetHeight(), 0);
-        int gridSize = grid.GetHeight() + grid.GetWidth();
+        int gridSize = grid.GetHeight() * grid.GetWidth();
         for (int i = startTilemap.x - gridSize; i < endTilemap.x + gridSize; i++)
         {
             for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)

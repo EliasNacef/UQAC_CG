@@ -20,7 +20,7 @@ public class LaunchManager : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetString("Save", "");
+            PlayerPrefs.SetString("Save", "LevelFa");
         }
         SceneManager.LoadScene("TrapGameScene");
     }

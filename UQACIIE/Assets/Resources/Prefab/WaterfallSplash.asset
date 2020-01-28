@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,11 +13,13 @@ MonoBehaviour:
   m_Name: WaterfallSplash
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300010, guid: bf541ba7810cafd43af665d35d1dc29e, type: 3}
-  - {fileID: 21300012, guid: bf541ba7810cafd43af665d35d1dc29e, type: 3}
-  - {fileID: 21300014, guid: bf541ba7810cafd43af665d35d1dc29e, type: 3}
-  - {fileID: 21300016, guid: bf541ba7810cafd43af665d35d1dc29e, type: 3}
-  - {fileID: 21300018, guid: bf541ba7810cafd43af665d35d1dc29e, type: 3}
+  - {fileID: 1725676371340164549, guid: 76e4c0565c3c8494a83d3324c6130ea9, type: 3}
+  - {fileID: 2872686455240326431, guid: 76e4c0565c3c8494a83d3324c6130ea9, type: 3}
+  - {fileID: 3786080894526622295, guid: 76e4c0565c3c8494a83d3324c6130ea9, type: 3}
+  - {fileID: 5045660051849922305, guid: 76e4c0565c3c8494a83d3324c6130ea9, type: 3}
+  - {fileID: 5612536237972652912, guid: 76e4c0565c3c8494a83d3324c6130ea9, type: 3}
   m_MinSpeed: 1
   m_MaxSpeed: 1
   m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
