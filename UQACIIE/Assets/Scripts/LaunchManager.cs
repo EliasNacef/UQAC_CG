@@ -33,7 +33,7 @@ public class LaunchManager : MonoBehaviour
         {
             PlayerPrefs.SetString("Save", "LevelFa");
         }
-        SceneManager.LoadScene("TrapGameScene");
+        SceneManager.LoadScene("MultiGameScene");
     }
 
     public void LoadMenu()
