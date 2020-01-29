@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class StaticBlock : Block
 {
-    // Start is called before the first frame update
+
     void Start()
     {
         isStatic = true; // Cette entite est fixe
+        name = "Bloc";
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

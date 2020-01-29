@@ -58,7 +58,7 @@ public class TileSlot : MonoBehaviour
         {
             SetSprite(levelDesignManager.map.drawingTile.sprite);
             SetColor(levelDesignManager.map.drawingTile.color);
-            SetString("Current Tile");
+            SetString("Sélection");
         }
     }
 

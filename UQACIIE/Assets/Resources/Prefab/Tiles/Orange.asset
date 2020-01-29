@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: orangeTile
+  m_Name: Orange
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 261a9c7d5c8c95e4299a43bc4e4104fa, type: 3}
   m_Color: {r: 0.8962264, g: 0.63456815, b: 0.07186722, a: 1}

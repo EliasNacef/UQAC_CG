@@ -185,10 +185,10 @@ RectTransform:
   m_Father: {fileID: 2055162872}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.79875, y: 0.12444499}
-  m_AnchorMax: {x: 1, y: 0.19111247}
-  m_AnchoredPosition: {x: 0.5, y: 0.19998169}
-  m_SizeDelta: {x: -1, y: 0}
+  m_AnchorMin: {x: 0.8175, y: 0.21332702}
+  m_AnchorMax: {x: 0.98625, y: 0.27777883}
+  m_AnchoredPosition: {x: 0.7000122, y: -0.1000061}
+  m_SizeDelta: {x: -2.1000004, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473294205
 MonoBehaviour:
@@ -407,10 +407,10 @@ RectTransform:
   m_Father: {fileID: 2055162872}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.79875, y: 0}
-  m_AnchorMax: {x: 1, y: 0.06444498}
-  m_AnchoredPosition: {x: 0.5, y: 0.5}
-  m_SizeDelta: {x: -1, y: 1}
+  m_AnchorMin: {x: 0.8175, y: 0.091000006}
+  m_AnchorMax: {x: 0.98249996, y: 0.15532704}
+  m_AnchoredPosition: {x: 2.2000122, y: -1.2999878}
+  m_SizeDelta: {x: 0.8999996, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &578919906
 MonoBehaviour:
@@ -634,10 +634,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 15
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -657,15 +657,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0.18695742, b: 0, a: 1}
+  m_Color: {r: 0.9433962, g: 0.5416241, b: 0.30704877, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b2dbd0d5095731446be6244985a00698, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -8051,7 +8051,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Load
+  m_Text: Charger
 --- !u!222 &996132642
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8146,7 +8146,7 @@ PrefabInstance:
     - target: {fileID: 6938107186867753359, guid: c5131b64b14219548921a9385112813e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 6938107186867753359, guid: c5131b64b14219548921a9385112813e,
         type: 3}
@@ -8401,15 +8401,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0.18695742, b: 0, a: 1}
+  m_Color: {r: 0.95, g: 0.5408667, b: 0.304, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b2dbd0d5095731446be6244985a00698, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -8440,10 +8440,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 15
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -8499,10 +8499,10 @@ RectTransform:
   m_Father: {fileID: 2055162872}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.79875, y: 0.06444498}
-  m_AnchorMax: {x: 1, y: 0.12444499}
-  m_AnchoredPosition: {x: 0.5, y: 0.5}
-  m_SizeDelta: {x: -1, y: 3}
+  m_AnchorMin: {x: 0.8175, y: 0.15532704}
+  m_AnchorMax: {x: 0.98625, y: 0.21332702}
+  m_AnchoredPosition: {x: 0.7000122, y: -0.8000183}
+  m_SizeDelta: {x: -2.1000004, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1298722383
 MonoBehaviour:
@@ -8908,7 +8908,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Save
+  m_Text: Sauvegarder
 --- !u!222 &1840914298
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9381,7 +9381,7 @@ PrefabInstance:
     - target: {fileID: 4332277471412963562, guid: d487790ea20b99148b8d1698205ffd1e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 4332277471412963562, guid: d487790ea20b99148b8d1698205ffd1e,
         type: 3}

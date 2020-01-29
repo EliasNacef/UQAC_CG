@@ -17,7 +17,7 @@ public class EntitySlot : MonoBehaviour
 
     private void Start()
     {
-        mapManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        mapManager = FindObjectOfType<GameManager>();
     }
 
     public void SetSprite(Sprite newSprite)
@@ -53,7 +53,7 @@ public class EntitySlot : MonoBehaviour
         {
             SetSprite(mapManager.newEntity.gameObject.GetComponent<SpriteRenderer>().sprite);
             SetColor(mapManager.newEntity.gameObject.GetComponent<SpriteRenderer>().color);
-            SetString("Current Trap");
+            SetString("Sélection");
         }
     }
 

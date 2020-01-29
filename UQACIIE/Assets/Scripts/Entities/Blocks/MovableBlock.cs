@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class MovableBlock : Block
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        name = "Tonneau";
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -7,13 +7,12 @@ using UnityEngine;
 /// </summary>
 public class Trap : Entity
 {
-
     protected bool isActivated; // Le piege a-t-il ete declenche
     public Animator animator; // Animator du piege (l'explosion)
 
     void Start()
     {
-        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = FindObjectOfType<GameManager>(); // On load le MapManager
         isActivated = false; // Le piege est initialement non declenche
     }
 

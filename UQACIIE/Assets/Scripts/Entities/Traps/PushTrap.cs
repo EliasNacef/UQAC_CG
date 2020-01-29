@@ -9,12 +9,18 @@ using UnityEngine;
 public class PushTrap : Trap
 {
 
+    private void Start()
+    {
+        name = "Pousseur";
+    }
+
     /// <summary>
     /// Activation du piege : pousse ce qu'il y a autour si possible
     /// </summary>
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Player player)
     {
+        if(gameManager == null) Debug.Log("wat");
         GridMap grid = gameManager.map.grid;
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche

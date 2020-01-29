@@ -31,7 +31,7 @@ public class LevelDesignManager : MonoBehaviour
         {
             for(int j = map.startTilemap.y; j < map.endTilemap.y; j++)
             {
-                map.tilemap.SetTile(new Vector3Int(i, j, 0), Resources.Load<TileBase>("Prefab/redTile"));
+                map.tilemap.SetTile(new Vector3Int(i, j, 0), Resources.Load<TileBase>("Prefab/Rouge"));
             }
         }
         

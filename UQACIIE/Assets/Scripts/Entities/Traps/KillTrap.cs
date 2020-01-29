@@ -8,6 +8,11 @@ using UnityEngine;
 /// </summary>
 public class KillTrap : Trap
 {
+    private void Start()
+    {
+        name = "Piège";
+    }
+
     /// <summary>
     /// Activation du piege : va faire des degats au Player player
     /// </summary>

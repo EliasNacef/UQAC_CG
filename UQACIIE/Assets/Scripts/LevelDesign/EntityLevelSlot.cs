@@ -59,7 +59,7 @@ public class EntityLevelSlot : MonoBehaviour
         {
             SetSprite(levelDesignManager.newEntity.gameObject.GetComponent<SpriteRenderer>().sprite);
             SetColor(levelDesignManager.newEntity.gameObject.GetComponent<SpriteRenderer>().color);
-            SetString("Current Entity");
+            SetString("Sélection");
         }
     }
 
