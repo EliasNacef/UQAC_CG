@@ -22,7 +22,7 @@ public class KillTrap : Trap
         isActivated = true; // Le piege a ete active
         animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
         FindObjectOfType<AudioManager>().Play("BearTrap");
-        entity.Hurt(); // Infliger des degats au joueur
+        entity.Hurt(); // Infliger des degats a l'entite
         StartCoroutine(Desactivate()); // Desactivation du piege
     }
 

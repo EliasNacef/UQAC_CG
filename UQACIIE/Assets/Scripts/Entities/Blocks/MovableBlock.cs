@@ -9,4 +9,13 @@ public class MovableBlock : Block
         name = "Tonneau";
     }
 
+    
+    /// <summary>
+    /// Blesser le joueur
+    /// </summary>
+    override
+    public void Hurt()
+    {
+        Destroy(this.gameObject);
+    }
 }

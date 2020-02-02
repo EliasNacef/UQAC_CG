@@ -34,7 +34,7 @@ public class Player : Entity
     /// <returns> Renvoie des secondes pour laisser attendre assez longtemps </returns>
     public IEnumerator Waiting()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.0f);
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
         gameManager.map.UpdateAroundPosition(this.gameObject);
     }

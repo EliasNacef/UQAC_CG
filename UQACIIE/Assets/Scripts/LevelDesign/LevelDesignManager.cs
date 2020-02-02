@@ -31,7 +31,7 @@ public class LevelDesignManager : MonoBehaviour
         {
             for(int j = map.startTilemap.y; j < map.endTilemap.y; j++)
             {
-                map.tilemap.SetTile(new Vector3Int(i, j, 0), Resources.Load<TileBase>("Prefab/Rouge"));
+                map.tilemap.SetTile(new Vector3Int(i, j, 0), Resources.Load<TileBase>("Prefab/Bleu"));
             }
         }
         
@@ -132,7 +132,7 @@ public class LevelDesignManager : MonoBehaviour
         string fileName = FindObjectOfType<InputField>().text;
         if (File.Exists(Application.persistentDataPath + "/" + fileName + ".uqac"))
         {
-            LevelData data = SaveSystem.LoadLevel(fileName);
+            LevelData data = SaveSystem.LoadLevel(fileName + ".uqac");
 
             // Tiles
             map.tilemap.ClearAllTiles();
@@ -175,7 +175,7 @@ public class LevelDesignManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("File " + fileName + " not found");
+            Debug.Log("File " + fileName + ".uqac not found");
         }
     }
 

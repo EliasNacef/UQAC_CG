@@ -44,7 +44,6 @@ public class Map : MonoBehaviour
 
     public int idealNumberOfTraps = 1;
 
-
     private void Awake()
     {
         // Parametres initiaux

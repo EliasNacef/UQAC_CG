@@ -34,11 +34,11 @@ public class Trap : Entity
     /// <returns> Attends un certain nombre de secondes pour desactiver le piege </returns>
     protected IEnumerator Desactivate()
     {
-        yield return new WaitForSeconds(0.2f);
-        isActivated = false;
         // On retire le trap de la grid
         Vector3Int trapPosition = gameManager.map.grid.GetLocalPosition(this.transform.position);
-        gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null);
+        if (gameManager.map.grid.GetValue(trapPosition.x, trapPosition.y) == this) gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null); // TODO Plus propre ??
+        yield return new WaitForSeconds(0.0f);
+        isActivated = false;
         Object.Destroy(this.gameObject);
     }
 }
