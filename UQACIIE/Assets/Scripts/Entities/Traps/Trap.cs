@@ -20,9 +20,9 @@ public class Trap : Entity
     /// Activation du piege sur le Player player
     /// </summary>
     /// <param name="player"> Joueur qui a enclenche le piege </param>
-    virtual public void Activate(Player player)
+    virtual public void Activate(Entity entity)
     {
-        gameManager.trapAlreadySet = true;
+        gameManager.nbTraps = 0;
         isActivated = true;
         animator.SetBool("isActivated", isActivated); // Active l'animation du piege
         Debug.Log("Un Trap de base a été enclenché, pas une sous classe..");

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2600075026781901127}
   - component: {fileID: 2600075026781901123}
   - component: {fileID: 7965276355327104438}
+  - component: {fileID: 1055494925277054328}
   m_Layer: 0
   m_Name: PushTrap
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2600075026781901120}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 6.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -125,7 +126,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &7965276355327104438
 MonoBehaviour:
@@ -136,9 +137,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2600075026781901120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee5a51ccb0eb784881e9c99a1dc1f6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c5666d5d73c6814d83d7ca09d5ed172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Pousseur
+  name: 
   isStatic: 0
   animator: {fileID: 2600075026781901127}
+--- !u!114 &1055494925277054328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600075026781901120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202f384e5335507409dc60482b08b135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trap: {fileID: 0}

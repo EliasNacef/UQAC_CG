@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class EntitySlot : MonoBehaviour
 {
-    private GameManager mapManager;
+    private GameManager gameManager;
     private Entity entity;
     [SerializeField]
     private Image image;
@@ -17,7 +17,7 @@ public class EntitySlot : MonoBehaviour
 
     private void Start()
     {
-        mapManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void SetSprite(Sprite newSprite)
@@ -43,7 +43,7 @@ public class EntitySlot : MonoBehaviour
 
     public void Select()
     {
-        if (entity != null ) mapManager.newEntity = entity;
+        if (entity != null ) gameManager.newEntity = entity;
         EventSystem.current.SetSelectedGameObject(null);
     }
 
@@ -51,8 +51,8 @@ public class EntitySlot : MonoBehaviour
     {
         if (isCurrent)
         {
-            SetSprite(mapManager.newEntity.gameObject.GetComponent<SpriteRenderer>().sprite);
-            SetColor(mapManager.newEntity.gameObject.GetComponent<SpriteRenderer>().color);
+            SetSprite(gameManager.newEntity.gameObject.GetComponent<SpriteRenderer>().sprite);
+            SetColor(gameManager.newEntity.gameObject.GetComponent<SpriteRenderer>().color);
             SetString("Sélection");
         }
     }

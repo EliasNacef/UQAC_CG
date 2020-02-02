@@ -20,7 +20,7 @@ public class TilePanelManager : MonoBehaviour
         tileSlot = Resources.Load<GameObject>("Prefab/TileSlot");
         foreach (Tile tile in tiles)
         {
-            instance = Instantiate(tileSlot, new Vector3(0, 0, 0), Quaternion.identity, GameObject.Find("TilePanel").transform);
+            instance = Instantiate(tileSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
             TileSlot slot = instance.GetComponent<TileSlot>();
             slot.SetSprite(tile.sprite);
             slot.SetColor(tile.color);

@@ -9,7 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuScene.unity
     guid: cb46d897bcbae1344932c711005eb8ca
   - enabled: 1
-    path: Assets/Scenes/TrapGameScene.unity
+    path: Assets/Scenes/SoloGameScene.unity
+    guid: 79d9a8eac2559ba45b0e98b4c61ba6b5
+  - enabled: 1
+    path: Assets/Scenes/MultiGameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/LevelDesignScene.unity

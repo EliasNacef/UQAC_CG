@@ -16,4 +16,12 @@ public class Entity : MonoBehaviour
         isStatic = false;
         gameManager = FindObjectOfType<GameManager>(); // On load le MapManager
     }
+
+    /// <summary>
+    /// Blesser le joueur
+    /// </summary>
+    virtual public void Hurt()
+    {
+        Debug.Log("Nothing happens..");
+    }
 }

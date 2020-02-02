@@ -58,19 +58,17 @@ public class Map : MonoBehaviour
     /// </summary>
     public void SetSelectionTile(GameObject go)
     {
-
         selectionMap.SetTile(oldPosition, oldTile); // Remet en place l'ancienne Tile
         UpdateAroundPosition(go);
         oldTile = selectionMap.GetTile(currentCellInt + selectionRotation); // Stocke la tile avant de la changer
         oldPosition = currentCellInt + selectionRotation;
         selectionMap.SetTile(currentCellInt + selectionRotation, selectionTile); // Dessine la tile de selection
-
     }
 
     /// <summary>
     /// Tente de placer un piege sur la position de selection du piege.
     /// </summary>
-    public void SetTrap(Entity newEntity)
+    public bool SetTrap(Entity newEntity)
     {
         Vector3 positionTrap = tilemap.GetCellCenterLocal(currentCellInt + selectionRotation); // La future position du piege
         Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
@@ -80,7 +78,9 @@ public class Map : MonoBehaviour
             grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
             FindObjectOfType<AudioManager>().Play("PutTrap");
             selectionRotation = new Vector3Int(0, 1, 0);
+            return true;
         }
+        else return false;
     }
 
 
@@ -168,7 +168,8 @@ public class Map : MonoBehaviour
         }
         else
         {
-            data = SaveSystem.LoadLevel("");
+            LoadDefault();
+            return;
         }
 
 

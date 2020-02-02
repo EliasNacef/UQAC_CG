@@ -8,18 +8,25 @@ using UnityEngine;
 public class TriggerAndCollider : MonoBehaviour
 {
     [SerializeField]
-    private Player player; // Player qui peut entrer en collision avec quelque chose
+    private Trap trap; // Entity qui peut entrer en collision avec quelque chose
+
+
+    private void Start()
+    {
+        trap = this.GetComponent<Trap>(); // Le trap qui va s'enclencher car il est en collision avec le player
+    }
 
     /// <summary>
-    /// Decrit se qu'il se passe lors de la collision entre un collider et le joueur
+    /// Decrit se qu'il se passe lors d'une collision
     /// </summary>
     /// <param name="collision"> Objet qui est entre en collision </param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Trap trap = collision.gameObject.GetComponent<Trap>(); // Le trap qui va s'enclencher car il est en collision avec le player
-        collision.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
-        if(trap != null)
-            trap.Activate(player); // Activation du trap
+        Entity entity = collision.gameObject.GetComponentInParent<Player>(); 
+        if (entity == null) entity = collision.gameObject.GetComponent<MovableBlock>();
+        trap.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
+        if(trap != null && entity != null)
+            trap.Activate(entity); // Activation du trap
     }
 
 

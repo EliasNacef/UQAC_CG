@@ -35,8 +35,8 @@ public class Player : Entity
     public IEnumerator Waiting()
     {
         yield return new WaitForSeconds(0.5f);
-        gameManager.map.UpdateAroundPosition(this.gameObject);
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
+        gameManager.map.UpdateAroundPosition(this.gameObject);
     }
 
 
@@ -44,9 +44,11 @@ public class Player : Entity
     /// <summary>
     /// Blesser le joueur
     /// </summary>
+    override
     public void Hurt()
     {
         _life--; // Le joueur perd une vie
+        gameManager.nbTraps = 0;
         isHurting = true; // Le joueur est en train d'etre blesse
         GetComponent<PlayerMovement>().canMove = false; // Pendant sa blessure, le joueur ne peut pas bouger
         animator.SetBool("isHurting", isHurting); // Animator mis a jour (en train d'etre blesse)
@@ -64,8 +66,8 @@ public class Player : Entity
         yield return new WaitForSeconds(1f);
         isHurting = false; // Fin de blessure (animation)
         animator.SetBool("isHurting", isHurting);
-        gameManager.UpdatePlayersPositions(); // Update des positions (reset)
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
+        gameManager.UpdatePlayersPositions(); // Update des positions (reset)
     }
 
     /// <summary>

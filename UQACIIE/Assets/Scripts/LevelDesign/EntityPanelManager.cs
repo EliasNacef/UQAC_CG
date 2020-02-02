@@ -20,7 +20,7 @@ public class EntityPanelManager : MonoBehaviour
         entityLevelSlot = Resources.Load<GameObject>("Prefab/EntityLevelSlot");
         foreach (Entity entity in entities)
         {
-            instance = Instantiate(entityLevelSlot, new Vector3(0, 0, 0), Quaternion.identity, GameObject.Find("EntityPanel").transform);
+            instance = Instantiate(entityLevelSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
             EntityLevelSlot slot = instance.GetComponent<EntityLevelSlot>();
             slot.SetSprite(entity.gameObject.GetComponent<SpriteRenderer>().sprite);
             slot.SetColor(entity.gameObject.GetComponent<SpriteRenderer>().color);

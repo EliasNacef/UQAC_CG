@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8716722608842267950}
   - component: {fileID: 8716722608842267946}
   - component: {fileID: 1837151163215989116}
+  - component: {fileID: -8037544858564308206}
   m_Layer: 0
   m_Name: KillTrap
   m_TagString: Untagged
@@ -71,12 +72,12 @@ SpriteRenderer:
   m_SortingLayerID: 1680383521
   m_SortingLayer: 1
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 5ecee23365216f44daf348b7888cfb58, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e43d0f79f59361841afc6d097dc759d7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1.3, y: 1.15}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -117,15 +118,15 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1328125, y: 1.0546875}
-    newSize: {x: 2, y: 2}
+    pivot: {x: 0.5, y: 0.4}
+    oldSize: {x: 0.8666667, y: 0.76666665}
+    newSize: {x: 1.3, y: 1.15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &1837151163215989116
 MonoBehaviour:
@@ -142,3 +143,16 @@ MonoBehaviour:
   name: "Pi\xE8ge"
   isStatic: 0
   animator: {fileID: 8716722608842267950}
+--- !u!114 &-8037544858564308206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8716722608842267945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202f384e5335507409dc60482b08b135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trap: {fileID: 0}

@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Start()
     {
-        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = FindObjectOfType<GameManager>();
         
 
         // Initialement, les joueurs sont immobiles
