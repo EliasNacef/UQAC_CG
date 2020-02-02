@@ -89,6 +89,10 @@ public class LevelDesignManager : MonoBehaviour
                 else entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau block
                 map.grid.SetValue(gridCellPosition.x, gridCellPosition.y, entityInstance);
             }
+            else
+            {
+                if( map.grid.GetValue(gridCellPosition.x, gridCellPosition.y) != null ) Destroy(map.grid.GetValue(gridCellPosition.x, gridCellPosition.y).gameObject);
+            }
         }
     }
 

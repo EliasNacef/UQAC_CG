@@ -33,7 +33,7 @@ public class MultiGameManager : GameManager
         whoPlay = 1; // Le joueur 1 commence a jouer
         player = player1; // Le player est donc le joueur 1
         spectator = player2; // ..et le spectator est donc le joueur 2
-        nbTraps = roundNumberTraps; // la bombe n'a pas encore ete placee
+        nbTraps = roundNumberTraps;
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites

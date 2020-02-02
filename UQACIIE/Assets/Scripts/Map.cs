@@ -42,6 +42,8 @@ public class Map : MonoBehaviour
     public Vector3Int currentCellInt; // Cellule currentCell convertie en vectuer d'entiers avec Floor()
     public Vector3Int frontCellInt; // Cellule frontCell convertie en vectuer d'entiers avec Floor()
 
+    public int idealNumberOfTraps = 1;
+
 
     private void Awake()
     {
@@ -218,6 +220,8 @@ public class Map : MonoBehaviour
         Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -(Mathf.Abs(grid.GetWidth()) + Mathf.Abs(grid.GetHeight())));
         EventSystem.current.SetSelectedGameObject(null);
 
+        idealNumberOfTraps = data.nbTraps;
+
     }
 
 
@@ -227,5 +231,11 @@ public class Map : MonoBehaviour
         else if (selectionRotation.x == 1) selectionRotation = new Vector3Int(0, -1, 0);
         else if (selectionRotation.y == 1) selectionRotation = new Vector3Int(1, 0, 0);
         else if (selectionRotation.y == -1) selectionRotation = new Vector3Int(-1, 0, 0);
+    }
+
+    public void SetIdealNumberOfTraps(string text)
+    {
+        idealNumberOfTraps = int.Parse(text);
+        Debug.Log(int.Parse(text));
     }
 }

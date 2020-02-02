@@ -11,7 +11,7 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/" + saveName + ".uqac";
 
         FileStream stream = new FileStream(path, FileMode.Create);
-        LevelData data = new LevelData(map);
+        LevelData data = new LevelData(map, map.idealNumberOfTraps);
 
         formatter.Serialize(stream, data);
         stream.Close();

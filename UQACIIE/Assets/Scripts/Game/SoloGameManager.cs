@@ -18,7 +18,7 @@ public class SoloGameManager : GameManager
         map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
 
         // Parametres initiaux
-        nbTraps = roundNumberTraps; // Nb de bombes initial
+        nbTraps = map.idealNumberOfTraps; // Nb de bombes initial
         endGame = false; // Ce n'est pas la fin du tour, il vient de commencer
         UpdateAbilities(); // On update les abilites
         UpdatePlayersPositions();

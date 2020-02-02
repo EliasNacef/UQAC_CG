@@ -12,10 +12,11 @@ public class LevelData
     public string[,] tilesTypes; // La liste des types de tiles de la map
     public string[,] trapsTypes; // La liste des types  de pieges instancies
     public string[,] blocksTypes; // La liste des types de blocks instancies
+    public int nbTraps; // Nombre de pieges disponibles pour le joueur
 
 
 
-    public LevelData(Map map)
+    public LevelData(Map map, int number)
     {
 
         int i = 0;
@@ -71,6 +72,9 @@ public class LevelData
             blocksTypes[i, 0] = block.GetType().ToString();
             i++;
         }
+
+        nbTraps = number;
+
     }
 
 
