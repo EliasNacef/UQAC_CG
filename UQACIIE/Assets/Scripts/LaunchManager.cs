@@ -25,14 +25,7 @@ public class LaunchManager : MonoBehaviour
     {
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
-        if (File.Exists(Application.persistentDataPath + "/" + toLoad.text + ".uqac"))
-        {
-            PlayerPrefs.SetString("Save", toLoad.text);
-        }
-        else
-        {
-            PlayerPrefs.SetString("Save", "LevelDefault");
-        }
+        PlayerPrefs.SetString("Save", toLoad.text);
         SceneManager.LoadScene("MultiGameScene");
     }
 
@@ -40,14 +33,15 @@ public class LaunchManager : MonoBehaviour
     {
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
-        if (File.Exists(Application.persistentDataPath + "/" + toLoad.text + ".uqac"))
-        {
-            PlayerPrefs.SetString("Save", toLoad.text);
-        }
-        else
-        {
-            PlayerPrefs.SetString("Save", "LevelDefault");
-        }
+        PlayerPrefs.SetString("Save", toLoad.text);
+        SceneManager.LoadScene("SoloGameScene");
+    }
+
+    public void LoadLevelGame(string nameLevel)
+    {
+        Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
+        s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
+        PlayerPrefs.SetString("Save", nameLevel);
         SceneManager.LoadScene("SoloGameScene");
     }
 

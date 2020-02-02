@@ -164,9 +164,13 @@ public class Map : MonoBehaviour
     {
         LevelData data;
         string saveName = PlayerPrefs.GetString("Save");
-        if (File.Exists(Application.persistentDataPath + "/" + saveName + ".uqac"))
+        if (File.Exists(Application.dataPath + "/Resources/Prefab/Levels/" + saveName + ".lvl"))
         {
-            data = SaveSystem.LoadLevel(saveName);
+            data = SaveSystem.LoadLevel(saveName + ".lvl");
+        }
+        else if (File.Exists(Application.persistentDataPath + "/" + saveName + ".uqac"))
+        {
+            data = SaveSystem.LoadLevel(saveName + ".uqac");
         }
         else
         {
@@ -236,6 +240,5 @@ public class Map : MonoBehaviour
     public void SetIdealNumberOfTraps(string text)
     {
         idealNumberOfTraps = int.Parse(text);
-        Debug.Log(int.Parse(text));
     }
 }

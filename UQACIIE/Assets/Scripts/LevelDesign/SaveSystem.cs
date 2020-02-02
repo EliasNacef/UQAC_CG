@@ -20,11 +20,24 @@ public static class SaveSystem
 
     public static LevelData LoadLevel(string saveName)
     {
-        string path = Application.persistentDataPath + "/" + saveName + ".uqac";
-        if (File.Exists(path))
+        string path1 = Application.persistentDataPath + "/" + saveName;
+        string path2 = Application.dataPath + "/Resources/Prefab/Levels/" + saveName;
+        if (File.Exists(path2))
         {
+            Debug.Log("Loading of : " + path2);
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(path2, FileMode.Open);
+
+            LevelData data = formatter.Deserialize(stream) as LevelData;
+            stream.Close();
+
+            return data;
+        }
+        else if (File.Exists(path1))
+        {
+            Debug.Log("Loading of : " + path1);
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path1, FileMode.Open);
 
             LevelData data = formatter.Deserialize(stream) as LevelData;
             stream.Close();
@@ -33,7 +46,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.Log("Save file non trouve dans le path : " + path);
+            Debug.Log("Save file non trouve dans le path : " + path1 + "ou" + path2);
             return null;
         }
     }
