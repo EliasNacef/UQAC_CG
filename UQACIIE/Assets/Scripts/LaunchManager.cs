@@ -14,6 +14,8 @@ public class LaunchManager : MonoBehaviour
     [SerializeField]
     private InputField toLoad;
     private AudioManager audioManager;
+    [SerializeField]
+    private Animator transition;
 
     private void Start()
     {
@@ -23,41 +25,42 @@ public class LaunchManager : MonoBehaviour
 
     public void LoadMultiGame()
     {
+        StartCoroutine(Transition("MultiGameScene"));
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
         PlayerPrefs.SetString("Save", toLoad.text);
-        SceneManager.LoadScene("MultiGameScene");
     }
 
     public void LoadSoloGame()
     {
+        StartCoroutine(Transition("SoloGameScene"));
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
         PlayerPrefs.SetString("Save", toLoad.text);
-        SceneManager.LoadScene("SoloGameScene");
     }
 
     public void LoadLevelGame(string nameLevel)
     {
+        StartCoroutine(Transition("SoloGameScene"));
+
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
         PlayerPrefs.SetString("Save", nameLevel);
-        SceneManager.LoadScene("SoloGameScene");
     }
 
 
     public void LoadMenu()
     {
+        StartCoroutine(Transition("MenuScene"));
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/menuMusic");
-        SceneManager.LoadScene("MenuScene");
     }
 
     public void LoadLevelEditor()
     {
+        StartCoroutine(Transition("LevelDesignScene"));
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/levelDesignMusic");
-        SceneManager.LoadScene("LevelDesignScene");
     }
 
     public void QuitGame()
@@ -81,5 +84,12 @@ public class LaunchManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         animator1.SetBool("Title", false);
         animator2.SetBool("Title", false);
+    }
+
+    private IEnumerator Transition(string name)
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(name);
     }
 }
