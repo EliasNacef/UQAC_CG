@@ -77,7 +77,9 @@ public class Map : MonoBehaviour
         {
             var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
             grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
-            FindObjectOfType<AudioManager>().Play("PutTrap");
+            if (entityInstance is KillTrap) FindObjectOfType<AudioManager>().Play("PutKillTrap");
+            else if (entityInstance is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
+            else if (entityInstance is Block) FindObjectOfType<AudioManager>().Play("Block");
             selectionRotation = new Vector3Int(0, 1, 0);
             return true;
         }
@@ -138,7 +140,6 @@ public class Map : MonoBehaviour
             }
         }
         grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin);
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -Mathf.Max(grid.GetWidth(), grid.GetHeight())); // La camera suit le joueur
     }
 
 
@@ -220,9 +221,7 @@ public class Map : MonoBehaviour
         }
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
-        Camera.main.transform.position = new Vector3((endTilemap.x + startTilemap.x) / 2, (endTilemap.y + startTilemap.y) / 2, -(Mathf.Abs(grid.GetWidth()) + Mathf.Abs(grid.GetHeight())));
         EventSystem.current.SetSelectedGameObject(null);
-
         idealNumberOfTraps = data.nbTraps;
 
     }

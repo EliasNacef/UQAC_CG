@@ -38,6 +38,7 @@ public class MultiGameManager : GameManager
         UpdatePlayersPositions(); // On update les positions
         UpdateAbilities(); // On update les abilites
         map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
+        CameraUpToPlayer();
     }
 
 
@@ -45,7 +46,7 @@ public class MultiGameManager : GameManager
     void Update()
     {
         TestEndGame(); // Testons si c'est la fin du jeu
-
+        CameraFollowPlayer();
         if (endRound) // Est-ce la fin d'un round ?
             StartCoroutine(EndRound()); // Si oui, on y met fin
         else // Sinon
@@ -64,11 +65,11 @@ public class MultiGameManager : GameManager
             {
                 Pause();
             }
-            else if (Input.mouseScrollDelta.y > 0)
+            else if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.z < -1)
             {
                 Camera.main.transform.position += new Vector3(0, 0, 1);
             }
-            else if (Input.mouseScrollDelta.y < 0)
+            else if (Input.mouseScrollDelta.y < 0 && Camera.main.transform.position.z > -(Mathf.Abs(map.grid.GetWidth()) + Mathf.Abs(map.grid.GetHeight())))
             {
                 Camera.main.transform.position += new Vector3(0, 0, -1);
 
@@ -160,6 +161,7 @@ public class MultiGameManager : GameManager
         player.GetComponent<PlayerMovement>().canMove = false;
         yield return new WaitForSeconds(0.10f); //Eviter que le joueur n'avance automatiquement avec l'input du joueur precedent
         UpdateAbilities();
+        CameraUpToPlayer();
     }
 
 

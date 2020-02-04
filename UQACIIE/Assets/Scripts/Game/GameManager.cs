@@ -30,4 +30,15 @@ public class GameManager : MonoBehaviour
         // Mise a jour de la position du joueur au spawn
         player.transform.position = map.spawnPosition;
     }
+
+
+    protected void CameraUpToPlayer()
+    {
+        Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -6f);
+    }
+
+    protected void CameraFollowPlayer()
+    {
+        Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, Camera.main.transform.position.z);
+    }
 }

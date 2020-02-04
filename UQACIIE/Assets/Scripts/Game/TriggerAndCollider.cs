@@ -22,7 +22,6 @@ public class TriggerAndCollider : MonoBehaviour
     /// <param name="collision"> Objet qui est entre en collision </param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("LOL");
         Entity entity = collision.gameObject.GetComponentInParent<Player>(); 
         if (entity == null) entity = collision.gameObject.GetComponent<MovableBlock>();
         if(trap != null && entity != null)

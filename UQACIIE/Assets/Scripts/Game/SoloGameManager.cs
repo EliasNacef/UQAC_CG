@@ -23,6 +23,7 @@ public class SoloGameManager : GameManager
         UpdateAbilities(); // On update les abilites
         UpdatePlayersPositions();
         map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
+        CameraUpToPlayer();
 
     }
 
@@ -30,9 +31,8 @@ public class SoloGameManager : GameManager
 
     void Update()
     {
-        Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -6f);
         TestEndGame(); // Testons si c'est la fin du jeu
-
+        CameraFollowPlayer();
         // La case de selection se deplace avec le joueur.
         map.SetSelectionTile(player);
         if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
@@ -45,11 +45,11 @@ public class SoloGameManager : GameManager
         {
             Pause();
         }
-        else if (Input.mouseScrollDelta.y > 0)
+        else if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.z < -1)
         {
             Camera.main.transform.position += new Vector3(0, 0, 1);
         }
-        else if (Input.mouseScrollDelta.y < 0)
+        else if (Input.mouseScrollDelta.y < 0 && Camera.main.transform.position.z > -(Mathf.Abs(map.grid.GetWidth()) + Mathf.Abs(map.grid.GetHeight())))
         {
             Camera.main.transform.position += new Vector3(0, 0, -1);
         }
