@@ -42,17 +42,7 @@ public class LevelDesignManager : MonoBehaviour
         UpdateEntitiesArrays(); // Update des arrays d'entites
 
         map.ResetGrid();
-        map.startTilemap = map.tilemap.origin;
-        map.endTilemap = map.tilemap.origin + new Vector3Int(map.grid.GetWidth(), map.grid.GetHeight(), 0);
-        int gridSize = map.grid.GetHeight() * map.grid.GetWidth();
-        for (int i = map.startTilemap.x - gridSize; i < map.endTilemap.x + gridSize; i++)
-        {
-            for (int j = map.startTilemap.y - gridSize; j < map.endTilemap.y + gridSize; j++)
-            {
-                Vector3Int tilePosition = new Vector3Int(i, j, 0);
-                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
-            }
-        }
+        DrawBackground();
     }
 
     void Update()
@@ -184,10 +174,10 @@ public class LevelDesignManager : MonoBehaviour
     {
         map.startTilemap = map.tilemap.origin;
         map.endTilemap = map.tilemap.origin + new Vector3Int(map.grid.GetWidth(), map.grid.GetHeight(), 0);
-        int gridSize = map.grid.GetHeight() + map.grid.GetWidth();
-        for (int i = map.startTilemap.x - gridSize; i < map.endTilemap.x + gridSize; i++)
+        int backSize = Mathf.Max(15, (map.grid.GetHeight() + map.grid.GetWidth()));
+        for (int i = map.startTilemap.x - backSize; i < map.endTilemap.x + backSize; i++)
         {
-            for (int j = map.startTilemap.y - gridSize; j < map.endTilemap.y + gridSize; j++)
+            for (int j = map.startTilemap.y - backSize; j < map.endTilemap.y + backSize; j++)
             {
                 Vector3Int tilePosition = new Vector3Int(i, j, 0);
                 GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));

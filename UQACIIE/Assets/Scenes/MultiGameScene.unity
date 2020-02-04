@@ -930,7 +930,6 @@ GameObject:
   m_Component:
   - component: {fileID: 549784869}
   - component: {fileID: 549784871}
-  - component: {fileID: 549784870}
   m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
@@ -952,19 +951,6 @@ Transform:
   m_Father: {fileID: 1410658578}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &549784870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549784868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 202f384e5335507409dc60482b08b135, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1410658579}
 --- !u!61 &549784871
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -978,7 +964,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.090194404, y: 0.14985108}
+  m_Offset: {x: 0.1, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -989,7 +975,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7511879, y: 0.111531734}
+  m_Size: {x: 0.6, y: 0.2}
   m_EdgeRadius: 0
 --- !u!1 &577022634
 GameObject:
@@ -4548,6 +4534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e1a0200cc340542a6c752e3d7b6d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   isStatic: 0
   isHurting: 0
   animator: {fileID: 1057283239}
@@ -4929,6 +4916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e1a0200cc340542a6c752e3d7b6d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   isStatic: 0
   isHurting: 0
   animator: {fileID: 1410658580}
@@ -5293,13 +5281,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 1589292865}
-  player1: {fileID: 1410658577}
-  player2: {fileID: 1057283236}
+  player: {fileID: 0}
   newEntity: {fileID: 1837151163215989116, guid: 3113a339e3b1bf34180676b04af8afa9,
     type: 3}
   victoryPanel: {fileID: 895528967}
+  failurePanel: {fileID: 0}
   pausePanel: {fileID: 267297236}
-  trapAlreadySet: 0
+  nbTraps: 0
+  player1: {fileID: 1410658577}
+  player2: {fileID: 1057283236}
 --- !u!114 &1589292865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5312,7 +5302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db7d1f643e789c4a8490b6de00cfb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isReady: 0
   tilemap: {fileID: 1981802443}
   startTilemap: {x: -3, y: -3, z: 0}
   endTilemap: {x: 3, y: 3, z: 0}
@@ -5330,6 +5319,7 @@ MonoBehaviour:
   spectatePosition: {x: 0, y: 0, z: 0}
   currentCellInt: {x: 0, y: 0, z: 0}
   frontCellInt: {x: 0, y: 0, z: 0}
+  idealNumberOfTraps: 1
 --- !u!1 &1680589123
 GameObject:
   m_ObjectHideFlags: 0
@@ -5372,7 +5362,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1779674502}
   - component: {fileID: 1779674504}
-  - component: {fileID: 1779674503}
   m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
@@ -5394,19 +5383,6 @@ Transform:
   m_Father: {fileID: 1057283237}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1779674503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779674501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 202f384e5335507409dc60482b08b135, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1057283238}
 --- !u!61 &1779674504
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5420,7 +5396,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.090194404, y: 0.14985108}
+  m_Offset: {x: 0.1, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5431,7 +5407,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7511879, y: 0.15357447}
+  m_Size: {x: 0.8, y: 0.2}
   m_EdgeRadius: 0
 --- !u!1 &1840914295
 GameObject:

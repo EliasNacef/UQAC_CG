@@ -23,12 +23,14 @@ public class SoloGameManager : GameManager
         UpdateAbilities(); // On update les abilites
         UpdatePlayersPositions();
         map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
+
     }
 
 
 
     void Update()
     {
+        Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -6f);
         TestEndGame(); // Testons si c'est la fin du jeu
 
         // La case de selection se deplace avec le joueur.

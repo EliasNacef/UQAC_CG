@@ -22,11 +22,14 @@ public class TriggerAndCollider : MonoBehaviour
     /// <param name="collision"> Objet qui est entre en collision </param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("LOL");
         Entity entity = collision.gameObject.GetComponentInParent<Player>(); 
         if (entity == null) entity = collision.gameObject.GetComponent<MovableBlock>();
-        trap.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
         if(trap != null && entity != null)
+        {
+            trap.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
             trap.Activate(entity); // Activation du trap
+        }
     }
 
 
