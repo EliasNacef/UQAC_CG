@@ -144,7 +144,6 @@ public class GridMap
 
     public void MoveEntity(int x, int y, Vector3Int translation)
     {
-        Debug.Log(x + " " + y);
         Entity entity = GetValue(x, y);
         if(!entity.isStatic)
         {

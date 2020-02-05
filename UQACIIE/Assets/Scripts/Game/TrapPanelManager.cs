@@ -20,7 +20,7 @@ public class TrapPanelManager : MonoBehaviour
         trapSlot = Resources.Load<GameObject>("Prefab/TrapSlot");
         foreach(Entity entity in entities)
         {
-            instance = Instantiate(trapSlot, new Vector3(0, 0, 0), Quaternion.identity, GameObject.Find("TrapPanel").transform);
+            instance = Instantiate(trapSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
             EntitySlot slot = instance.GetComponent<EntitySlot>();
             slot.SetSprite(entity.gameObject.GetComponent<SpriteRenderer>().sprite);
             slot.SetColor(entity.gameObject.GetComponent<SpriteRenderer>().color);
