@@ -108,3 +108,27 @@ MonoBehaviour:
     pitchVariance: 0
     loop: 0
     source: {fileID: 0}
+  - name: Intro1
+    clip: {fileID: 8300000, guid: f82329bc8eaee7f4b8f5550f0d51137e, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Intro2
+    clip: {fileID: 8300000, guid: 63a99e3478dda914eb490f60db6ebb51, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Intro3
+    clip: {fileID: 8300000, guid: 3a39468127775c44a9db13da80b4e384, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
