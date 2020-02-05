@@ -24,7 +24,7 @@ public class SettingsMenu : MonoBehaviour
         audioManager = FindObjectOfType<AudioManager>();
         generalVolumeSlider.value = 0.5f;
         musicVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "GameMusic").volume;
-        effectsVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "PutTrap").volume;
+        effectsVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "PutKillTrap").volume;
 
         resolutions = Screen.resolutions;
         resolutionDropDown.ClearOptions();

@@ -16,6 +16,8 @@ public class LaunchManager : MonoBehaviour
     private AudioManager audioManager;
     [SerializeField]
     private Animator transition;
+    [SerializeField]
+    private Animator middleTransition;
 
     private void Start()
     {
@@ -89,7 +91,8 @@ public class LaunchManager : MonoBehaviour
     private IEnumerator Transition(string name)
     {
         transition.SetTrigger("Start");
-        yield return new WaitForSeconds(1f);
+        middleTransition.SetTrigger("Start");
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(name);
     }
 }

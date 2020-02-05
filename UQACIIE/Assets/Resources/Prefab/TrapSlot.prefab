@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 89683133239661107}
   - component: {fileID: 89683133239661105}
   - component: {fileID: -1685704384251955537}
+  - component: {fileID: -2085948232050904071}
   m_Layer: 5
   m_Name: TrapSlot
   m_TagString: Untagged
@@ -149,6 +150,18 @@ MonoBehaviour:
   image: {fileID: 89683133496105580}
   text: {fileID: 89683133762679694}
   isCurrent: 0
+--- !u!114 &-2085948232050904071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89683133239661109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &89683133496105582
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1480691944399561375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7985534986838703691}
+  - component: {fileID: 1209652350422231035}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7985534986838703691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480691944399561375}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1209652350422231035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480691944399561375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1daf45ffa9df78e42845e6172f84e8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: GameMusic
+    clip: {fileID: 8300000, guid: c9caf0097bf28b74292096b43c104df9, type: 3}
+    volume: 0.25
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: MoveSound
+    clip: {fileID: 0}
+    volume: 0
+    volumeVariance: 0
+    pitch: 0
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: BearTrap
+    clip: {fileID: 8300000, guid: ff6bca6ca2f2e164c9284c79fa7e5281, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1.5
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: PutKillTrap
+    clip: {fileID: 8300000, guid: 2994795f88e14ea4c9ae718918eb7d89, type: 3}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Block
+    clip: {fileID: 8300000, guid: b7d640be1b5ee5e41bcb81dcf60fad0a, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: WindTrap
+    clip: {fileID: 8300000, guid: dfc39ed8f97ad104ebe53c9a5a521cd5, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 0.75
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: PutPushTrap
+    clip: {fileID: 8300000, guid: 815b31b6ab5e01e47a99f372ee2ec1f7, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 0.75
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ClickButton
+    clip: {fileID: 8300000, guid: 08cacbdcdc9208a4997b7f1fd96ecdf2, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}

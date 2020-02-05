@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6938107186867753358}
   - component: {fileID: 6938107186867753356}
   - component: {fileID: 3688308565246573551}
+  - component: {fileID: -341535898137106525}
   m_Layer: 5
   m_Name: CurrentTile
   m_TagString: UI
@@ -149,6 +150,18 @@ MonoBehaviour:
   image: {fileID: 6938107187150412241}
   text: {fileID: 6938107188490203187}
   isCurrent: 1
+--- !u!114 &-341535898137106525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6938107186867753352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6938107187150412243
 GameObject:
   m_ObjectHideFlags: 0

@@ -441,6 +441,7 @@ GameObject:
   - component: {fileID: 125086834}
   - component: {fileID: 125086833}
   - component: {fileID: 125086832}
+  - component: {fileID: 125086835}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -572,6 +573,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125086830}
   m_CullTransparentMesh: 0
+--- !u!114 &125086835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125086830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &193255538
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +782,7 @@ GameObject:
   - component: {fileID: 326420265}
   - component: {fileID: 326420264}
   - component: {fileID: 326420263}
+  - component: {fileID: 326420262}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -796,6 +810,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 32.500015}
   m_SizeDelta: {x: 0, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &326420262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326420260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &326420263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,98 +926,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326420260}
   m_CullTransparentMesh: 0
---- !u!1 &346475825
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 346475827}
-  - component: {fileID: 346475826}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &346475826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346475825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1daf45ffa9df78e42845e6172f84e8f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - name: GameMusic
-    clip: {fileID: 8300000, guid: 01341daffd77d724eb8e17e51a0c7e1f, type: 3}
-    volume: 0.25
-    volumeVariance: 1
-    pitch: 1
-    pitchVariance: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: MoveSound
-    clip: {fileID: 0}
-    volume: 0
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    source: {fileID: 0}
-  - name: BearTrap
-    clip: {fileID: 8300000, guid: fed7233c1f8177040b6c69c2db8c24dd, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 1.5
-    pitchVariance: 0
-    loop: 0
-    source: {fileID: 0}
-  - name: PutTrap
-    clip: {fileID: 8300000, guid: b0ab2939751da344d8e712cedb2c0978, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 1
-    pitchVariance: 0
-    loop: 0
-    source: {fileID: 0}
-  - name: PutBlock
-    clip: {fileID: 0}
-    volume: 0
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    source: {fileID: 0}
-  - name: WindTrap
-    clip: {fileID: 8300000, guid: fed7233c1f8177040b6c69c2db8c24dd, type: 3}
-    volume: 0
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    source: {fileID: 0}
---- !u!4 &346475827
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346475825}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &347117675
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1232,7 @@ GameObject:
   - component: {fileID: 578919908}
   - component: {fileID: 578919907}
   - component: {fileID: 578919906}
+  - component: {fileID: 578919909}
   m_Layer: 5
   m_Name: LoadButton
   m_TagString: Untagged
@@ -1418,6 +1353,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578919904}
   m_CullTransparentMesh: 0
+--- !u!114 &578919909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578919904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &596375672
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,6 +4839,7 @@ GameObject:
   - component: {fileID: 1298722385}
   - component: {fileID: 1298722384}
   - component: {fileID: 1298722383}
+  - component: {fileID: 1298722386}
   m_Layer: 5
   m_Name: SaveButton
   m_TagString: Untagged
@@ -5012,6 +4960,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298722381}
   m_CullTransparentMesh: 0
+--- !u!114 &1298722386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298722381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1410658577
 GameObject:
   m_ObjectHideFlags: 0
@@ -5195,6 +5155,7 @@ GameObject:
   - component: {fileID: 1426689434}
   - component: {fileID: 1426689433}
   - component: {fileID: 1426689432}
+  - component: {fileID: 1426689431}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -5222,6 +5183,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 32.500015}
   m_SizeDelta: {x: 0, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1426689431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426689429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cff30e664148d341966d578eacd3e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1426689432
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class IntroManager : MonoBehaviour
 
     IEnumerator WaifForIntroAnimation()
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(5f);
         SceneManager.LoadScene("MenuScene");
     }
 }

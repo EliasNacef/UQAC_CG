@@ -51,4 +51,9 @@ public class AudioManager : MonoBehaviour
 		s.source.Play();
 	}
 
+    public void ButtonSound()
+    {
+        FindObjectOfType<AudioManager>().Play("ClickButton");
+    }
+
 }
