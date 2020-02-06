@@ -53,10 +53,10 @@ MonoBehaviour:
     loop: 1
     source: {fileID: 0}
   - name: MoveSound
-    clip: {fileID: 0}
-    volume: 0
+    clip: {fileID: 8300000, guid: b6bfa8a3ee68f964d9cd8274ef0358ac, type: 3}
+    volume: 1
     volumeVariance: 0
-    pitch: 0
+    pitch: 1.71
     pitchVariance: 0
     loop: 0
     source: {fileID: 0}
@@ -72,7 +72,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 2994795f88e14ea4c9ae718918eb7d89, type: 3}
     volume: 0.5
     volumeVariance: 0
-    pitch: 1
+    pitch: 1.2
     pitchVariance: 0
     loop: 0
     source: {fileID: 0}

@@ -65,9 +65,19 @@ public class LevelDesignManager : MonoBehaviour
         Vector3Int localCellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
         if (putTile) // TODO : si on veut placer un tile
         {
-            map.tilemap.SetTile(localCellPosition, map.drawingTile);
-            map.ResetGrid();
-            DrawBackground();
+            TileBase currentTile = map.tilemap.GetTile(localCellPosition);
+            if(currentTile == null)
+            {
+                map.tilemap.SetTile(localCellPosition, map.drawingTile);
+                map.ResetGrid();
+                DrawBackground();
+            }
+            else
+            {
+                map.tilemap.SetTile(localCellPosition, null);
+                map.ResetGrid();
+                DrawBackground();
+            }
         }
         else if (putEntity) // Si on veut placer un block
         {

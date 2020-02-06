@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
@@ -17,7 +18,6 @@ public class MultiGameManager : GameManager
     private GameObject player2; // GameObject du second joueur
 
     private int whoPlay; // Entier indiquant le numero de celui qui joue
-
     private bool endRound; // Est-ce la fin d'un round ?
 
 
@@ -85,7 +85,10 @@ public class MultiGameManager : GameManager
     {
         if (nbTraps > 0 && !endRound) // Si je peux poser un piege et que ce n'est pas la fin de la manche
         {
-            if (map.SetTrap(newEntity)) nbTraps--;
+            if (map.SetTrap(newEntity))
+            {
+                nbTraps--;
+            }
             else Debug.Log("Je ne peux pas poser de piège");
         }
         else // Je ne peux pas poser de piege pour le moment
@@ -157,11 +160,16 @@ public class MultiGameManager : GameManager
         map.selectionRotation = new Vector3Int(0, 1, 0);
         nbTraps = roundNumberTraps; // On redonne le nb de pieges initial
         endRound = false;
+        foreach(Trap trap in map.roundTraps)
+        {
+            StartCoroutine(trap.Hiding());
+        }
         SwitchPlayer(); // Echange de joueurs
         player.GetComponent<PlayerMovement>().canMove = false;
         yield return new WaitForSeconds(0.10f); //Eviter que le joueur n'avance automatiquement avec l'input du joueur precedent
         UpdateAbilities();
         CameraUpToPlayer();
+        map.roundTraps.Clear();
     }
 
 

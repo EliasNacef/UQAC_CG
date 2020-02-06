@@ -100,7 +100,10 @@ public class PlayerMovement : MonoBehaviour {
                     Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
                     Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || !(entity is Block))
+                    {
                         transform.position = futurePosition; // Déplacement sur la future cellule
+                        FindObjectOfType<AudioManager>().Play("MoveSound");
+                    }
                 }
                 movingX = 0;
                 yield return new WaitForSeconds(0.15f);
@@ -116,7 +119,10 @@ public class PlayerMovement : MonoBehaviour {
                     Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
                     Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
                     if (entity == null || !(entity is Block))
+                    {
                         transform.position = futurePosition; // Déplacement sur la future cellule
+                        FindObjectOfType<AudioManager>().Play("MoveSound");
+                    }
                 }
                 movingY = 0;
                 yield return new WaitForSeconds(0.15f);

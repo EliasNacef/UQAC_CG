@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
@@ -32,6 +33,8 @@ public class Map : MonoBehaviour
     public Trap[] traps; // La liste des pieges instancies
     public Block[] blocks; // La liste des blocks instancies
     public Player[] players; // La liste des blocks instancies
+    public List<Entity> roundTraps = new List<Entity>();
+
 
 
     public Vector3 spawnPosition; // La position ou le joueur doit apparaitre
@@ -80,6 +83,7 @@ public class Map : MonoBehaviour
             if (entityInstance is KillTrap) FindObjectOfType<AudioManager>().Play("PutKillTrap");
             else if (entityInstance is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
             else if (entityInstance is Block) FindObjectOfType<AudioManager>().Play("Block");
+            roundTraps.Add(entityInstance);
             selectionRotation = new Vector3Int(0, 1, 0);
             return true;
         }
@@ -120,6 +124,7 @@ public class Map : MonoBehaviour
 
     public void ResetGrid()
     {
+        tilemap.CompressBounds();
         grid = new GridMap(tilemap.size.x, tilemap.size.y, 1f, tilemap.origin);
         UpdateEntitiesArrays();
         foreach (Entity entity in entities) //  on vide le tableau de traps

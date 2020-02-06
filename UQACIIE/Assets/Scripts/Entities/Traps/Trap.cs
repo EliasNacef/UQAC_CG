@@ -41,4 +41,16 @@ public class Trap : Entity
         isActivated = false;
         Object.Destroy(this.gameObject);
     }
+
+
+    public IEnumerator Hiding()
+    {
+        Color color = this.GetComponent<SpriteRenderer>().color;
+        while (color.a > 0)
+        {
+            this.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, color.a - 0.1f);
+            color = this.GetComponent<SpriteRenderer>().color;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
