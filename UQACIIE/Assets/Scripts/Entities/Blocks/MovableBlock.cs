@@ -16,6 +16,7 @@ public class MovableBlock : Block
     override
     public void Hurt()
     {
+        gameManager.map.roundTraps.Remove(this);
         Destroy(this.gameObject);
     }
 }

@@ -41,4 +41,20 @@ public class GameManager : MonoBehaviour
     {
         Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, Camera.main.transform.position.z);
     }
+
+    public void CameraUp()
+    {
+        if (Camera.main.transform.position.z < -1)
+        {
+            Camera.main.transform.position += new Vector3(0, 0, 1);
+        }
+    }
+
+    public void CameraDown()
+    {
+        if (Camera.main.transform.position.z > -(Mathf.Abs(map.grid.GetWidth()) + Mathf.Abs(map.grid.GetHeight())))
+        {
+            Camera.main.transform.position += new Vector3(0, 0, -1);
+        }
+    }
 }

@@ -39,6 +39,7 @@ public class Trap : Entity
         if (gameManager.map.grid.GetValue(trapPosition.x, trapPosition.y) == this) gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null); // TODO Plus propre ??
         yield return new WaitForSeconds(0.0f);
         isActivated = false;
+        gameManager.map.roundTraps.Remove(this);
         Object.Destroy(this.gameObject);
     }
 

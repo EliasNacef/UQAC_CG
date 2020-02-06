@@ -80,10 +80,13 @@ public class Map : MonoBehaviour
         {
             var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
             grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
-            if (entityInstance is KillTrap) FindObjectOfType<AudioManager>().Play("PutKillTrap");
+            if (entityInstance is KillTrap)
+            {
+                roundTraps.Add(entityInstance);
+                FindObjectOfType<AudioManager>().Play("PutKillTrap");
+            }
             else if (entityInstance is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
             else if (entityInstance is Block) FindObjectOfType<AudioManager>().Play("Block");
-            roundTraps.Add(entityInstance);
             selectionRotation = new Vector3Int(0, 1, 0);
             return true;
         }

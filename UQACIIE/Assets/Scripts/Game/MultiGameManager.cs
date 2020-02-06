@@ -65,17 +65,9 @@ public class MultiGameManager : GameManager
             {
                 Pause();
             }
-            else if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.z < -1)
-            {
-                Camera.main.transform.position += new Vector3(0, 0, 1);
-            }
-            else if (Input.mouseScrollDelta.y < 0 && Camera.main.transform.position.z > -(Mathf.Abs(map.grid.GetWidth()) + Mathf.Abs(map.grid.GetHeight())))
-            {
-                Camera.main.transform.position += new Vector3(0, 0, -1);
-
-            }
         }
     }
+
 
 
     /// <summary>
@@ -162,7 +154,7 @@ public class MultiGameManager : GameManager
         endRound = false;
         foreach(Trap trap in map.roundTraps)
         {
-            StartCoroutine(trap.Hiding());
+            if (trap != null) StartCoroutine(trap.Hiding());
         }
         SwitchPlayer(); // Echange de joueurs
         player.GetComponent<PlayerMovement>().canMove = false;

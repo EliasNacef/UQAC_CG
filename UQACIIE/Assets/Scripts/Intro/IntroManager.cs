@@ -7,10 +7,10 @@ public class IntroManager : MonoBehaviour
 {
     private void Start()
     {
-        StartCoroutine(WaifForIntroAnimation());
+        StartCoroutine(WaitForIntroAnimation());
     }
 
-    IEnumerator WaifForIntroAnimation()
+    IEnumerator WaitForIntroAnimation()
     {
         AudioManager audioManager = FindObjectOfType<AudioManager>();
         yield return new WaitForSeconds(1.5f);

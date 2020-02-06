@@ -37,21 +37,13 @@ public class SoloGameManager : GameManager
         map.SetSelectionTile(player);
         if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
             TryToSetTrap(); // Essayer de poser un piege
-        else if(Input.GetButtonDown("R"))
+        else if (Input.GetButtonDown("R"))
         {
             if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
         }
         else if (Input.GetButtonDown("Cancel"))
         {
             Pause();
-        }
-        else if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.z < -1)
-        {
-            Camera.main.transform.position += new Vector3(0, 0, 1);
-        }
-        else if (Input.mouseScrollDelta.y < 0 && Camera.main.transform.position.z > -(Mathf.Abs(map.grid.GetWidth()) + Mathf.Abs(map.grid.GetHeight())))
-        {
-            Camera.main.transform.position += new Vector3(0, 0, -1);
         }
     }
 
