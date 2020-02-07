@@ -24,7 +24,9 @@ public class TriggerAndCollider : MonoBehaviour
     {
         Entity entity = collision.gameObject.GetComponentInParent<Player>(); 
         if (entity == null) entity = collision.gameObject.GetComponent<MovableBlock>();
-        if(trap != null && entity != null)
+        if (entity == null) entity = collision.gameObject.GetComponent<PushTrap>();
+        if (entity == null) entity = collision.gameObject.GetComponent<KillTrap>();
+        if (trap != null && entity != null && trap.isActive)
         {
             trap.gameObject.GetComponent<SpriteRenderer>().sprite = null; // Pour activer l'animation de destruction du trap.
             trap.Activate(entity); // Activation du trap

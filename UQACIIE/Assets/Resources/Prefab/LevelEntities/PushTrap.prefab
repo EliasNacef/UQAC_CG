@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2600075026781901123}
   - component: {fileID: 7965276355327104438}
   - component: {fileID: 7993863608208853389}
+  - component: {fileID: 7177354019613315227}
   m_Layer: 0
   m_Name: PushTrap
   m_TagString: Untagged
@@ -156,3 +157,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trap: {fileID: 0}
+--- !u!50 &7177354019613315227
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600075026781901120}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

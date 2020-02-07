@@ -20,19 +20,22 @@ public class PushTrap : Trap
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Entity entity)
     {
-        GridMap grid = gameManager.map.grid;
-        isActivated = true; // Le piege a ete active
-        animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
-        FindObjectOfType<AudioManager>().Play("WindTrap");
-        gameManager.map.UpdateAroundPosition(this.gameObject);
-        Vector3Int CellEntity = grid.GetLocalPosition(gameManager.map.currentCellInt); // La position du PushTrap
-        Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;
-        Vector3Int behindCellEntity = new Vector3Int(0, -1, 0) + CellEntity;
-        Vector3Int rightCellEntity = new Vector3Int(1, 0, 0) + CellEntity;
-        Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity; // TODO : Corriger la gridMap pour pas qu'elle interagisse en dehors de sa taille(width et height)
-        PushAround(grid, frontCellEntity, behindCellEntity, rightCellEntity, leftCellEntity);
-        gameManager.player.GetComponent<Player>().Wait(); // Faire attendre le joueur
-        StartCoroutine(Desactivate()); // Desactivation du piege
+        if (!(entity is KillTrap))
+        {
+            GridMap grid = gameManager.map.grid;
+            isActivated = true; // Le piege a ete active
+            animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
+            FindObjectOfType<AudioManager>().Play("WindTrap");
+            gameManager.map.UpdateAroundPosition(this.gameObject);
+            Vector3Int CellEntity = grid.GetLocalPosition(gameManager.map.currentCellInt); // La position du PushTrap
+            Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;
+            Vector3Int behindCellEntity = new Vector3Int(0, -1, 0) + CellEntity;
+            Vector3Int rightCellEntity = new Vector3Int(1, 0, 0) + CellEntity;
+            Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity; // TODO : Corriger la gridMap pour pas qu'elle interagisse en dehors de sa taille(width et height)
+            PushAround(grid, frontCellEntity, behindCellEntity, rightCellEntity, leftCellEntity);
+            gameManager.player.GetComponent<Player>().Wait(); // Faire attendre le joueur
+            StartCoroutine(Desactivate()); // Desactivation du piege
+        }
     }
 
 
@@ -40,7 +43,11 @@ public class PushTrap : Trap
     private void PushAround(GridMap grid, Vector3Int frontCellEntity, Vector3Int behindCellEntity, Vector3Int rightCellEntity, Vector3Int leftCellEntity)
     {
         // PUSH UP
-        if (grid.GetValue(frontCellEntity.x, frontCellEntity.y) != null)
+        Entity front = grid.GetValue(frontCellEntity.x, frontCellEntity.y);
+        Entity down = grid.GetValue(behindCellEntity.x, behindCellEntity.y);
+        Entity left = grid.GetValue(leftCellEntity.x, leftCellEntity.y);
+        Entity right = grid.GetValue(rightCellEntity.x, rightCellEntity.y);
+        if (front != null)
         {
             if (grid.CheckGrid(frontCellEntity.x, frontCellEntity.y + 1) || grid.GetValue(frontCellEntity.x, frontCellEntity.y + 1) is Trap)
             {
@@ -48,7 +55,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH DOWN
-        if (grid.GetValue(behindCellEntity.x, behindCellEntity.y) != null)
+        if (down != null)
         {
             if (grid.CheckGrid(behindCellEntity.x, behindCellEntity.y - 1) || grid.GetValue(behindCellEntity.x, behindCellEntity.y - 1) is Trap)
             {
@@ -56,7 +63,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH RIGHT
-        if (grid.GetValue(rightCellEntity.x, rightCellEntity.y) != null)
+        if (right != null)
         {
             if (grid.CheckGrid(rightCellEntity.x + 1, rightCellEntity.y) || grid.GetValue(rightCellEntity.x + 1, rightCellEntity.y) is Trap)
             {
@@ -64,7 +71,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH LEFT
-        if (grid.GetValue(leftCellEntity.x, leftCellEntity.y) != null)
+        if (left != null)
         {
             if (grid.CheckGrid(leftCellEntity.x - 1, leftCellEntity.y) || grid.GetValue(leftCellEntity.x - 1, leftCellEntity.y) is Trap)
             {

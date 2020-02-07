@@ -10,13 +10,5 @@ public class MovableBlock : Block
     }
 
     
-    /// <summary>
-    /// Blesser le joueur
-    /// </summary>
-    override
-    public void Hurt()
-    {
-        gameManager.map.roundTraps.Remove(this);
-        Destroy(this.gameObject);
-    }
+    
 }

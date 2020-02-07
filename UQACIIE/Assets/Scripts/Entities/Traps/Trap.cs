@@ -14,6 +14,7 @@ public class Trap : Entity
     {
         gameManager = FindObjectOfType<GameManager>(); // On load le MapManager
         isActivated = false; // Le piege est initialement non declenche
+        isActive = true;
     }
 
     /// <summary>
@@ -54,4 +55,5 @@ public class Trap : Entity
             yield return new WaitForSeconds(0.1f);
         }
     }
+
 }

@@ -10,6 +10,8 @@ public class Entity : MonoBehaviour
     new public string name;
     protected GameManager gameManager;
     public bool isStatic;
+    public bool isActive = true;
+
 
     void Awake()
     {
@@ -22,6 +24,12 @@ public class Entity : MonoBehaviour
     /// </summary>
     virtual public void Hurt()
     {
-        Debug.Log("Nothing happens..");
+        gameManager.map.roundTraps.Remove(this);
+        Destroy(this.gameObject);
+    }
+
+    public void SwitchActivity()
+    {
+        isActive = !isActive;
     }
 }
