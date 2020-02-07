@@ -9,13 +9,13 @@ public class SettingsMenu : MonoBehaviour
 {
     private AudioManager audioManager;
     [SerializeField]
-    private Slider generalVolumeSlider;
+    private Slider generalVolumeSlider = null;
     [SerializeField]
-    private Slider musicVolumeSlider;
+    private Slider musicVolumeSlider = null;
     [SerializeField]
-    private Slider effectsVolumeSlider;
-    public Dropdown resolutionDropDown;
-
+    private Slider effectsVolumeSlider = null;
+    [SerializeField]
+    private Dropdown resolutionDropDown = null;
     Resolution[] resolutions;
 
 
@@ -25,7 +25,6 @@ public class SettingsMenu : MonoBehaviour
         generalVolumeSlider.value = 0.5f;
         musicVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "GameMusic").volume;
         effectsVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "PutKillTrap").volume;
-
         resolutions = Screen.resolutions;
         resolutionDropDown.ClearOptions();
         List<string> options = new List<string>();

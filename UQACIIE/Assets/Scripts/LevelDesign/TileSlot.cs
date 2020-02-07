@@ -10,11 +10,11 @@ public class TileSlot : MonoBehaviour
     private LevelDesignManager levelDesignManager;
     private Tile tile;
     [SerializeField]
-    private Image image;
+    private Image image = null;
     [SerializeField]
-    private Text text;
+    private Text text = null;
     [SerializeField]
-    private bool isCurrent;
+    private bool isCurrent = false;
 
     private void Start()
     {

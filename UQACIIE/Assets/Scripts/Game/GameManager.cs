@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     protected int roundNumberTraps = 1;
     public int nbTraps; // Un piege a-t-il deja ete place pendant le round ?
     protected int tamponSetTrap; // Tampon pour le int nbTraps
+    protected bool endGame = false; // Est-ce la fin du jeu ?
 
 
 

@@ -40,7 +40,6 @@ public class ZUpTrap : Trap
         // PUSH
         if(entity is Player)
         {
-            Debug.Log("Player");
             Vector3 playerPosition = entity.transform.position;
             Vector3 futurePosition = new Vector3(playerPosition.x, playerPosition.y, playerPosition.z) + direction;
             Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
@@ -53,8 +52,6 @@ public class ZUpTrap : Trap
         }
         else if (grid.GetValue(cellEntity.x, cellEntity.y) != null)
         {
-            Debug.Log("Block");
-
             if (grid.CheckGrid(directionCellEntity.x, directionCellEntity.y) || grid.GetValue(directionCellEntity.x, directionCellEntity.y) is Trap)
             {
                 grid.MoveEntity(cellEntity.x, cellEntity.y, direction);

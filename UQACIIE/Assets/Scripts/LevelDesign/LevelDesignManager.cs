@@ -18,7 +18,7 @@ public class LevelDesignManager : MonoBehaviour
     public bool putEntity; // Peut-on placer une Entity
 
     [SerializeField]
-    private GameObject pausePanel; // Le panel a afficher en pause
+    private GameObject pausePanel = null; // Le panel a afficher en pause
 
 
 

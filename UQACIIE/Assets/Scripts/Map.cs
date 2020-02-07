@@ -20,17 +20,14 @@ public class Map : MonoBehaviour
 
 
     [SerializeField]
-    private Tilemap selectionMap; // Tilemap ou la case selectionnee est dessinee
+    private Tilemap selectionMap = null; // Tilemap ou la case selectionnee est dessinee
     public TileBase selectionTile; // La TileBase que l'on va dessiner pour la selection
     public Vector3Int selectionRotation;
     public TileBase oldTile; // La TileBase que l'on va stocker avant de redessiner
     public Vector3Int oldPosition;
     public GridMap grid; // La grille de jeu associee a la tilemap de la game area
-
-    [SerializeField]
-    public Entity[] entities;
-    [SerializeField]
-    public Trap[] traps; // La liste des pieges instancies
+    public Entity[] entities = null;
+    public Trap[] traps = null; // La liste des pieges instancies
     public Block[] blocks; // La liste des blocks instancies
     public Player[] players; // La liste des blocks instancies
     public List<Entity> roundTraps = new List<Entity>();

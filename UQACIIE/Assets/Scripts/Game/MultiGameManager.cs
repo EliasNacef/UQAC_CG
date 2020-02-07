@@ -13,9 +13,9 @@ public class MultiGameManager : GameManager
 {
     private GameObject spectator; // Le spectateur (qui attend de jouer)
     [SerializeField]
-    private GameObject player1; // GameObject du premier joueur
+    private GameObject player1 = null; // GameObject du premier joueur
     [SerializeField]
-    private GameObject player2; // GameObject du second joueur
+    private GameObject player2 = null; // GameObject du second joueur
 
     private int whoPlay; // Entier indiquant le numero de celui qui joue
     private bool endRound; // Est-ce la fin d'un round ?
@@ -45,25 +45,28 @@ public class MultiGameManager : GameManager
 
     void Update()
     {
-        TestEndGame(); // Testons si c'est la fin du jeu
-        CameraFollowPlayer();
-        if (endRound) // Est-ce la fin d'un round ?
-            StartCoroutine(EndRound()); // Si oui, on y met fin
-        else // Sinon
+        if (!endGame)
         {
-            // La case de selection se deplace avec le joueur.
-            map.SetSelectionTile(player);
-            if (map.grid.GetLocalPosition(player.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
-                endRound = true; // Fin du round
-            else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
-                TryToSetTrap(); // Essayer de poser un piege
-            else if(Input.GetButtonDown("R"))
+            TestEndGame(); // Testons si c'est la fin du jeu
+            CameraFollowPlayer();
+            if (endRound) // Est-ce la fin d'un round ?
+                StartCoroutine(EndRound()); // Si oui, on y met fin
+            else // Sinon
             {
-                if (player.GetComponent<PlayerMovement>().canMove)  map.RotateSelection();
-            }
-            else if (Input.GetButtonDown("Cancel"))
-            {
-                Pause();
+                // La case de selection se deplace avec le joueur.
+                map.SetSelectionTile(player);
+                if (map.grid.GetLocalPosition(player.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
+                    endRound = true; // Fin du round
+                else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
+                    TryToSetTrap(); // Essayer de poser un piege
+                else if (Input.GetButtonDown("R"))
+                {
+                    if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
+                }
+                else if (Input.GetButtonDown("Cancel"))
+                {
+                    Pause();
+                }
             }
         }
     }
@@ -174,12 +177,14 @@ public class MultiGameManager : GameManager
         Player s = spectator.GetComponent<Player>();
         if (p.Life <= 0 || s.Life <= 0)
         {
+            endGame = true;
             // On bloque les mouvement et la possibilite de mettre des pieges
             PlayerMovement pm = player.GetComponent<PlayerMovement>();
             PlayerMovement sm = spectator.GetComponent<PlayerMovement>();
             pm.canMove = false;
             sm.canMove = false;
             nbTraps = 0;
+            FindObjectOfType<AudioManager>().Play("Victory");
             victoryPanel.SetActive(true);
         }
     }

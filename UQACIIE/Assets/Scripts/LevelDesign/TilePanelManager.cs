@@ -8,11 +8,8 @@ using UnityEngine.Tilemaps;
 // Classe qui va mettre en place les pieges que l'on peut selectionner
 public class TilePanelManager : MonoBehaviour
 {
-    [SerializeField]
     private GameObject tileSlot;
-    [SerializeField]
     private Tile[] tiles;
-    private GameObject instance;
 
     void Start()
     {
@@ -20,7 +17,7 @@ public class TilePanelManager : MonoBehaviour
         tileSlot = Resources.Load<GameObject>("Prefab/TileSlot");
         foreach (Tile tile in tiles)
         {
-            instance = Instantiate(tileSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+            var instance = Instantiate(tileSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
             TileSlot slot = instance.GetComponent<TileSlot>();
             slot.SetSprite(tile.sprite);
             slot.SetColor(tile.color);

@@ -10,7 +10,6 @@ using System.IO;
 /// </summary>
 public class SoloGameManager : GameManager
 {
-    protected bool endGame; // Est-ce la fin du jeu ?
 
     private void Start()
     {
@@ -19,7 +18,6 @@ public class SoloGameManager : GameManager
 
         // Parametres initiaux
         nbTraps = map.idealNumberOfTraps; // Nb de bombes initial
-        endGame = false; // Ce n'est pas la fin du tour, il vient de commencer
         UpdateAbilities(); // On update les abilites
         UpdatePlayersPositions();
         map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
@@ -31,19 +29,22 @@ public class SoloGameManager : GameManager
 
     void Update()
     {
-        TestEndGame(); // Testons si c'est la fin du jeu
-        CameraFollowPlayer();
-        // La case de selection se deplace avec le joueur.
-        map.SetSelectionTile(player);
-        if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
-            TryToSetTrap(); // Essayer de poser un piege
-        else if (Input.GetButtonDown("R"))
+        if (!endGame)
         {
-            if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
-        }
-        else if (Input.GetButtonDown("Cancel"))
-        {
-            Pause();
+            TestEndGame(); // Testons si c'est la fin du jeu
+            CameraFollowPlayer();
+            // La case de selection se deplace avec le joueur.
+            map.SetSelectionTile(player);
+            if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
+                TryToSetTrap(); // Essayer de poser un piege
+            else if (Input.GetButtonDown("R"))
+            {
+                if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
+            }
+            else if (Input.GetButtonDown("Cancel"))
+            {
+                Pause();
+            }
         }
     }
 
@@ -76,8 +77,6 @@ public class SoloGameManager : GameManager
 
 
 
-
-
     /// <summary>
     /// Teste si c'est la fin du jeu. Si l'un des joueurs n'a plus de vie, on met fin au jeu.
     /// </summary>
@@ -100,6 +99,7 @@ public class SoloGameManager : GameManager
             pm.canMove = false;
             UpdatePlayersPositions();
             nbTraps = 0;
+            FindObjectOfType<AudioManager>().Play("Victory");
             victoryPanel.SetActive(true);
         }
     }

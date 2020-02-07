@@ -12,12 +12,12 @@ using System.IO;
 public class LaunchManager : MonoBehaviour
 {
     [SerializeField]
-    private InputField toLoad;
+    private InputField toLoad = null;
     private AudioManager audioManager;
     [SerializeField]
-    private Animator transition;
+    private Animator transition = null;
     [SerializeField]
-    private Animator middleTransition;
+    private Animator middleTransition = null;
 
     private void Start()
     {
