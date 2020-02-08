@@ -13,7 +13,6 @@ public class ArrowTrap : Trap
     private void Start()
     {
         name = "Flèche";
-        isStatic = true;
     }
 
     /// <summary>
@@ -23,18 +22,22 @@ public class ArrowTrap : Trap
     override public void Activate(Entity entity)
     {
         GridMap grid = gameManager.map.grid;
-        isActivated = true; // Le piege a ete active
-        animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
         FindObjectOfType<AudioManager>().Play("WindTrap");
         gameManager.map.UpdateAroundPosition(this.gameObject);
         Vector3Int cellEntity = grid.GetLocalPosition(gameManager.map.currentCellInt); // La position du PushTrap
         PushTowardsDirection(grid, entity, cellEntity, direction);
-        gameManager.player.GetComponent<Player>().Wait(); // Faire attendre le joueur
-        StartCoroutine(Desactivate()); // Desactivation du piege
+        gameManager.playerGO.GetComponent<Player>().Wait(); // Faire attendre le joueur
+        Desactivate(); // Desactivation du piege
     }
 
 
-
+    /// <summary>
+    /// Pousse l'entite d'une case  dans la bonne direction
+    /// </summary>
+    /// <param name="grid"> La grille </param>
+    /// <param name="entity"> L'entite </param>
+    /// <param name="cellEntity"> La cellule de l'entite </param>
+    /// <param name="direction"> Translation a effectuer </param>
     private void PushTowardsDirection(GridMap grid, Entity entity, Vector3Int cellEntity, Vector3Int direction)
     {
         Vector3Int directionCellEntity = direction + cellEntity;

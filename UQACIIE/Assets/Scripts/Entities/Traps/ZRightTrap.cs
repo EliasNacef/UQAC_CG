@@ -2,7 +2,7 @@
 
 
 /// <summary>
-/// Sous-classe de Trap : piege qui pousse ce qu'il y a autour d'une case
+/// Sous-classe de Trap : piege qui pousse a droite
 /// </summary>
 public class ZRightTrap : ArrowTrap
 {
@@ -13,7 +13,4 @@ public class ZRightTrap : ArrowTrap
         direction = new Vector3Int(1, 0, 0);
         isStatic = true;
     }
-
-
-
 }

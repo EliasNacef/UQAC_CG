@@ -8,7 +8,4 @@ public class MovableBlock : Block
     {
         name = "Tonneau";
     }
-
-    
-    
 }

@@ -6,23 +6,25 @@ using System.IO;
 
 
 /// <summary>
-/// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
+/// Classe de gestion du mode un joueur
 /// </summary>
 public class SoloGameManager : GameManager
 {
+    private PlayerMovement playerMovement;
+    private Player player;
 
     private void Start()
     {
-        map.LoadLevel();
+        map.LoadLevel(); // On charge la map
         map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
-
+        playerMovement = playerGO.GetComponent<PlayerMovement>();
+        player = playerGO.GetComponent<Player>();
         // Parametres initiaux
         nbTraps = map.idealNumberOfTraps; // Nb de bombes initial
         UpdateAbilities(); // On update les abilites
         UpdatePlayersPositions();
-        map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
-        CameraUpToPlayer();
-
+        map.UpdateAroundPosition(playerGO); // Cellule du joueur et celle devant lui mises a jour
+        CameraUpToPlayer(); // On positionne la camera au dessus du joueur
     }
 
 
@@ -34,17 +36,23 @@ public class SoloGameManager : GameManager
             TestEndGame(); // Testons si c'est la fin du jeu
             CameraFollowPlayer();
             // La case de selection se deplace avec le joueur.
-            map.SetSelectionTile(player);
+            map.SetSelectionTile(playerGO);
             if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                 TryToSetTrap(); // Essayer de poser un piege
             else if (Input.GetButtonDown("R"))
             {
-                if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
+                if (playerMovement.canMove) map.RotateSelection();
             }
             else if (Input.GetButtonDown("Cancel"))
             {
                 Pause();
             }
+        }
+        else
+        {
+            playerMovement.canMove = false;
+            map.SetSelectionTile(playerGO);
+            return;
         }
     }
 
@@ -68,11 +76,11 @@ public class SoloGameManager : GameManager
 
 
     /// <summary>
-    /// Met a jour les abilites du joueur et du spectateur : le joueur peut bouger mais pas le spectateur
+    /// Met a jour les abilites des joueurs en fonction de leur statut
     /// </summary>
     void UpdateAbilities()
     {
-        player.GetComponent<PlayerMovement>().canMove = true;
+        playerMovement.canMove = true;
     }
 
 
@@ -82,36 +90,35 @@ public class SoloGameManager : GameManager
     /// </summary>
     private void TestEndGame()
     {
-        Player p = player.GetComponent<Player>();
-        if (p.Life <= 0)
+        if (player.Life <= 0)
         {
+            endGame = true;
             // On bloque les mouvement et la possibilite de mettre des pieges
-            PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            pm.canMove = false;
+            playerMovement.canMove = false;
             nbTraps = 0;
+            FindObjectOfType<AudioManager>().Play("GameOver");
             failurePanel.SetActive(true);
         }
-        else if (map.grid.GetLocalPosition(player.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
+        else if (map.grid.GetLocalPosition(playerGO.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
         {
-            // On bloque les mouvement et la possibilite de mettre des pieges
             endGame = true;
-            PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            pm.canMove = false;
-            UpdatePlayersPositions();
+            // On bloque les mouvement et la possibilite de mettre des pieges
+            playerMovement.canMove = false;
             nbTraps = 0;
             FindObjectOfType<AudioManager>().Play("Victory");
             victoryPanel.SetActive(true);
         }
     }
 
+    /// <summary>
+    /// Met en pause ou fait reprendre le jeu
+    /// </summary>
     private void Pause()
     {
-        PlayerMovement pm = player.GetComponent<PlayerMovement>();
-        pm.canMove = pausePanel.activeSelf;
+        playerMovement.canMove = pausePanel.activeSelf;
         if (!pausePanel.activeSelf) tamponSetTrap = nbTraps;
         nbTraps = 0;
         if (pausePanel.activeSelf) nbTraps = tamponSetTrap;
-
         pausePanel.SetActive(!pausePanel.activeSelf);
     }
 

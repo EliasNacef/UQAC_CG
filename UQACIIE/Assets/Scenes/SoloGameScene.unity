@@ -5346,7 +5346,6 @@ GameObject:
   - component: {fileID: 1410658578}
   - component: {fileID: 1410658584}
   - component: {fileID: 1410658579}
-  - component: {fileID: 1410658583}
   - component: {fileID: 1410658582}
   - component: {fileID: 1410658580}
   - component: {fileID: 1410658581}
@@ -5386,6 +5385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   isStatic: 0
+  isActive: 1
   isHurting: 0
   animator: {fileID: 1410658580}
 --- !u!95 &1410658580
@@ -5444,20 +5444,6 @@ MonoBehaviour:
   canMove: 0
   m_FacingRight: 1
   runSpeed: 40
---- !u!114 &1410658583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410658577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 745bbc84c12eede4289de3c9ab54f8fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovementSmoothing: 0.05
-  m_FacingRight: 1
 --- !u!212 &1410658584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5762,7 +5748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 1589292865}
-  player: {fileID: 1410658577}
+  playerGO: {fileID: 1410658577}
   newEntity: {fileID: 1837151163215989116, guid: 3113a339e3b1bf34180676b04af8afa9,
     type: 3}
   victoryPanel: {fileID: 895528967}
@@ -5794,7 +5780,7 @@ MonoBehaviour:
   traps: []
   blocks: []
   players: []
-  roundTraps: []
+  trapsToHide: []
   spawnPosition: {x: 0, y: 0, z: 0}
   spectatePosition: {x: 0, y: 0, z: 0}
   currentCellInt: {x: 0, y: 0, z: 0}
@@ -6308,7 +6294,7 @@ Tilemap:
   - first: {x: -3, y: -5, z: 0}
     second:
       m_TileIndex: 0
-      m_TileSpriteIndex: 7
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -6353,7 +6339,7 @@ Tilemap:
   - first: {x: 2, y: -5, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 6
+      m_TileSpriteIndex: 7
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -6794,7 +6780,7 @@ Tilemap:
   - first: {x: -3, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6803,7 +6789,7 @@ Tilemap:
   - first: {x: -2, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6812,7 +6798,7 @@ Tilemap:
   - first: {x: -1, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6821,7 +6807,7 @@ Tilemap:
   - first: {x: 0, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6830,7 +6816,7 @@ Tilemap:
   - first: {x: 1, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6839,7 +6825,7 @@ Tilemap:
   - first: {x: 2, y: 4, z: 0}
     second:
       m_TileIndex: 9
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 4294967295
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
@@ -6883,17 +6869,17 @@ Tilemap:
   - m_RefCount: 8
     m_Data: {fileID: -9070271667552485007, guid: dca8fe4a303782a4c88a59d860b1fd9a,
       type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 3139092602934258579, guid: dca8fe4a303782a4c88a59d860b1fd9a,
-      type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -3004704076019072420, guid: dca8fe4a303782a4c88a59d860b1fd9a,
       type: 3}
   - m_RefCount: 32
     m_Data: {fileID: 6750537783264842295, guid: dca8fe4a303782a4c88a59d860b1fd9a,
       type: 3}
-  - m_RefCount: 6
-    m_Data: {fileID: 21300144, guid: 261212b977f594d5dbc48631a5c1295c, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -3004704076019072420, guid: dca8fe4a303782a4c88a59d860b1fd9a,
+      type: 3}
   m_TileMatrixArray:
   - m_RefCount: 60
     m_Data:

@@ -7,17 +7,15 @@ using System.IO;
 using UnityEngine.UI;
 
 /// <summary>
-/// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
+/// Classe de la map. Permet de configurer la map de jeu en fonction de ce que l'on souhaite.
 /// </summary>
 public class Map : MonoBehaviour
 {
-
     [SerializeField]
     public Tilemap tilemap; // Tilemap de de la Game Area
     public Vector3Int startTilemap; // Position de debut de dessin (en bas a gauche)
     public Vector3Int endTilemap; // Position de fin de dessin (en haut a droite)
     public Tile drawingTile; // Tile pour dessiner
-
 
     [SerializeField]
     private Tilemap selectionMap = null; // Tilemap ou la case selectionnee est dessinee
@@ -30,9 +28,7 @@ public class Map : MonoBehaviour
     public Trap[] traps = null; // La liste des pieges instancies
     public Block[] blocks; // La liste des blocks instancies
     public Player[] players; // La liste des blocks instancies
-    public List<Entity> roundTraps = new List<Entity>();
-
-
+    public List<Entity> trapsToHide = new List<Entity>();
 
     public Vector3 spawnPosition; // La position ou le joueur doit apparaitre
     public Vector3 spectatePosition; // La position ou le spactateur doit observer
@@ -73,13 +69,15 @@ public class Map : MonoBehaviour
     {
         Vector3 positionTrap = tilemap.GetCellCenterLocal(currentCellInt + selectionRotation); // La future position du piege
         Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
-        if (grid.CheckGrid(cellTrap.x, cellTrap.y))
+        if (grid.CheckGrid(cellTrap.x, cellTrap.y)) // Si on peut poser un piege
         {
-            var entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            Entity entityInstance = null ;
+            if (newEntity is Trap) entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege
+            else entityInstance = Instantiate(newEntity, positionTrap, Quaternion.identity, GameObject.Find("Blocks").transform); // Pose le nouveau piege
             grid.SetValue(cellTrap.x, cellTrap.y, entityInstance);
             if (entityInstance is KillTrap)
             {
-                roundTraps.Add(entityInstance);
+                trapsToHide.Add(entityInstance);
                 FindObjectOfType<AudioManager>().Play("PutKillTrap");
             }
             else if (entityInstance is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
@@ -92,7 +90,7 @@ public class Map : MonoBehaviour
 
 
     /// <summary>
-    /// Met a jour les cells autour de go pour travailler avec leurs positions
+    /// Met a jour les cells autour du gameobject go pour pouvoir travailler avec leurs positions
     /// </summary>
     /// <param name="go"> Gameobject d'observation </param>
     public void UpdateAroundPosition(GameObject go)
@@ -105,7 +103,9 @@ public class Map : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Met a jour le tableaux d'entites en focntion de ce qu'il y a sur la map
+    /// </summary>
     public void UpdateEntitiesArrays()
     {
         // Liste des pièges
@@ -121,7 +121,9 @@ public class Map : MonoBehaviour
         //players.CopyTo(entities, traps.Length + blocks.Length);
     }
 
-
+    /// <summary>
+    /// Reinitialise la grille afin qu'elle soit adaptee a la tilemap 
+    /// </summary>
     public void ResetGrid()
     {
         tilemap.CompressBounds();
@@ -134,6 +136,10 @@ public class Map : MonoBehaviour
         UpdateEntitiesArrays();
     }
 
+
+    /// <summary>
+    /// Map par defaut
+    /// </summary>
     private void LoadDefault()
     {
         tilemap.ClearAllTiles();
@@ -231,7 +237,9 @@ public class Map : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Fait tourner la zone de selection ou on peut poser le piege
+    /// </summary>
     public void RotateSelection()
     {
         if (selectionRotation.x == -1) selectionRotation = new Vector3Int(0, 1, 0);
@@ -240,6 +248,10 @@ public class Map : MonoBehaviour
         else if (selectionRotation.y == -1) selectionRotation = new Vector3Int(-1, 0, 0);
     }
 
+    /// <summary>
+    /// Changer le nombre ideal de piege pour cette map
+    /// </summary>
+    /// <param name="text"> Nombre de piege </param>
     public void SetIdealNumberOfTraps(string text)
     {
         idealNumberOfTraps = int.Parse(text);

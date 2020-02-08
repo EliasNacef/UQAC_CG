@@ -2,6 +2,9 @@ using UnityEngine.Audio;
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Classe gestionnaire du son
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
 
@@ -35,7 +38,10 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
-
+    /// <summary>
+    /// Jouer un son
+    /// </summary>
+    /// <param name="sound"> Le son a jouer </param>
     public void Play(string sound)
 	{
 		Sound s = Array.Find(sounds, item => item.name == sound);
@@ -50,10 +56,5 @@ public class AudioManager : MonoBehaviour
 
 		s.source.Play();
 	}
-
-    public void ButtonSound()
-    {
-        FindObjectOfType<AudioManager>().Play("ClickButton");
-    }
 
 }

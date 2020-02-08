@@ -25,6 +25,9 @@ public class LaunchManager : MonoBehaviour
         audioManager.Play("GameMusic");
     }
 
+    /// <summary>
+    /// Charger le mode multijoueur
+    /// </summary>
     public void LoadMultiGame()
     {
         StartCoroutine(Transition("MultiGameScene"));
@@ -33,6 +36,9 @@ public class LaunchManager : MonoBehaviour
         PlayerPrefs.SetString("Save", toLoad.text);
     }
 
+    /// <summary>
+    /// Charger le mode 1 joueur
+    /// </summary>
     public void LoadSoloGame()
     {
         StartCoroutine(Transition("SoloGameScene"));
@@ -41,6 +47,10 @@ public class LaunchManager : MonoBehaviour
         PlayerPrefs.SetString("Save", toLoad.text);
     }
 
+    /// <summary>
+    /// Charger un niveau predefini
+    /// </summary>
+    /// <param name="nameLevel"></param>
     public void LoadLevelGame(string nameLevel)
     {
         StartCoroutine(Transition("SoloGameScene"));
@@ -50,7 +60,9 @@ public class LaunchManager : MonoBehaviour
         PlayerPrefs.SetString("Save", nameLevel);
     }
 
-
+    /// <summary>
+    /// Charger le menu principal
+    /// </summary>
     public void LoadMenu()
     {
         StartCoroutine(Transition("MenuScene"));
@@ -58,6 +70,9 @@ public class LaunchManager : MonoBehaviour
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/menuMusic");
     }
 
+    /// <summary>
+    /// Charger le mode createur de maps
+    /// </summary>
     public void LoadLevelEditor()
     {
         StartCoroutine(Transition("LevelDesignScene"));
@@ -65,34 +80,35 @@ public class LaunchManager : MonoBehaviour
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/levelDesignMusic");
     }
 
+    /// <summary>
+    /// Quitter le jeu
+    /// </summary>
     public void QuitGame()
     {
         Application.Quit();
     }
 
+    /// <summary>
+    /// Easter egg qui blesse les monstres du titre
+    /// </summary>
     public void MakeHurt()
     {
         Animator animator1 = GameObject.Find("Monster1").GetComponent<Animator>();
         Animator animator2 = GameObject.Find("Monster2").GetComponent<Animator>();
-        animator1.SetBool("Title", true);
-        animator2.SetBool("Title", true);
-        StartCoroutine(DisableEasterEgg());
+        animator1.SetTrigger("Title");
+        animator2.SetTrigger("Title");
     }
 
-    private IEnumerator DisableEasterEgg()
-    {
-        Animator animator1 = GameObject.Find("Monster1").GetComponent<Animator>();
-        Animator animator2 = GameObject.Find("Monster2").GetComponent<Animator>();
-        yield return new WaitForSeconds(0.05f);
-        animator1.SetBool("Title", false);
-        animator2.SetBool("Title", false);
-    }
-
+    /// <summary>
+    /// Transition de la scene d'introduction
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns> Temps permettant d'animer correctement la scene </returns>
     private IEnumerator Transition(string name)
     {
         transition.SetTrigger("Start");
         middleTransition.SetTrigger("Start");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.0f);
         SceneManager.LoadScene(name);
     }
 }

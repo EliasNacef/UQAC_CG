@@ -19,11 +19,9 @@ public class KillTrap : Trap
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Entity entity)
     {
-        isActivated = true; // Le piege a ete active
-        animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
         FindObjectOfType<AudioManager>().Play("BearTrap");
         entity.Hurt(); // Infliger des degats a l'entite
-        StartCoroutine(Desactivate()); // Desactivation du piege
+        Desactivate(); // Desactivation du piege
     }
 
 }

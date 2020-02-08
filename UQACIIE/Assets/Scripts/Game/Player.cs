@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Classe du joueur
+/// </summary>
 public class Player : Entity
 {
     [SerializeField]
@@ -17,7 +20,6 @@ public class Player : Entity
         isHurting = false; // Un joueur en train d'etre blesser au debut de partie
         _life = 1; // Vie du joueur
     }
-
 
     /// <summary>
     /// Le joueur attend
@@ -39,8 +41,6 @@ public class Player : Entity
         gameManager.map.UpdateAroundPosition(this.gameObject);
     }
 
-
-
     /// <summary>
     /// Blesser le joueur
     /// </summary>
@@ -54,7 +54,6 @@ public class Player : Entity
         animator.SetBool("isHurting", isHurting); // Animator mis a jour (en train d'etre blesse)
         StartCoroutine(Hurting()); // Coroutine gerant la fin de blessure
     }
-
 
 
     /// <summary>

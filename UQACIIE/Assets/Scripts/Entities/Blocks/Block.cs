@@ -12,5 +12,4 @@ public class Block : Entity
     {
         gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
     }
-
 }

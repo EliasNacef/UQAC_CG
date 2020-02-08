@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
-
-// Classe qui va mettre en place les pieges que l'on peut selectionner
+/// <summary>
+/// Classe qui va mettre en place les pieges que l'on peut selectionner
+/// </summary>
 public class EntityPanelManager : MonoBehaviour
 {
     [SerializeField]

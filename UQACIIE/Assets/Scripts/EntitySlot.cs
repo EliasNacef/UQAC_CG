@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Classe d'un slot d'entity
+/// </summary>
 public class EntitySlot : MonoBehaviour
 {
     private GameManager gameManager;

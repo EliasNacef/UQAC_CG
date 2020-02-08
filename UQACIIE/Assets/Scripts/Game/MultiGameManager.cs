@@ -7,11 +7,11 @@ using System.IO;
 
 
 /// <summary>
-/// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
+/// Classe du gamemode Multijoueur : permet de joueur a 2
 /// </summary>
 public class MultiGameManager : GameManager
 {
-    private GameObject spectator; // Le spectateur (qui attend de jouer)
+    private GameObject spectatorGO; // Le gameobject du spectateur (qui attend de jouer)
     [SerializeField]
     private GameObject player1 = null; // GameObject du premier joueur
     [SerializeField]
@@ -24,28 +24,28 @@ public class MultiGameManager : GameManager
 
     private void Start()
     {
-        map.LoadLevel();
-        map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
-        map.spectatePosition = new Vector3(map.startTilemap.x - 1.5f, map.startTilemap.y + Mathf.FloorToInt((map.grid.GetHeight() / 2)) + 1f, 0f);
-        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(map.spectatePosition.x), Mathf.FloorToInt(map.spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/Rouge"));
+        map.LoadLevel(); // On charge la map de jeu
+        map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f); // Position initiale du joueur
+        map.spectatePosition = new Vector3(map.startTilemap.x - 1.5f, map.startTilemap.y + Mathf.FloorToInt((map.grid.GetHeight() / 2)) + 1f, 0f); // Position du spectateur
+        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(map.spectatePosition.x), Mathf.FloorToInt(map.spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/Rouge")); // Plateforme du spectateur
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
-        player = player1; // Le player est donc le joueur 1
-        spectator = player2; // ..et le spectator est donc le joueur 2
-        nbTraps = roundNumberTraps;
+        playerGO = player1; // Le premier a jouer est donc le joueur 1
+        spectatorGO = player2; // ..et le spectator est donc le joueur 2
+        nbTraps = roundNumberTraps; // Le nombre de pieges pendant le round est le nombre ideal de pieges a poser pendant un round
         endRound = false; // Ce n'est pas la fin du tour, il vient de commencer
         UpdatePlayersPositions(); // On update les positions
-        UpdateAbilities(); // On update les abilites
-        map.UpdateAroundPosition(player); // Cellule du joueur et celle devant lui mises a jour
-        CameraUpToPlayer();
+        UpdateAbilities(); // On update les abilites des joueurs en fonction de leur statut
+        map.UpdateAroundPosition(playerGO); // Cellule du joueur et celle devant lui mises a jour
+        CameraUpToPlayer(); // La camera est initialement au dessus du joueur
     }
 
 
 
     void Update()
     {
-        if (!endGame)
+        if (!endGame) // Tant que le jeu continue
         {
             TestEndGame(); // Testons si c'est la fin du jeu
             CameraFollowPlayer();
@@ -54,20 +54,27 @@ public class MultiGameManager : GameManager
             else // Sinon
             {
                 // La case de selection se deplace avec le joueur.
-                map.SetSelectionTile(player);
-                if (map.grid.GetLocalPosition(player.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
+                map.SetSelectionTile(playerGO);
+                if (map.grid.GetLocalPosition(playerGO.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
                     endRound = true; // Fin du round
                 else if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                     TryToSetTrap(); // Essayer de poser un piege
                 else if (Input.GetButtonDown("R"))
                 {
-                    if (player.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
+                    if (playerGO.GetComponent<PlayerMovement>().canMove) map.RotateSelection();
                 }
                 else if (Input.GetButtonDown("Cancel"))
                 {
                     Pause();
                 }
             }
+        }
+        else
+        {
+            playerGO.GetComponent<PlayerMovement>().canMove = false;
+            spectatorGO.GetComponent<PlayerMovement>().canMove = false;
+            map.SetSelectionTile(playerGO);
+            return;
         }
     }
 
@@ -82,7 +89,8 @@ public class MultiGameManager : GameManager
         {
             if (map.SetTrap(newEntity))
             {
-                nbTraps--;
+                nbTraps--; // On a pose un piege
+                UpdatePlayersPositions();
             }
             else Debug.Log("Je ne peux pas poser de piège");
         }
@@ -99,14 +107,14 @@ public class MultiGameManager : GameManager
     {
         if (whoPlay == 1) // Si le joueur 1 joue
         {
-            player = player2;
-            spectator = player1;
+            playerGO = player2;
+            spectatorGO = player1;
             whoPlay = 2;
         }
         else if(whoPlay == 2) // Sinon si le joueur 2 joue
         {
-            player = player1;
-            spectator = player2;
+            playerGO = player1;
+            spectatorGO = player2;
             whoPlay = 1;
         }
         else // Erreur
@@ -119,17 +127,17 @@ public class MultiGameManager : GameManager
 
 
     /// <summary>
-    /// Met a jour les positions en fonction du statut joueur/spectateur
+    /// Met a jour les positions des joueurs en fonction de leur statut
     /// </summary>
     override
     public void UpdatePlayersPositions()
     {
         // Mise a jour des positions
-        player.transform.position = map.spawnPosition;
-        spectator.transform.position = map.spectatePosition;
+        playerGO.transform.position = map.spawnPosition;
+        spectatorGO.transform.position = map.spectatePosition;
 
         // Le spectateur doit observer le jeu est donc faire face a la game area
-        PlayerMovement controllerSpectate = spectator.GetComponent<PlayerMovement>();
+        PlayerMovement controllerSpectate = spectatorGO.GetComponent<PlayerMovement>();
         if (!controllerSpectate.m_FacingRight)
             controllerSpectate.Flip();
     }
@@ -137,12 +145,12 @@ public class MultiGameManager : GameManager
 
 
     /// <summary>
-    /// Met a jour les abilites du joueur et du spectateur : le joueur peut bouger mais pas le spectateur
+    /// Met a jour les abilites des joueurs en fonction de leur statut
     /// </summary>
     void UpdateAbilities()
     {
-        player.GetComponent<PlayerMovement>().canMove = true;
-        spectator.GetComponent<PlayerMovement>().canMove = false;
+        playerGO.GetComponent<PlayerMovement>().canMove = true;
+        spectatorGO.GetComponent<PlayerMovement>().canMove = false;
     }
 
 
@@ -155,16 +163,16 @@ public class MultiGameManager : GameManager
         map.selectionRotation = new Vector3Int(0, 1, 0);
         nbTraps = roundNumberTraps; // On redonne le nb de pieges initial
         endRound = false;
-        foreach(Trap trap in map.roundTraps)
+        foreach(Trap trap in map.trapsToHide)
         {
             if (trap != null) StartCoroutine(trap.Hiding());
         }
         SwitchPlayer(); // Echange de joueurs
-        player.GetComponent<PlayerMovement>().canMove = false;
-        yield return new WaitForSeconds(0.10f); //Eviter que le joueur n'avance automatiquement avec l'input du joueur precedent
+        playerGO.GetComponent<PlayerMovement>().canMove = false;
+        yield return new WaitForSeconds(0.10f); //Permet d'eviter que le nouveau joueur n'avance a cause de l'input du joueur precedent
         UpdateAbilities();
         CameraUpToPlayer();
-        map.roundTraps.Clear();
+        map.trapsToHide.Clear();
     }
 
 
@@ -173,26 +181,29 @@ public class MultiGameManager : GameManager
     /// </summary>
     private void TestEndGame()
     {
-        Player p = player.GetComponent<Player>();
-        Player s = spectator.GetComponent<Player>();
+        Player p = playerGO.GetComponent<Player>();
+        Player s = spectatorGO.GetComponent<Player>();
         if (p.Life <= 0 || s.Life <= 0)
         {
             endGame = true;
             // On bloque les mouvement et la possibilite de mettre des pieges
-            PlayerMovement pm = player.GetComponent<PlayerMovement>();
-            PlayerMovement sm = spectator.GetComponent<PlayerMovement>();
+            PlayerMovement pm = playerGO.GetComponent<PlayerMovement>();
+            PlayerMovement sm = spectatorGO.GetComponent<PlayerMovement>();
             pm.canMove = false;
             sm.canMove = false;
             nbTraps = 0;
-            FindObjectOfType<AudioManager>().Play("Victory");
+            FindObjectOfType<AudioManager>().Play("GameOver");
             victoryPanel.SetActive(true);
         }
     }
 
+    /// <summary>
+    /// Met en pause ou fait reprendre le jeu
+    /// </summary>
     private void Pause()
     {
-        PlayerMovement pm = player.GetComponent<PlayerMovement>();
-        PlayerMovement sm = spectator.GetComponent<PlayerMovement>();
+        PlayerMovement pm = playerGO.GetComponent<PlayerMovement>();
+        PlayerMovement sm = spectatorGO.GetComponent<PlayerMovement>();
         pm.canMove = pausePanel.activeSelf;
         sm.canMove = false;
         if (!pausePanel.activeSelf) tamponSetTrap = nbTraps;

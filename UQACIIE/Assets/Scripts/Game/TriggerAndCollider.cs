@@ -10,7 +10,6 @@ public class TriggerAndCollider : MonoBehaviour
     [SerializeField]
     private Trap trap; // Entity qui peut entrer en collision avec quelque chose
 
-
     private void Start()
     {
         trap = this.GetComponent<Trap>(); // Le trap qui va s'enclencher car il est en collision avec le player
@@ -19,7 +18,7 @@ public class TriggerAndCollider : MonoBehaviour
     /// <summary>
     /// Decrit se qu'il se passe lors d'une collision
     /// </summary>
-    /// <param name="collision"> Objet qui est entre en collision </param>
+    /// <param name="collision"> Collider qui est entre en collision avec le trap </param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Entity entity = collision.gameObject.GetComponentInParent<Player>(); 
@@ -32,6 +31,4 @@ public class TriggerAndCollider : MonoBehaviour
             trap.Activate(entity); // Activation du trap
         }
     }
-
-
 }

@@ -7,13 +7,11 @@ using UnityEngine;
 /// </summary>
 public class Trap : Entity
 {
-    protected bool isActivated; // Le piege a-t-il ete declenche
     public Animator animator; // Animator du piege (l'explosion)
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>(); // On load le MapManager
-        isActivated = false; // Le piege est initialement non declenche
         isActive = true;
     }
 
@@ -24,8 +22,6 @@ public class Trap : Entity
     virtual public void Activate(Entity entity)
     {
         gameManager.nbTraps = 0;
-        isActivated = true;
-        animator.SetBool("isActivated", isActivated); // Active l'animation du piege
         Debug.Log("Un Trap de base a été enclenché, pas une sous classe..");
     }
 
@@ -33,18 +29,26 @@ public class Trap : Entity
     /// Va mettre un terme a l'activation du piege et le detruire
     /// </summary>
     /// <returns> Attends un certain nombre de secondes pour desactiver le piege </returns>
-    protected IEnumerator Desactivate()
+    protected void Desactivate()
     {
-        // On retire le trap de la grid
+        // On retire le trap de la grid et on le detruit
         Vector3Int trapPosition = gameManager.map.grid.GetLocalPosition(this.transform.position);
-        if (gameManager.map.grid.GetValue(trapPosition.x, trapPosition.y) == this) gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null); // TODO Plus propre ??
-        yield return new WaitForSeconds(0.0f);
-        isActivated = false;
-        gameManager.map.roundTraps.Remove(this);
+        if (gameManager.map.grid.GetValue(trapPosition.x, trapPosition.y) == this) gameManager.map.grid.SetValue(trapPosition.x, trapPosition.y, null);
+        gameManager.map.trapsToHide.Remove(this);
+        StartCoroutine(DestroyTrap());
+    }
+
+    public IEnumerator DestroyTrap()
+    {
+        animator.SetTrigger("isActivated");
+        yield return new WaitForSeconds(0.3f);
         Object.Destroy(this.gameObject);
     }
 
-
+    /// <summary>
+    /// Cacher le piege actuel
+    /// </summary>
+    /// <returns> Permet d'attendre assez longtemps pour que la disparition du piege soit progressive </returns>
     public IEnumerator Hiding()
     {
         Color color = this.GetComponent<SpriteRenderer>().color;

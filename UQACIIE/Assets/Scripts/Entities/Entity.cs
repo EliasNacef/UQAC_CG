@@ -7,10 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Entity : MonoBehaviour
 {
-    new public string name;
-    protected GameManager gameManager;
-    public bool isStatic;
-    public bool isActive = true;
+    new public string name; // Nom de l'entite
+    protected GameManager gameManager; // Gestionnaire de jeu
+    public bool isStatic; // L'entite est-elle statique ?
+    public bool isActive = true; // L'entite est-elle active ?
 
 
     void Awake()
@@ -20,14 +20,17 @@ public class Entity : MonoBehaviour
     }
 
     /// <summary>
-    /// Blesser le joueur
+    /// Action "Blesser" l'entite (generalement : la detruire)
     /// </summary>
     virtual public void Hurt()
     {
-        gameManager.map.roundTraps.Remove(this);
+        gameManager.map.trapsToHide.Remove(this);
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// Inverse l'activite de l'entite
+    /// </summary>
     public void SwitchActivity()
     {
         isActive = !isActive;

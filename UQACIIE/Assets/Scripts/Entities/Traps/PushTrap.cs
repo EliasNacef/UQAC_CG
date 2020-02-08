@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Sous-classe de Trap : piege qui pousse ce qu'il y a autour d'une case
+/// Sous-classe de Trap : piege qui pousse ce qu'il y a autour de sa position
 /// </summary>
 public class PushTrap : Trap
 {
@@ -23,8 +23,6 @@ public class PushTrap : Trap
         if (!(entity is KillTrap))
         {
             GridMap grid = gameManager.map.grid;
-            isActivated = true; // Le piege a ete active
-            animator.SetBool("isActivated", isActivated); // Animation du piege enclenche
             FindObjectOfType<AudioManager>().Play("WindTrap");
             gameManager.map.UpdateAroundPosition(this.gameObject);
             Vector3Int CellEntity = grid.GetLocalPosition(gameManager.map.currentCellInt); // La position du PushTrap
@@ -33,13 +31,20 @@ public class PushTrap : Trap
             Vector3Int rightCellEntity = new Vector3Int(1, 0, 0) + CellEntity;
             Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity; // TODO : Corriger la gridMap pour pas qu'elle interagisse en dehors de sa taille(width et height)
             PushAround(grid, frontCellEntity, behindCellEntity, rightCellEntity, leftCellEntity);
-            gameManager.player.GetComponent<Player>().Wait(); // Faire attendre le joueur
-            StartCoroutine(Desactivate()); // Desactivation du piege
+            gameManager.playerGO.GetComponent<Player>().Wait(); // Faire attendre le joueur
+            Desactivate(); // Desactivation du piege
         }
     }
 
 
-
+    /// <summary>
+    /// Pousse les objets sur les cellules designee
+    /// </summary>
+    /// <param name="grid"></param>
+    /// <param name="frontCellEntity"> Cellule dont l'objet doit etre pousse devant </param>
+    /// <param name="behindCellEntity"> Cellule dont l'objet doit etre pousse derriere </param>
+    /// <param name="rightCellEntity"> Cellule dont l'objet doit etre pousse droite </param>
+    /// <param name="leftCellEntity"> Cellule dont l'objet doit etre pousse gauche </param>
     private void PushAround(GridMap grid, Vector3Int frontCellEntity, Vector3Int behindCellEntity, Vector3Int rightCellEntity, Vector3Int leftCellEntity)
     {
         // PUSH UP

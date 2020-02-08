@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Sous-classe de Trap : piege qui pousse ce qu'il y a autour d'une case
+/// Sous-classe de Trap : piege qui pousse derriere
 /// </summary>
 public class ZDownTrap : ArrowTrap
 {
@@ -15,7 +15,4 @@ public class ZDownTrap : ArrowTrap
         direction = new Vector3Int(0, -1, 0);
         isStatic = true;
     }
-
-
-
 }
