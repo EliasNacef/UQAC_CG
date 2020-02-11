@@ -47,12 +47,13 @@ public class PushTrap : Trap
     /// <param name="leftCellEntity"> Cellule dont l'objet doit etre pousse gauche </param>
     private void PushAround(GridMap grid, Vector3Int frontCellEntity, Vector3Int behindCellEntity, Vector3Int rightCellEntity, Vector3Int leftCellEntity)
     {
-        // PUSH UP
+        bool isMulti = (gameManager is MultiGameManager);
         Entity front = grid.GetValue(frontCellEntity.x, frontCellEntity.y);
         Entity down = grid.GetValue(behindCellEntity.x, behindCellEntity.y);
         Entity left = grid.GetValue(leftCellEntity.x, leftCellEntity.y);
         Entity right = grid.GetValue(rightCellEntity.x, rightCellEntity.y);
-        if (front != null)
+        // PUSH UP
+        if (front != null && (isMulti || !(front is KillTrap)))
         {
             if (grid.CheckGrid(frontCellEntity.x, frontCellEntity.y + 1) || grid.GetValue(frontCellEntity.x, frontCellEntity.y + 1) is Trap)
             {
@@ -60,7 +61,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH DOWN
-        if (down != null)
+        if (down != null && (isMulti || !(down is KillTrap)))
         {
             if (grid.CheckGrid(behindCellEntity.x, behindCellEntity.y - 1) || grid.GetValue(behindCellEntity.x, behindCellEntity.y - 1) is Trap)
             {
@@ -68,7 +69,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH RIGHT
-        if (right != null)
+        if (right != null && (isMulti || !(right is KillTrap)))
         {
             if (grid.CheckGrid(rightCellEntity.x + 1, rightCellEntity.y) || grid.GetValue(rightCellEntity.x + 1, rightCellEntity.y) is Trap)
             {
@@ -76,7 +77,7 @@ public class PushTrap : Trap
             }
         }
         // PUSH LEFT
-        if (left != null)
+        if (left != null && (isMulti || !(left is KillTrap)))
         {
             if (grid.CheckGrid(leftCellEntity.x - 1, leftCellEntity.y) || grid.GetValue(leftCellEntity.x - 1, leftCellEntity.y) is Trap)
             {

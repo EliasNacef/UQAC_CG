@@ -16,16 +16,20 @@ public class TrapPanelManager : MonoBehaviour
 
     void Start()
     {
+        bool isMulti = FindObjectOfType<GameManager>() is MultiGameManager;
         entities = Resources.LoadAll<Entity>("Prefab/Traps");
         trapSlot = Resources.Load<GameObject>("Prefab/TrapSlot");
         foreach(Entity entity in entities)
         {
-            instance = Instantiate(trapSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            EntitySlot slot = instance.GetComponent<EntitySlot>();
-            slot.SetSprite(entity.gameObject.GetComponent<SpriteRenderer>().sprite);
-            slot.SetColor(entity.gameObject.GetComponent<SpriteRenderer>().color);
-            slot.SetString(entity.gameObject.name);
-            slot.SetEntity(entity);
+            if (!(entity is KillTrap || entity is MovableBlock) || isMulti)
+            {
+                instance = Instantiate(trapSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+                EntitySlot slot = instance.GetComponent<EntitySlot>();
+                slot.SetSprite(entity.gameObject.GetComponent<SpriteRenderer>().sprite);
+                slot.SetColor(entity.gameObject.GetComponent<SpriteRenderer>().color);
+                slot.SetString(entity.gameObject.name);
+                slot.SetEntity(entity);
+            }
         }
     }
 

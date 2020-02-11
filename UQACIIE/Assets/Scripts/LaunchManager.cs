@@ -48,18 +48,29 @@ public class LaunchManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Charger un niveau predefini
+    /// Charger un niveau predefini en Solo
     /// </summary>
     /// <param name="nameLevel"></param>
-    public void LoadLevelGame(string nameLevel)
+    public void LoadSoloLevelGame(string nameLevel)
     {
         StartCoroutine(Transition("SoloGameScene"));
-
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
         PlayerPrefs.SetString("Save", nameLevel);
     }
 
+
+    /// <summary>
+    /// Charger un niveau predefini en Multi
+    /// </summary>
+    /// <param name="nameLevel"></param>
+    public void LoadMultiLevelGame(string nameLevel)
+    {
+        StartCoroutine(Transition("MultiGameScene"));
+        Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
+        s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/gameMusic");
+        PlayerPrefs.SetString("Save", nameLevel);
+    }
     /// <summary>
     /// Charger le menu principal
     /// </summary>

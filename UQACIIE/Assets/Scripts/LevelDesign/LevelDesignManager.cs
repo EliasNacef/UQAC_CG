@@ -47,7 +47,7 @@ public class LevelDesignManager : MonoBehaviour
 
     void Update()
     {
-        if (map.grid != null) Camera.main.transform.position = new Vector3((map.endTilemap.x + map.startTilemap.x) / 2, (map.endTilemap.y + map.startTilemap.y) / 2, Mathf.Min(-12, -Mathf.Max(map.grid.GetWidth(), map.grid.GetHeight()))); // La camera suit le joueur
+        if (map.grid != null) Camera.main.transform.position = new Vector3((map.endTilemap.x + map.startTilemap.x) / 2, (map.endTilemap.y + map.startTilemap.y) / 2, Mathf.Min(-12, -Mathf.Max(map.grid.GetWidth(), map.grid.GetHeight()) - 3)); 
         if (Input.GetMouseButtonDown(0) && !IsMouseOverUI())
         {
             Clicked();
@@ -63,9 +63,9 @@ public class LevelDesignManager : MonoBehaviour
         Vector3 clickPosition;
         clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - new Vector3(0, 0, Camera.main.transform.position.z));
         Vector3Int localCellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
+        TileBase currentTile = map.tilemap.GetTile(localCellPosition);
         if (putTile) // TODO : si on veut placer un tile
         {
-            TileBase currentTile = map.tilemap.GetTile(localCellPosition);
             if(currentTile == null)
             {
                 map.tilemap.SetTile(localCellPosition, map.drawingTile);
@@ -82,7 +82,7 @@ public class LevelDesignManager : MonoBehaviour
         else if (putEntity) // Si on veut placer un block
         {
             Vector3Int gridCellPosition = map.grid.GetLocalPosition(localCellPosition);
-            if (map.grid.CheckGrid(gridCellPosition.x, gridCellPosition.y))
+            if (map.grid.CheckGrid(gridCellPosition.x, gridCellPosition.y) && currentTile != null)
             {
                 Entity entityInstance;
                 if (newEntity is Trap) entityInstance = Instantiate(newEntity, localCellPosition + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, GameObject.Find("Traps").transform); // Pose le nouveau piege

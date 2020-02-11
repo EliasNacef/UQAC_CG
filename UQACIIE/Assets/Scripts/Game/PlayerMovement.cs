@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+
 
 
 /// <summary>
@@ -91,15 +93,13 @@ public class PlayerMovement : MonoBehaviour {
             if (move.x != 0) // Si on souhaite se déplacer selon X
             {
                 movingX = Mathf.Sign(move.x); // Selon +X => 1 ; Selon -X => -1
-                //animator.SetFloat("Speed", Mathf.Abs(move.x) + Mathf.Abs(move.y)); // Si le joueur bouge, l'animation doit s'activer
-                //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-                //yield return new WaitForSeconds(0.1f);
                 if (currentPosition.x + movingX < mapXMax && currentPosition.x + movingX > mapXMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x + movingX, currentPosition.y, currentPosition.z);
                     Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    TileBase cellTile = gameManager.map.tilemap.GetTile(new Vector3Int(Mathf.FloorToInt(futurePosition.x - 0.3f), Mathf.FloorToInt(futurePosition.y - 0.3f), 0));
                     Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
-                    if (entity == null || !(entity is Block))
+                    if ((entity == null || !(entity is Block)) && cellTile != null)
                     {
                         transform.position = futurePosition; // Déplacement sur la future cellule
                         FindObjectOfType<AudioManager>().Play("MoveSound");
@@ -111,14 +111,13 @@ public class PlayerMovement : MonoBehaviour {
             else if (move.y != 0) // Sinon si on souhaite se deplacer selon Y
             {
                 movingY = Mathf.Sign(move.y); // Selon +Y => 1 ; Selon -Y => -1
-                //animator.SetFloat("Speed", Mathf.Abs(move.x) + Mathf.Abs(move.y)); // Si le joueur bouge, l'animation doit s'activer
-                //yield return new WaitForSeconds(0.1f);
                 if (currentPosition.y-0.3f + movingY < mapYMax && currentPosition.y-0.3f + movingY > mapYMin)
                 {
                     Vector3 futurePosition = new Vector3(currentPosition.x, currentPosition.y + movingY, currentPosition.z); // Déplacement sur la future cellule
                     Vector3Int cellPosition = gameManager.map.grid.GetLocalPosition(futurePosition - new Vector3(0.3f, 0.3f, 0f));
+                    TileBase cellTile = gameManager.map.tilemap.GetTile(new Vector3Int(Mathf.FloorToInt(futurePosition.x - 0.3f), Mathf.FloorToInt(futurePosition.y - 0.3f), 0));
                     Entity entity = gameManager.map.grid.GetValue(cellPosition.x, cellPosition.y);
-                    if (entity == null || !(entity is Block))
+                    if ((entity == null || !(entity is Block)) && cellTile != null)
                     {
                         transform.position = futurePosition; // Déplacement sur la future cellule
                         FindObjectOfType<AudioManager>().Play("MoveSound");

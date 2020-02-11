@@ -41,7 +41,7 @@ public class Trap : Entity
     public IEnumerator DestroyTrap()
     {
         animator.SetTrigger("isActivated");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         Object.Destroy(this.gameObject);
     }
 
