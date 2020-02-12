@@ -91,6 +91,12 @@ public class LaunchManager : MonoBehaviour
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/levelDesignMusic");
     }
 
+
+    public void ReloadLevel()
+    {
+        StartCoroutine(ReloadTransition());
+    }
+
     /// <summary>
     /// Quitter le jeu
     /// </summary>
@@ -119,7 +125,16 @@ public class LaunchManager : MonoBehaviour
     {
         transition.SetTrigger("Start");
         middleTransition.SetTrigger("Start");
-        yield return new WaitForSeconds(0.0f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(name);
+    }
+
+
+    private IEnumerator ReloadTransition()
+    {
+        transition.SetTrigger("Start");
+        middleTransition.SetTrigger("Start");
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

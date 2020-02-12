@@ -175,7 +175,7 @@ public class Map : MonoBehaviour
     {
         LevelData data;
         string saveName = PlayerPrefs.GetString("Save");
-        if (File.Exists(Application.dataPath + "/Resources/Prefab/Levels/" + saveName + ".lvl"))
+        if (File.Exists(Application.streamingAssetsPath + "/Levels/" + saveName + ".lvl"))
         {
             data = SaveSystem.LoadLevel(saveName + ".lvl");
         }

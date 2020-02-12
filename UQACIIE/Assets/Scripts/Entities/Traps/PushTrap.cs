@@ -17,7 +17,7 @@ public class PushTrap : Trap
     /// <summary>
     /// Activation du piege : pousse ce qu'il y a autour si possible
     /// </summary>
-    /// <param name="player"> Joueur ayant declenche le piege </param>
+    /// <param name="player"> Entite ayant declenche le piege </param>
     override public void Activate(Entity entity)
     {
         if (!(entity is KillTrap))
@@ -29,8 +29,8 @@ public class PushTrap : Trap
             Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;
             Vector3Int behindCellEntity = new Vector3Int(0, -1, 0) + CellEntity;
             Vector3Int rightCellEntity = new Vector3Int(1, 0, 0) + CellEntity;
-            Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity; // TODO : Corriger la gridMap pour pas qu'elle interagisse en dehors de sa taille(width et height)
-            PushAround(grid, frontCellEntity, behindCellEntity, rightCellEntity, leftCellEntity);
+            Vector3Int leftCellEntity = new Vector3Int(-1, 0, 0) + CellEntity;
+            PushAround(grid, frontCellEntity, behindCellEntity, rightCellEntity, leftCellEntity, entity);
             gameManager.playerGO.GetComponent<Player>().Wait(); // Faire attendre le joueur
             Desactivate(); // Desactivation du piege
         }
@@ -45,9 +45,12 @@ public class PushTrap : Trap
     /// <param name="behindCellEntity"> Cellule dont l'objet doit etre pousse derriere </param>
     /// <param name="rightCellEntity"> Cellule dont l'objet doit etre pousse droite </param>
     /// <param name="leftCellEntity"> Cellule dont l'objet doit etre pousse gauche </param>
-    private void PushAround(GridMap grid, Vector3Int frontCellEntity, Vector3Int behindCellEntity, Vector3Int rightCellEntity, Vector3Int leftCellEntity)
+    private void PushAround(GridMap grid, Vector3Int frontCellEntity, Vector3Int behindCellEntity, Vector3Int rightCellEntity, Vector3Int leftCellEntity, Entity entity)
     {
         bool isMulti = (gameManager is MultiGameManager);
+        bool checkNextValue = false;
+        bool killToKill = false;
+        Entity nextValue = null;
         Entity front = grid.GetValue(frontCellEntity.x, frontCellEntity.y);
         Entity down = grid.GetValue(behindCellEntity.x, behindCellEntity.y);
         Entity left = grid.GetValue(leftCellEntity.x, leftCellEntity.y);
@@ -55,7 +58,10 @@ public class PushTrap : Trap
         // PUSH UP
         if (front != null && (isMulti || !(front is KillTrap)))
         {
-            if (grid.CheckGrid(frontCellEntity.x, frontCellEntity.y + 1) || grid.GetValue(frontCellEntity.x, frontCellEntity.y + 1) is Trap)
+            checkNextValue = grid.CheckGrid(frontCellEntity.x, frontCellEntity.y + 1);
+            nextValue = grid.GetValue(frontCellEntity.x, frontCellEntity.y + 1);
+            killToKill = entity is KillTrap && nextValue is KillTrap;
+            if ((checkNextValue || nextValue is Trap) && killToKill)
             {
                 grid.MoveEntity(frontCellEntity.x, frontCellEntity.y, new Vector3Int(0, 1, 0));
             }
@@ -63,7 +69,10 @@ public class PushTrap : Trap
         // PUSH DOWN
         if (down != null && (isMulti || !(down is KillTrap)))
         {
-            if (grid.CheckGrid(behindCellEntity.x, behindCellEntity.y - 1) || grid.GetValue(behindCellEntity.x, behindCellEntity.y - 1) is Trap)
+            checkNextValue = grid.CheckGrid(behindCellEntity.x, behindCellEntity.y - 1);
+            nextValue = grid.GetValue(behindCellEntity.x, behindCellEntity.y - 1);
+            killToKill = entity is KillTrap && nextValue is KillTrap;
+            if ((checkNextValue || nextValue is Trap) && killToKill)
             {
                 grid.MoveEntity(behindCellEntity.x, behindCellEntity.y, new Vector3Int(0, -1, 0));
             }
@@ -71,7 +80,10 @@ public class PushTrap : Trap
         // PUSH RIGHT
         if (right != null && (isMulti || !(right is KillTrap)))
         {
-            if (grid.CheckGrid(rightCellEntity.x + 1, rightCellEntity.y) || grid.GetValue(rightCellEntity.x + 1, rightCellEntity.y) is Trap)
+            checkNextValue = grid.CheckGrid(rightCellEntity.x + 1, rightCellEntity.y);
+            nextValue = grid.GetValue(rightCellEntity.x + 1, rightCellEntity.y);
+            killToKill = entity is KillTrap && nextValue is KillTrap;
+            if ((checkNextValue || nextValue is Trap) && killToKill)
             {
                 grid.MoveEntity(rightCellEntity.x, rightCellEntity.y, new Vector3Int(1, 0, 0));
             }
@@ -79,7 +91,10 @@ public class PushTrap : Trap
         // PUSH LEFT
         if (left != null && (isMulti || !(left is KillTrap)))
         {
-            if (grid.CheckGrid(leftCellEntity.x - 1, leftCellEntity.y) || grid.GetValue(leftCellEntity.x - 1, leftCellEntity.y) is Trap)
+            checkNextValue = grid.CheckGrid(leftCellEntity.x - 1, leftCellEntity.y);
+            nextValue = grid.GetValue(leftCellEntity.x - 1, leftCellEntity.y);
+            killToKill = entity is KillTrap && nextValue is KillTrap;
+            if ((checkNextValue || nextValue is Trap) && killToKill)
             {
                 grid.MoveEntity(leftCellEntity.x, leftCellEntity.y, new Vector3Int(-1, 0, 0));
             }

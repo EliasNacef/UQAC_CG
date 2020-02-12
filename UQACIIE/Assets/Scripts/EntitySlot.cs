@@ -56,7 +56,6 @@ public class EntitySlot : MonoBehaviour
         {
             SetSprite(gameManager.newEntity.gameObject.GetComponent<SpriteRenderer>().sprite);
             SetColor(gameManager.newEntity.gameObject.GetComponent<SpriteRenderer>().color);
-            SetString("Sélection");
         }
     }
 

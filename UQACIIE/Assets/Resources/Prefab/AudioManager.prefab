@@ -148,3 +148,11 @@ MonoBehaviour:
     pitchVariance: 0
     loop: 0
     source: {fileID: 0}
+  - name: Bell
+    clip: {fileID: 8300000, guid: 46676ca6100c9d24bbbf44a8d9310be4, type: 3}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}

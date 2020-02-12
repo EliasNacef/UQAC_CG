@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     protected void CameraUpToPlayer()
     {
-        Camera.main.transform.position = new Vector3(playerGO.transform.position.x, playerGO.transform.position.y, -6f);
+        Camera.main.transform.position = new Vector3(playerGO.transform.position.x, playerGO.transform.position.y, -8f);
     }
 
     /// <summary>

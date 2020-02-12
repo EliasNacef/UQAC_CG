@@ -21,7 +21,8 @@ public static class SaveSystem
     public static LevelData LoadLevel(string saveName)
     {
         string path1 = Application.persistentDataPath + "/" + saveName;
-        string path2 = Application.dataPath + "/Resources/Prefab/Levels/" + saveName;
+        string path2 = Application.streamingAssetsPath + "/Levels/" + saveName;
+        Debug.Log(path2);
         if (File.Exists(path2))
         {
             Debug.Log("Loading of : " + path2);

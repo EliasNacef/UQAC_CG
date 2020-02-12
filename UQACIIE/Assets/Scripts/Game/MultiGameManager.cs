@@ -92,7 +92,14 @@ public class MultiGameManager : GameManager
                 nbTraps--; // On a pose un piege
                 UpdatePlayersPositions();
             }
-            else Debug.Log("Je ne peux pas poser de piège");
+            else
+            {
+                nbTraps--;
+                if (newEntity is KillTrap) FindObjectOfType<AudioManager>().Play("PutKillTrap");
+                else if (newEntity is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
+                else if (newEntity is Block) FindObjectOfType<AudioManager>().Play("Block");
+                map.selectionRotation = new Vector3Int(0, 1, 0);
+            }
         }
         else // Je ne peux pas poser de piege pour le moment
         {
@@ -160,6 +167,7 @@ public class MultiGameManager : GameManager
     /// </summary>
     public IEnumerator EndRound()
     {
+        FindObjectOfType<AudioManager>().Play("Bell");
         map.selectionRotation = new Vector3Int(0, 1, 0);
         nbTraps = roundNumberTraps; // On redonne le nb de pieges initial
         endRound = false;
@@ -171,7 +179,6 @@ public class MultiGameManager : GameManager
         playerGO.GetComponent<PlayerMovement>().canMove = false;
         yield return new WaitForSeconds(0.10f); //Permet d'eviter que le nouveau joueur n'avance a cause de l'input du joueur precedent
         UpdateAbilities();
-        CameraUpToPlayer();
         map.trapsToHide.Clear();
     }
 
@@ -193,6 +200,12 @@ public class MultiGameManager : GameManager
             sm.canMove = false;
             nbTraps = 0;
             FindObjectOfType<AudioManager>().Play("GameOver");
+            map.UpdateEntitiesArrays();
+            foreach(Entity entity in map.entities)
+            {
+                Color color = entity.GetComponent<SpriteRenderer>().color;
+                entity.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 1f);
+            }
             victoryPanel.SetActive(true);
         }
     }
