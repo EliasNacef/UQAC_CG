@@ -22,7 +22,6 @@ public static class SaveSystem
     {
         string path1 = Application.persistentDataPath + "/" + saveName;
         string path2 = Application.streamingAssetsPath + "/Levels/" + saveName;
-        Debug.Log(path2);
         if (File.Exists(path2))
         {
             Debug.Log("Loading of : " + path2);

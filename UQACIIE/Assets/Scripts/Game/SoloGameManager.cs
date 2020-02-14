@@ -16,7 +16,7 @@ public class SoloGameManager : GameManager
     private void Start()
     {
         map.LoadLevel(); // On charge la map
-        map.spawnPosition = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
+        PutSpawn();
         playerMovement = playerGO.GetComponent<PlayerMovement>();
         player = playerGO.GetComponent<Player>();
         // Parametres initiaux
@@ -73,7 +73,7 @@ public class SoloGameManager : GameManager
         }
     }
 
-
+   
 
     /// <summary>
     /// Met a jour les abilites des joueurs en fonction de leur statut
