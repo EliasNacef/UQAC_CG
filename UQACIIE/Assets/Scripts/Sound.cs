@@ -1,6 +1,9 @@
 ﻿using UnityEngine.Audio;
 using UnityEngine;
 
+/// <summary>
+/// Classe qui decrit comment se caracterise un son a partir d'un clip
+/// </summary>
 [System.Serializable]
 public class Sound {
 
@@ -19,8 +22,6 @@ public class Sound {
 	public float pitchVariance = .1f;
 
 	public bool loop = false;
-
-	//public AudioMixerGroup mixerGroup;
 
 	[HideInInspector]
 	public AudioSource source;

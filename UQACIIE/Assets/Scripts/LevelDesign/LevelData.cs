@@ -15,8 +15,12 @@ public class LevelData
     public int nbTraps; // Nombre de pieges disponibles pour le joueur
 
 
-
-    public LevelData(Map map, int number)
+    /// <summary>
+    /// Constructeur de la sauvegarde
+    /// </summary>
+    /// <param name="map"> Map de jeu </param>
+    /// <param name="trapsNumber"> Nombre de pieges </param>
+    public LevelData(Map map, int trapsNumber)
     {
 
         int i = 0;
@@ -72,9 +76,7 @@ public class LevelData
             blocksTypes[i, 0] = block.GetType().ToString();
             i++;
         }
-
-        nbTraps = number;
-
+        nbTraps = trapsNumber;
     }
 
 

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Tilemaps;
+﻿using UnityEngine;
 
 /// <summary>
 /// Classe qui va mettre en place les pieges que l'on peut selectionner
@@ -10,10 +6,10 @@ using UnityEngine.Tilemaps;
 public class EntityPanelManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject entityLevelSlot;
+    private GameObject entityLevelSlot; // Slot entite
     [SerializeField]
-    private Entity[] entities;
-    private GameObject instance;
+    private Entity[] entities; // Les entites du panel
+    private GameObject instanceEntity; 
 
     void Start()
     {
@@ -21,8 +17,8 @@ public class EntityPanelManager : MonoBehaviour
         entityLevelSlot = Resources.Load<GameObject>("Prefab/EntityLevelSlot");
         foreach (Entity entity in entities)
         {
-            instance = Instantiate(entityLevelSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            EntityLevelSlot slot = instance.GetComponent<EntityLevelSlot>();
+            instanceEntity = Instantiate(entityLevelSlot, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+            EntityLevelSlot slot = instanceEntity.GetComponent<EntityLevelSlot>();
             slot.SetSprite(entity.gameObject.GetComponent<SpriteRenderer>().sprite);
             slot.SetColor(entity.gameObject.GetComponent<SpriteRenderer>().color);
             slot.SetString(entity.name);

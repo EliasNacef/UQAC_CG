@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+/// <summary>
+/// Classe qui gerer la scene d'introduction du jeu
+/// </summary>
 public class IntroManager : MonoBehaviour
 {
     private void Start()
@@ -10,6 +13,10 @@ public class IntroManager : MonoBehaviour
         StartCoroutine(WaitForIntroAnimation());
     }
 
+    /// <summary>
+    /// Permet de gerer l'animation du titre en introduction correctement
+    /// </summary>
+    /// <returns> Temps necessaire </returns>
     IEnumerator WaitForIntroAnimation()
     {
         AudioManager audioManager = FindObjectOfType<AudioManager>();

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -16,9 +15,9 @@ public class Trap : Entity
     }
 
     /// <summary>
-    /// Activation du piege sur le Player player
+    /// Activation du piege sur l'entite
     /// </summary>
-    /// <param name="player"> Joueur qui a enclenche le piege </param>
+    /// <param name="entity"> Entite qui a enclenche le piege </param>
     virtual public void Activate(Entity entity)
     {
         gameManager.nbTraps = 0;
@@ -26,7 +25,7 @@ public class Trap : Entity
     }
 
     /// <summary>
-    /// Va mettre un terme a l'activation du piege et le detruire
+    /// Va mettre un terme a l'activation du piege et enclencher sa destruction
     /// </summary>
     /// <returns> Attends un certain nombre de secondes pour desactiver le piege </returns>
     protected void Desactivate()
@@ -38,6 +37,10 @@ public class Trap : Entity
         StartCoroutine(DestroyTrap());
     }
 
+    /// <summary>
+    /// Detruit le piege actuel
+    /// </summary>
+    /// <returns> Laisse du temps afin de terminer l'animation de destruction </returns>
     public IEnumerator DestroyTrap()
     {
         animator.SetTrigger("isActivated");

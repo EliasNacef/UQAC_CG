@@ -9,12 +9,19 @@ using UnityEngine;
 public class GridMap
 {
 
-    private int width;
-    private int height;
-    private float cellSize;
-    private Vector3 originPosition;
-    private Entity[,] gridArray;
+    private int width; // Largeur de la grille
+    private int height; // hauteur de la grille
+    private float cellSize; // Taille de la cellule
+    private Vector3 originPosition; // Origine
+    private Entity[,] gridArray; // Tableau (grille)
 
+    /// <summary>
+    /// Cosntructeur de la grille
+    /// </summary>
+    /// <param name="width"> largeur </param>
+    /// <param name="height"> hauteur </param>
+    /// <param name="cellSize"> taille de cellule </param>
+    /// <param name="originPosition"> origine de la grille </param>
     public GridMap(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;
@@ -24,6 +31,7 @@ public class GridMap
 
         gridArray = new Entity[width, height];
 
+        // Debuggeur
         bool showGrid = true;
         if (showGrid)
         {
@@ -162,7 +170,7 @@ public class GridMap
     /// <summary>
     /// Assigne une entite a une cellule de la grille
     /// </summary>
-    /// <param name="worldPosition"> POsition </param>
+    /// <param name="worldPosition"> Position </param>
     /// <param name="value"> Entite a assigner </param>
     public void SetValue(Vector3 worldPosition, Entity value)
     {

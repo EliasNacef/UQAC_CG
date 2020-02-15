@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 /// <summary>
 /// Sous-classe de Trap : piege qui pousse a gauche
 /// </summary>

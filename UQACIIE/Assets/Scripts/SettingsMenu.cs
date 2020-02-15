@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
-
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Classe gestionnaire des options de jeu
+/// </summary>
 public class SettingsMenu : MonoBehaviour
 {
     private AudioManager audioManager;
@@ -47,7 +48,10 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// LEt a jour le volume general du jeu
+    /// </summary>
+    /// <param name="volume"> Le volume </param>
     public void SetGeneralVolume(float volume)
     {
         foreach (Sound s in audioManager.sounds)
@@ -61,6 +65,10 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Met a jour le volume de la musique
+    /// </summary>
+    /// <param name="volume"> Le volume </param>
     public void SetMusicVolume(float volume)
     {
         Sound s = Array.Find(audioManager.sounds, item => item.name == "GameMusic");
@@ -72,6 +80,10 @@ public class SettingsMenu : MonoBehaviour
         s.source.volume = volume;
     }
 
+    /// <summary>
+    /// Met a jour le volume des effets sonores du jeu
+    /// </summary>
+    /// <param name="volume"> Le volume </param>
     public void SetEffectsVolume(float volume)
     {
         foreach (Sound s in audioManager.sounds)
@@ -86,20 +98,29 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Met a jour la qualite du jeu en fonction de ce que l'on a choisi
+    /// </summary>
+    /// <param name="quality"> Entier designant quelle qualite on souhaite </param>
     public void SetQuality (int quality)
     {
         QualitySettings.SetQualityLevel(quality);
     }
 
 
-
+    /// <summary>
+    /// Permet de mettre le jeu en plein ecran ou non.
+    /// </summary>
+    /// <param name="isFullScreen"> Booleen pour savoir si le jeu doit etre en fullscreen ou non </param>
     public void SetFullScreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
     }
 
-
+    /// <summary>
+    /// Permet de choisir la resolution du jeu
+    /// </summary>
+    /// <param name="resolutionIndex"> index de resolution d'ecran </param>
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
