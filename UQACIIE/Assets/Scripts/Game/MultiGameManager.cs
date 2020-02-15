@@ -21,13 +21,12 @@ public class MultiGameManager : GameManager
     private bool endRound; // Est-ce la fin d'un round ?
 
 
-
     private void Start()
     {
         map.LoadLevel(); // On charge la map de jeu
-        PutSpawn();
-        map.spectatePosition = new Vector3(map.startTilemap.x - 1.5f, map.startTilemap.y + Mathf.FloorToInt((map.grid.GetHeight() / 2)) + 1f, 0f); // Position du spectateur
-        GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(new Vector3Int(Mathf.FloorToInt(map.spectatePosition.x), Mathf.FloorToInt(map.spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/Rouge")); // Plateforme du spectateur
+        PutSpawn(); // On place le spawn des joueurs
+        map.spectatePosition = new Vector3(map.startTilemap.x - 1.5f, map.startTilemap.y + Mathf.FloorToInt((map.grid.GetHeight() / 2)) + 1f, 0f); // Position du spectateur hors de la map
+        map.backgroundTilemap.SetTile(new Vector3Int(Mathf.FloorToInt(map.spectatePosition.x), Mathf.FloorToInt(map.spectatePosition.y) - 1, 0), Resources.Load<TileBase>("Prefab/Rouge")); // Plateforme du spectateur
 
         // Parametres initiaux
         whoPlay = 1; // Le joueur 1 commence a jouer
@@ -92,13 +91,10 @@ public class MultiGameManager : GameManager
                 nbTraps--; // On a pose un piege
                 UpdatePlayersPositions();
             }
-            else
+            else // On simule la pose d'un piege
             {
                 nbTraps--;
-                if (newEntity is KillTrap) FindObjectOfType<AudioManager>().Play("PutKillTrap");
-                else if (newEntity is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
-                else if (newEntity is Block) FindObjectOfType<AudioManager>().Play("Block");
-                map.selectionRotation = new Vector3Int(0, 1, 0);
+                map.SimulatePutTrap(newEntity);
             }
         }
         else // Je ne peux pas poser de piege pour le moment

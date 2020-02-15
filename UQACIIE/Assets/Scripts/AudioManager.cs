@@ -8,11 +8,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
-	public static AudioManager instance;
-
-	//public AudioMixerGroup mixerGroup;
-
-	public Sound[] sounds;
+	public static AudioManager instance; // Evite que plusieurs Audiomanagers soient charges
+	public Sound[] sounds; // Les differents sons disponibles
 
 	void Awake()
 	{
@@ -33,9 +30,7 @@ public class AudioManager : MonoBehaviour
 			s.source.loop = s.loop;
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
-
-			//s.source.outputAudioMixerGroup = mixerGroup;
-		}
+        }
 	}
 
     /// <summary>
@@ -50,10 +45,6 @@ public class AudioManager : MonoBehaviour
 			Debug.LogWarning("Le son " + name + " n'a pas été trouvé..");
 			return;
 		}
-
-		//s.source.volume = s.volume * (1f + UnityEngine.Random.Range(-s.volumeVariance / 2f, s.volumeVariance / 2f));
-		//s.source.pitch = s.pitch * (1f + UnityEngine.Random.Range(-s.pitchVariance / 2f, s.pitchVariance / 2f));
-
 		s.source.Play();
 	}
 

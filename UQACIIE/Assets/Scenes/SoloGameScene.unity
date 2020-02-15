@@ -20170,6 +20170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1981802443}
+  backgroundTilemap: {fileID: 700138121}
   startTilemap: {x: -3, y: -3, z: 0}
   endTilemap: {x: 3, y: 3, z: 0}
   drawingTile: {fileID: 11400000, guid: 5467c31aa5f7de949ac969e26f1d7f3d, type: 2}

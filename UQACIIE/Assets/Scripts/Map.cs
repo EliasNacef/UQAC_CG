@@ -11,8 +11,8 @@ using UnityEngine.UI;
 /// </summary>
 public class Map : MonoBehaviour
 {
-    [SerializeField]
     public Tilemap tilemap; // Tilemap de de la Game Area
+    public Tilemap backgroundTilemap; // Tilemap du background
     public Vector3Int startTilemap; // Position de debut de dessin (en bas a gauche)
     public Vector3Int endTilemap; // Position de fin de dessin (en haut a droite)
     public Tile drawingTile; // Tile pour dessiner
@@ -40,6 +40,8 @@ public class Map : MonoBehaviour
 
     public int idealNumberOfTraps = 1;
 
+    private AudioManager audioManager;
+
     private void Awake()
     {
         // Parametres initiaux
@@ -47,6 +49,7 @@ public class Map : MonoBehaviour
         UpdateEntitiesArrays(); // Update des arrays d'entites
         oldTile = selectionMap.GetTile(frontCellInt); // Ancienne Tile initialisee
         oldPosition = frontCellInt;
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
 
@@ -78,14 +81,41 @@ public class Map : MonoBehaviour
             if (entityInstance is KillTrap)
             {
                 trapsToHide.Add(entityInstance);
-                FindObjectOfType<AudioManager>().Play("PutKillTrap");
+                audioManager.Play("PutKillTrap");
             }
-            else if (entityInstance is PushTrap) FindObjectOfType<AudioManager>().Play("PutPushTrap");
-            else if (entityInstance is Block) FindObjectOfType<AudioManager>().Play("Block");
+            else if (entityInstance is PushTrap) audioManager.Play("PutPushTrap");
+            else if (entityInstance is Block) audioManager.Play("Block");
             selectionRotation = new Vector3Int(0, 1, 0);
             return true;
         }
         else return false;
+    }
+
+    /// <summary>
+    /// Simule la pose de piege si un killtrap est devant le joueur
+    /// </summary>
+    /// <param name="newEntity"> Entite a simuler </param>
+    public void SimulatePutTrap(Entity newEntity)
+    {
+        Vector3 positionTrap = tilemap.GetCellCenterLocal(currentCellInt + selectionRotation); // La future position du piege
+        Vector3Int cellTrap = grid.GetLocalPosition(positionTrap);
+        if (!grid.CheckGrid(cellTrap.x, cellTrap.y)) // Si il y a un piege
+        {
+            Entity entity = grid.GetValue(cellTrap.x, cellTrap.y);
+            if (entity is KillTrap)
+            {
+                if (newEntity is KillTrap)
+                {
+                    audioManager.Play("PutKillTrap");
+                    Color color = entity.GetComponent<SpriteRenderer>().color;
+                    entity.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 1f);
+                    trapsToHide.Add(entity);
+                }
+                else if (newEntity is PushTrap) audioManager.Play("PutPushTrap");
+                else if (newEntity is Block) audioManager.Play("Block");
+            }
+            selectionRotation = new Vector3Int(0, 1, 0); // On reinitialise la tile de selection
+        }
     }
 
 
@@ -112,13 +142,10 @@ public class Map : MonoBehaviour
         traps = GameObject.Find("Traps").GetComponentsInChildren<Trap>();
         // Liste des blocks
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Block>();
-        // Liste des players
-        //players = GameObject.Find("Players").GetComponentsInChildren<Player>();
         // Liste des entites puis remplissage des entites presentes dans cette liste
         entities = new Entity[traps.Length + blocks.Length]; //+ players.Length];
         traps.CopyTo(entities, 0);
         blocks.CopyTo(entities, traps.Length);
-        //players.CopyTo(entities, traps.Length + blocks.Length);
     }
 
     /// <summary>
@@ -165,9 +192,7 @@ public class Map : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Load le level sauvegarde
-    /// </summary>
+
     /// <summary>
     /// Load le level sauvegarde
     /// </summary>
@@ -207,7 +232,7 @@ public class Map : MonoBehaviour
             for (int j = startTilemap.y - gridSize; j < endTilemap.y + gridSize; j++)
             {
                 Vector3Int tilePosition = new Vector3Int(i, j, 0);
-                GameObject.Find("Tilemap_Base").GetComponent<Tilemap>().SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
+                backgroundTilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/WaterfallMain"));
             }
         }
 

@@ -1,30 +1,28 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.EventSystems;
-using System.IO;
-
+﻿using UnityEngine;
 
 /// <summary>
-/// Classe de gestion du mode un joueur
+/// Classe de gestion du mode solo
 /// </summary>
 public class SoloGameManager : GameManager
 {
-    private PlayerMovement playerMovement;
-    private Player player;
+    private AudioManager audioManager; // Le gestionnaire de sons
+    private PlayerMovement playerMovement; // Mouvement du joueur
+    private Player player; // Joueur
 
     private void Start()
     {
         map.LoadLevel(); // On charge la map
-        PutSpawn();
+        PutSpawn(); // On place le spawn
         playerMovement = playerGO.GetComponent<PlayerMovement>();
         player = playerGO.GetComponent<Player>();
+
         // Parametres initiaux
         nbTraps = map.idealNumberOfTraps; // Nb de bombes initial
         UpdateAbilities(); // On update les abilites
-        UpdatePlayersPositions();
-        map.UpdateAroundPosition(playerGO); // Cellule du joueur et celle devant lui mises a jour
+        UpdatePlayersPositions(); // ON initialise la position du joueur
+        map.UpdateAroundPosition(playerGO); // mise a jour de la position des cellules autour du joueur
         CameraUpToPlayer(); // On positionne la camera au dessus du joueur
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
 
@@ -34,14 +32,13 @@ public class SoloGameManager : GameManager
         if (!endGame)
         {
             TestEndGame(); // Testons si c'est la fin du jeu
-            CameraFollowPlayer();
-            // La case de selection se deplace avec le joueur.
-            map.SetSelectionTile(playerGO);
+            CameraFollowPlayer(); // Camera suit le joueur
+            map.SetSelectionTile(playerGO); // La case de selection se deplace avec le joueur.
             if (Input.GetButtonDown("Jump")) // Si on appuie sur 'Espace'
                 TryToSetTrap(); // Essayer de poser un piege
             else if (Input.GetButtonDown("R"))
             {
-                if (playerMovement.canMove) map.RotateSelection();
+                if (playerMovement.canMove) map.RotateSelection(); // Faire tourner la tile de selection
             }
             else if (Input.GetButtonDown("Cancel"))
             {
@@ -76,7 +73,7 @@ public class SoloGameManager : GameManager
    
 
     /// <summary>
-    /// Met a jour les abilites des joueurs en fonction de leur statut
+    /// Met a jour les abilites des joueurs en fonction de leur statut (le joueur peut toujours bouger)
     /// </summary>
     void UpdateAbilities()
     {
@@ -86,7 +83,7 @@ public class SoloGameManager : GameManager
 
 
     /// <summary>
-    /// Teste si c'est la fin du jeu. Si l'un des joueurs n'a plus de vie, on met fin au jeu.
+    /// Teste si c'est la fin du jeu. Si le joueur n'a plus de vie, on met fin au jeu.
     /// </summary>
     private void TestEndGame()
     {
@@ -96,7 +93,7 @@ public class SoloGameManager : GameManager
             // On bloque les mouvement et la possibilite de mettre des pieges
             playerMovement.canMove = false;
             nbTraps = 0;
-            FindObjectOfType<AudioManager>().Play("GameOver");
+            audioManager.Play("GameOver");
             failurePanel.SetActive(true);
         }
         else if (map.grid.GetLocalPosition(playerGO.transform.position).y >= map.grid.GetLocalPosition(map.endTilemap).y)
@@ -105,7 +102,7 @@ public class SoloGameManager : GameManager
             // On bloque les mouvement et la possibilite de mettre des pieges
             playerMovement.canMove = false;
             nbTraps = 0;
-            FindObjectOfType<AudioManager>().Play("Victory");
+            audioManager.Play("Victory");
             victoryPanel.SetActive(true);
         }
     }

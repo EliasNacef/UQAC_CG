@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -64,7 +62,7 @@ public class LevelDesignManager : MonoBehaviour
         clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - new Vector3(0, 0, Camera.main.transform.position.z));
         Vector3Int localCellPosition = new Vector3Int(Mathf.FloorToInt(clickPosition.x), Mathf.FloorToInt(clickPosition.y), 0);
         TileBase currentTile = map.tilemap.GetTile(localCellPosition);
-        if (putTile) // TODO : si on veut placer un tile
+        if (putTile) // Si on veut placer un tile
         {
             if(currentTile == null)
             {
@@ -127,7 +125,7 @@ public class LevelDesignManager : MonoBehaviour
     /// <summary>
     /// Load le level sauvegarde
     /// </summary>
-    public void LoadLevel() // TODO REMPLIR LE GRID
+    public void LoadLevel()
     {
         string fileName = FindObjectOfType<InputField>().text;
         if (File.Exists(Application.persistentDataPath + "/" + fileName + ".uqac"))
@@ -141,7 +139,6 @@ public class LevelDesignManager : MonoBehaviour
             {
                 Vector3Int tilePosition = new Vector3Int(data.tilesPositions[i, 0], data.tilesPositions[i, 1], data.tilesPositions[i, 2]);
                 Vector3Int gridCellPosition = tilePosition;
-                //Debug.Log(data.tilesTypes[i, 0]);
                 if (data.tilesTypes[i, 0] != null) map.tilemap.SetTile(tilePosition, Resources.Load<TileBase>("Prefab/Tiles/" + data.tilesTypes[i, 0]));
             }
             map.ResetGrid();
@@ -179,7 +176,10 @@ public class LevelDesignManager : MonoBehaviour
         }
     }
 
-
+    
+    /// <summary>
+    /// Dessine le background de l'editeur de map
+    /// </summary>
     private void DrawBackground()
     {
         map.startTilemap = map.tilemap.origin;
@@ -195,7 +195,9 @@ public class LevelDesignManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Met a jour la camera en fonction de la map que l'on dessine afin de toujours voir la map
+    /// </summary>
     private void UpdateCamera()
     {
         map.startTilemap = map.tilemap.origin;

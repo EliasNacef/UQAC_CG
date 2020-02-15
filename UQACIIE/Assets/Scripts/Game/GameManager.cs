@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Classe mere gestionnaire du jeu
@@ -10,7 +8,7 @@ public class GameManager : MonoBehaviour
     public Map map; // La map
     [SerializeField]
     public GameObject playerGO; // Le gameobject du joueur
-    public Entity newEntity; // La nouvelle entite qui sera pose par le joueur
+    public Entity newEntity; // La nouvelle entite qui sera pourra etre posee par le joueur
 
     [SerializeField]
     protected GameObject victoryPanel; // Le panel a afficher en cas de victoire
@@ -74,7 +72,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Permet de placer le spawn du joueur au bon endroit en fonction de la map
+    /// </summary>
     protected void PutSpawn()
     {
         bool spawnCheck = false;

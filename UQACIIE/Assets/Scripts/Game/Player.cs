@@ -16,7 +16,7 @@ public class Player : Entity
 
     void Start()
     {
-        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager = FindObjectOfType<GameManager>(); // On load le MapManager
         isHurting = false; // Un joueur en train d'etre blesser au debut de partie
         _life = 1; // Vie du joueur
     }
@@ -36,7 +36,7 @@ public class Player : Entity
     /// <returns> Renvoie des secondes pour laisser attendre assez longtemps </returns>
     public IEnumerator Waiting()
     {
-        yield return new WaitForSeconds(0.0f);
+        yield return new WaitForSeconds(0.1f);
         GetComponent<PlayerMovement>().canMove = true; // Le joueur peut a nouveau bouger
         gameManager.map.UpdateAroundPosition(this.gameObject);
     }

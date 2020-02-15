@@ -2,9 +2,17 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-
+/// <summary>
+/// Classe permttant de gérer le systeme de sauvegarde.
+/// </summary>
 public static class SaveSystem
 {
+
+    /// <summary>
+    /// Permet de creer un fichier de sauvegarde de la map de jeu
+    /// </summary>
+    /// <param name="map"></param>
+    /// <param name="saveName"></param>
     public static void SaveLevel(Map map, string saveName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
@@ -18,6 +26,11 @@ public static class SaveSystem
     }
 
 
+    /// <summary>
+    /// Permet de charger un niveau.
+    /// </summary>
+    /// <param name="saveName"> Nom de la sauvegarde </param>
+    /// <returns> Renvoie la sauvegarde qui a ete chargee </returns>
     public static LevelData LoadLevel(string saveName)
     {
         string path1 = Application.persistentDataPath + "/" + saveName;
@@ -46,7 +59,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.Log("Save file non trouve dans le path : " + path1 + "ou" + path2);
+            Debug.Log("Fichier non trouve dans le chemin : " + path1 + "ou" + path2);
             return null;
         }
     }
