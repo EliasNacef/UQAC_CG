@@ -91,7 +91,9 @@ public class LaunchManager : MonoBehaviour
         s.source.clip = Resources.Load<AudioClip>("Prefab/Sounds/levelDesignMusic");
     }
 
-
+    /// <summary>
+    /// Recharge la scene pour rejouer
+    /// </summary>
     public void ReloadLevel()
     {
         StartCoroutine(ReloadTransition());
@@ -129,7 +131,10 @@ public class LaunchManager : MonoBehaviour
         SceneManager.LoadScene(name);
     }
 
-
+    /// <summary>
+    /// Transition en cas de volonté de rejouer
+    /// </summary>
+    /// <returns> Temps necessaire pour la transition </returns>
     private IEnumerator ReloadTransition()
     {
         transition.SetTrigger("Start");

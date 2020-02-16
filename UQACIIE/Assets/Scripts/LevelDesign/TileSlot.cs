@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
@@ -21,7 +19,7 @@ public class TileSlot : MonoBehaviour
 
     private void Start()
     {
-        levelDesignManager = GameObject.Find("Tiles").GetComponent<LevelDesignManager>(); // On load le MapManager
+        levelDesignManager = FindObjectOfType<LevelDesignManager>(); // On load le MapManager
     }
 
     /// <summary>

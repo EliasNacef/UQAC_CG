@@ -8,6 +8,6 @@ public class Block : Entity
 
     void Start()
     {
-        gameManager = GameObject.Find("Tiles").GetComponent<GameManager>(); // On load le MapManager
+        gameManager =FindObjectOfType<GameManager>(); // On load le MapManager
     }
 }

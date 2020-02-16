@@ -6,7 +6,7 @@ using System.IO;
 
 
 /// <summary>
-/// Classe gestionnaire de la map. Interagit avec la map en focntion de ce qu'il s'y passe.
+/// Classe gestionnaire de la map. Interagit avec la map en fonction de ce qu'il s'y passe.
 /// </summary>
 public class LevelDesignManager : MonoBehaviour
 {
@@ -56,6 +56,9 @@ public class LevelDesignManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Décrit ce qu'il se passe lorsque l'on clique sur l'editeur de map
+    /// </summary>
     void Clicked()
     {
         Vector3 clickPosition;
@@ -94,20 +97,27 @@ public class LevelDesignManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Pause ou reprendre l'édition de map
+    /// </summary>
     private void Pause()
     {
         pausePanel.SetActive(!pausePanel.activeSelf);
     }
 
-
+    /// <summary>
+    /// Savoir si la souris se trouve sur l'UI ou non
+    /// </summary>
+    /// <returns> Le booleen correspondant </returns>
     private bool IsMouseOverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
     }
 
 
-
+    /// <summary>
+    /// Met a jours le tableau des entites de la map
+    /// </summary>
     public void UpdateEntitiesArrays()
     {
         // Liste des pièges
