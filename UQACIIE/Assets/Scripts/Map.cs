@@ -48,7 +48,7 @@ public class Map : MonoBehaviour
         UpdateEntitiesArrays(); // Update des arrays d'entites
         oldTile = selectionMap.GetTile(frontCellInt); // Ancienne Tile initialisee
         oldPosition = frontCellInt;
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = AudioManager.instance;
     }
 
 

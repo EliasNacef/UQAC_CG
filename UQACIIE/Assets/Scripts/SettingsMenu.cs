@@ -22,7 +22,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = AudioManager.instance;
         generalVolumeSlider.value = 0.5f;
         musicVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "GameMusic").volume;
         effectsVolumeSlider.value = Array.Find(audioManager.sounds, item => item.name == "PutKillTrap").volume;

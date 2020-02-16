@@ -22,7 +22,7 @@ public class SoloGameManager : GameManager
         UpdatePlayersPositions(); // ON initialise la position du joueur
         map.UpdateAroundPosition(playerGO); // mise a jour de la position des cellules autour du joueur
         CameraUpToPlayer(); // On positionne la camera au dessus du joueur
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = AudioManager.instance;
     }
 
 

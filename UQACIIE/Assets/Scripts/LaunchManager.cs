@@ -21,7 +21,7 @@ public class LaunchManager : MonoBehaviour
 
     private void Start()
     {
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = AudioManager.instance;
         audioManager.Play("GameMusic");
     }
 

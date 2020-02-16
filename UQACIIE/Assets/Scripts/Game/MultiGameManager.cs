@@ -163,7 +163,7 @@ public class MultiGameManager : GameManager
     /// </summary>
     public IEnumerator EndRound()
     {
-        FindObjectOfType<AudioManager>().Play("Bell");
+        AudioManager.instance.Play("Bell");
         map.selectionRotation = new Vector3Int(0, 1, 0);
         nbTraps = roundNumberTraps; // On redonne le nb de pieges initial
         endRound = false;
@@ -195,7 +195,7 @@ public class MultiGameManager : GameManager
             pm.canMove = false;
             sm.canMove = false;
             nbTraps = 0;
-            FindObjectOfType<AudioManager>().Play("GameOver");
+            AudioManager.instance.Play("GameOver");
             map.UpdateEntitiesArrays();
             foreach(Entity entity in map.entities)
             {

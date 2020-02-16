@@ -10,7 +10,7 @@ public class ButtonTrigger : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        FindObjectOfType<AudioManager>().Play("ClickButton");
+        AudioManager.instance.Play("ClickButton");
     }
 
 }

@@ -19,7 +19,7 @@ public class KillTrap : Trap
     /// <param name="player"> Joueur ayant declenche le piege </param>
     override public void Activate(Entity entity)
     {
-        FindObjectOfType<AudioManager>().Play("BearTrap");
+        AudioManager.instance.Play("BearTrap");
         entity.Hurt(); // Infliger des degats a l'entite
         Desactivate(); // Desactivation du piege
     }

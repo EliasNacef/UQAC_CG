@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour {
                     if ((entity == null || !(entity is Block)) && cellTile != null)
                     {
                         transform.position = futurePosition; // Déplacement sur la future cellule
-                        FindObjectOfType<AudioManager>().Play("MoveSound");
+                        AudioManager.instance.Play("MoveSound");
                     }
                 }
                 movingX = 0;

@@ -19,7 +19,7 @@ public class IntroManager : MonoBehaviour
     /// <returns> Temps necessaire </returns>
     IEnumerator WaitForIntroAnimation()
     {
-        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        AudioManager audioManager = AudioManager.instance;
         yield return new WaitForSeconds(1.5f);
         audioManager.Play("Intro1");
         yield return new WaitForSeconds(0.8f);

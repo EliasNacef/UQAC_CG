@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     {
         bool spawnCheck = false;
         Vector3 middlePos = new Vector3(map.startTilemap.x + Mathf.FloorToInt((map.grid.GetWidth() / 2)) + 0.5f, map.startTilemap.y + 1f, 0f);
-        if (map.tilemap.GetTile(new Vector3Int(Mathf.FloorToInt(middlePos.x), Mathf.FloorToInt(middlePos.y), Mathf.FloorToInt(middlePos.z))) != null)
+        if (map.tilemap.GetTile(new Vector3Int(Mathf.FloorToInt(middlePos.x) + 1, Mathf.FloorToInt(middlePos.y), Mathf.FloorToInt(middlePos.z))) != null)
         {
             map.spawnPosition = middlePos;
             spawnCheck = true;
@@ -88,11 +88,12 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < map.grid.GetWidth(); i++)
             {
-                Vector3Int pos = map.startTilemap + new Vector3Int(i, 1, 0);
+                Vector3Int pos = map.startTilemap + new Vector3Int(i, 0, 0);
                 if (map.tilemap.GetTile(pos) != null)
                 {
                     map.spawnPosition = pos;
                     map.spawnPosition.x += 0.5f;
+                    map.spawnPosition.y += 1f;
                     spawnCheck = true;
                     return;
                 }

@@ -23,7 +23,7 @@ public class PushTrap : Trap
         if (!(entity is KillTrap))
         {
             GridMap grid = gameManager.map.grid;
-            FindObjectOfType<AudioManager>().Play("WindTrap");
+            AudioManager.instance.Play("WindTrap");
             gameManager.map.UpdateAroundPosition(this.gameObject);
             Vector3Int CellEntity = grid.GetLocalPosition(gameManager.map.currentCellInt); // La position du PushTrap
             Vector3Int frontCellEntity = new Vector3Int(0, 1, 0) + CellEntity;
